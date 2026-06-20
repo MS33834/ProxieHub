@@ -29,7 +29,7 @@ jobs:
       - name: Run tests
         run: python tests/test_parser.py
 
-      - name: Commit and push changes
+      - name: Commit and push changes to GitHub
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -40,3 +40,13 @@ jobs:
             git commit -m "chore: daily node update [skip ci]"
             git push
           fi
+
+      - name: Sync to GitCode
+        # Skip this step if the GITCODE_TOKEN secret is not configured.
+        if: ${{ secrets.GITCODE_TOKEN != '' }}
+        env:
+          GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
+        run: |
+          git remote add gitcode https://oauth2:${GITCODE_TOKEN}@gitcode.com/badhope/ProxieHub.git || true
+          git fetch gitcode main || true
+          git push gitcode main

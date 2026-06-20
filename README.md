@@ -84,7 +84,21 @@ python tests/test_parser.py
 
 ## Sync to GitCode
 
-After pushing updates to GitHub, sync the same content to GitCode:
+The GitHub Actions workflow can automatically push daily updates to GitCode as well.
+
+### Enable automatic sync
+
+1. Go to your GitHub repository → **Settings** → **Secrets and variables** → **Actions**.
+2. Click **New repository secret**.
+3. Name: `GITCODE_TOKEN`
+4. Value: your GitCode personal access token.
+5. Save.
+
+After this, every daily update will be pushed to both GitHub and GitCode automatically.
+
+### Manual sync
+
+If you prefer to sync manually from your local machine:
 
 ```bash
 git remote add github https://github.com/MS33834/ProxieHub.git

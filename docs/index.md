@@ -5,7 +5,14 @@ Welcome to the ProxieHub documentation site.
 ## Getting Started
 
 - [Beginner Guide](beginner-guide.md)
-- [Clash Setup](client-setup/clash.md)
+- [FAQ](faq.md)
+
+## Client Setup
+
+- [Clash / Clash Verge](client-setup/clash.md)
+- [v2rayN](client-setup/v2rayn.md)
+- [v2rayNG](client-setup/v2rayng.md)
+- [Shadowrocket](client-setup/shadowrocket.md)
 
 ## Tool Index
 
@@ -14,6 +21,12 @@ Welcome to the ProxieHub documentation site.
 - [Android](../tools/android.md)
 - [iOS](../tools/ios.md)
 - [Browser Extensions](../tools/browser-extensions.md)
+
+## Contributing
+
+- [Contributing Guide](../CONTRIBUTING.md)
+- [Security Policy](../SECURITY.md)
+- [Code of Conduct](../CODE_OF_CONDUCT.md)
 
 ## Disclaimer
 

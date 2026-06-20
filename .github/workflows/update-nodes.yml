@@ -27,7 +27,7 @@ jobs:
         run: python scripts/update.py
 
       - name: Run tests
-        run: python tests/test_parser.py
+        run: make test
 
       - name: Commit and push changes to GitHub
         run: |

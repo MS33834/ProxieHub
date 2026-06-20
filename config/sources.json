@@ -1,11 +1,21 @@
 {
+  "_comment": "Add real public sources here. Keep enabled=false until verified. Respect robots.txt and terms of service.",
   "free_node_sources": [
     {
-      "name": "example-github-repo",
+      "name": "example-github-raw",
       "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/example/free-nodes/main/nodes.txt",
+      "url": "https://raw.githubusercontent.com/example/free-nodes/main/subscribe.txt",
       "enabled": false,
-      "note": "Replace with real public source and set enabled=true"
+      "decode_base64": true,
+      "note": "Example: a GitHub raw URL serving base64-encoded node links."
+    },
+    {
+      "name": "example-web-page",
+      "type": "web_page",
+      "url": "https://example.com/free-node-page",
+      "enabled": false,
+      "decode_base64": false,
+      "note": "Example: a public web page containing node links in plain text."
     }
   ],
   "free_proxy_apis": [
@@ -14,7 +24,7 @@
       "type": "json_api",
       "url": "https://api.example.com/proxies",
       "enabled": false,
-      "note": "Replace with real public proxy API and set enabled=true"
+      "note": "Example: a JSON API returning proxy list. Implement custom parser if needed."
     }
   ]
 }

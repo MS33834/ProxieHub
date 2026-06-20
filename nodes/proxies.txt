@@ -1,3 +1,2 @@
 # ProxieHub public proxy list
-# Auto-generated. Currently no enabled sources.
-# Format: protocol://ip:port
+# Auto-generated.

@@ -1,48 +1,76 @@
 import socket
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
 
+from parser import decode_vmess
+
 TIMEOUT = 5
+MAX_WORKERS = 50
 
 
-def tcp_check(host: str, port: int) -> tuple[bool, float]:
+def tcp_check(host: str, port: int, timeout: int = TIMEOUT) -> tuple[bool, float]:
     start = time.time()
     try:
-        with socket.create_connection((host, port), timeout=TIMEOUT):
+        with socket.create_connection((host, port), timeout=timeout):
             latency = time.time() - start
             return True, latency
     except Exception:
         return False, float("inf")
 
 
-def verify_node(link: str) -> dict:
-    scheme = link.split("://", 1)[0]
+def parse_endpoint(link: str) -> tuple[str | None, int | None]:
+    scheme = link.split("://", 1)[0].lower()
     try:
         if scheme == "vmess":
-            from parser import decode_vmess
             cfg = decode_vmess(link)
-            host = cfg.get("add") if cfg else None
-            port = int(cfg.get("port")) if cfg else None
-        else:
-            parsed = urlparse(link)
-            host = parsed.hostname
-            port = parsed.port
+            if not cfg:
+                return None, None
+            host = cfg.get("add")
+            port = int(cfg.get("port")) if cfg.get("port") else None
+            return host, port
+        parsed = urlparse(link)
+        return parsed.hostname, parsed.port
     except Exception:
-        host, port = None, None
+        return None, None
 
+
+def verify_node(link: str, timeout: int = TIMEOUT) -> dict:
+    host, port = parse_endpoint(link)
     if not host or not port:
         return {"link": link, "alive": False, "latency": None, "error": "parse failed"}
 
-    alive, latency = tcp_check(host, port)
-    return {"link": link, "alive": alive, "latency": round(latency, 3) if alive else None}
+    alive, latency = tcp_check(host, port, timeout)
+    return {
+        "link": link,
+        "alive": alive,
+        "latency": round(latency, 3) if alive else None,
+    }
 
 
-def verify_nodes(links: list) -> list:
+def verify_nodes(links: list[str], max_workers: int = MAX_WORKERS) -> list[dict]:
     results = []
-    for link in links:
-        results.append(verify_node(link))
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_link = {executor.submit(verify_node, link): link for link in links}
+        for future in as_completed(future_to_link):
+            try:
+                results.append(future.result())
+            except Exception as exc:
+                link = future_to_link[future]
+                results.append({"link": link, "alive": False, "latency": None, "error": str(exc)})
     return results
 
 
+def filter_alive(links: list[str], max_workers: int = MAX_WORKERS) -> list[str]:
+    results = verify_nodes(links, max_workers)
+    return [r["link"] for r in results if r["alive"]]
+
+
 if __name__ == "__main__":
-    print(verify_node("ss://YWVzLTI1Ni1nY206cGFzc3dvcmQ=@example.com:443"))
+    sample = [
+        "ss://YWVzLTI1Ni1nY206cGFzc3dvcmQ=@example.com:443",
+        "trojan://pass@example.com:443",
+        "vmess://eyJhZGQiOiJleGFtcGxlLmNvbSIsInBvcnQiOiI0NDMiLCJpZCI6Inh4eHh4eHgteHh4eC14eHh4LXh4eHgteHh4eHh4eHh4eHgifQ==",
+    ]
+    for r in verify_nodes(sample):
+        print(r)

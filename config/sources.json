@@ -1,0 +1,20 @@
+{
+  "free_node_sources": [
+    {
+      "name": "example-github-repo",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/example/free-nodes/main/nodes.txt",
+      "enabled": false,
+      "note": "Replace with real public source and set enabled=true"
+    }
+  ],
+  "free_proxy_apis": [
+    {
+      "name": "example-proxy-api",
+      "type": "json_api",
+      "url": "https://api.example.com/proxies",
+      "enabled": false,
+      "note": "Replace with real public proxy API and set enabled=true"
+    }
+  ]
+}

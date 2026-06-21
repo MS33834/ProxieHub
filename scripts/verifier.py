@@ -9,6 +9,18 @@ TIMEOUT = 5
 MAX_WORKERS = 50
 
 
+def can_reach_public_internet(timeout: int = 5) -> bool:
+    """Check if the environment can make outbound TCP connections."""
+    # Use Cloudflare DNS or example.com as a well-known public endpoint.
+    for host, port in [("1.1.1.1", 53), ("example.com", 443)]:
+        try:
+            with socket.create_connection((host, port), timeout=timeout):
+                return True
+        except Exception:
+            continue
+    return False
+
+
 def tcp_check(host: str, port: int, timeout: int = TIMEOUT) -> tuple[bool, float]:
     start = time.time()
     try:

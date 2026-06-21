@@ -81,10 +81,16 @@ def parse_ss_link(link: str) -> dict | None:
         if ":" not in server_port:
             return None
         server, port_str = server_port.rsplit(":", 1)
+        # Strip plugin/query parameters that may appear after the port.
+        port_str = port_str.split("?", 1)[0]
+        try:
+            port = int(port_str)
+        except ValueError:
+            return None
         return {
             "type": "ss",
             "server": server,
-            "port": int(port_str),
+            "port": port,
             "cipher": method,
             "password": password,
             "name": name or "ss_node",
@@ -101,10 +107,15 @@ def parse_ss_link(link: str) -> dict | None:
                 return None
             method, password = auth.split(":", 1)
             server, port_str = server_port.rsplit(":", 1)
+            port_str = port_str.split("?", 1)[0]
+            try:
+                port = int(port_str)
+            except ValueError:
+                return None
             return {
                 "type": "ss",
                 "server": server,
-                "port": int(port_str),
+                "port": port,
                 "cipher": method,
                 "password": password,
                 "name": "ss_node",
@@ -112,39 +123,84 @@ def parse_ss_link(link: str) -> dict | None:
     return None
 
 
+def _split_link(link: str, scheme: str, default_port: int = 443) -> tuple[str, str, int, str, str] | None:
+    """
+    Split scheme://[userinfo@]host[:port][?query][#fragment] into parts.
+    Supports IPv6 addresses wrapped in brackets.
+    """
+    prefix = f"{scheme}://"
+    if not link.startswith(prefix):
+        return None
+    body = link[len(prefix):]
+
+    fragment = ""
+    if "#" in body:
+        body, fragment = body.split("#", 1)
+
+    query = ""
+    if "?" in body:
+        body, query = body.split("?", 1)
+
+    userinfo = ""
+    if "@" in body:
+        userinfo, body = body.rsplit("@", 1)
+
+    host = body
+    port = default_port
+    if host.startswith("["):
+        end = host.find("]")
+        if end == -1:
+            return None
+        rest = host[end + 1:]
+        host = host[1:end]
+        if rest.startswith(":"):
+            try:
+                port = int(rest[1:])
+            except ValueError:
+                return None
+    elif ":" in host:
+        host, port_str = host.rsplit(":", 1)
+        try:
+            port = int(port_str)
+        except ValueError:
+            return None
+
+    if not host:
+        return None
+    return userinfo, host, port, query, fragment
+
+
 def parse_trojan_link(link: str) -> dict | None:
-    if not link.startswith("trojan://"):
+    parts = _split_link(link, "trojan")
+    if not parts:
         return None
-    parsed = urlparse(link)
-    if not parsed.hostname or not parsed.port:
-        return None
+    password, host, port, _query, fragment = parts
     return {
         "type": "trojan",
-        "server": parsed.hostname,
-        "port": parsed.port,
-        "password": unquote(parsed.username or ""),
-        "sni": parsed.hostname,
+        "server": host,
+        "port": port,
+        "password": unquote(password),
+        "sni": host,
         "skip-cert-verify": False,
-        "name": parsed.fragment or "trojan_node",
+        "name": unquote(fragment) or "trojan_node",
     }
 
 
 def parse_vless_link(link: str) -> dict | None:
-    if not link.startswith("vless://"):
+    parts = _split_link(link, "vless")
+    if not parts:
         return None
-    parsed = urlparse(link)
-    if not parsed.hostname or not parsed.port:
-        return None
-    qs = {k: v[0] for k, v in parse_qs(parsed.query).items()} if parsed.query else {}
+    uuid, host, port, query, fragment = parts
+    qs = {k: v[0] for k, v in parse_qs(query).items()} if query else {}
     return {
         "type": "vless",
-        "server": parsed.hostname,
-        "port": parsed.port,
-        "uuid": unquote(parsed.username or ""),
-        "tls": qs.get("security", "none") == "tls",
-        "servername": qs.get("sni", parsed.hostname),
+        "server": host,
+        "port": port,
+        "uuid": unquote(uuid),
+        "tls": qs.get("security", "none") in ("tls", "reality"),
+        "servername": qs.get("sni", host),
         "network": qs.get("type", "tcp"),
-        "name": parsed.fragment or "vless_node",
+        "name": unquote(fragment) or "vless_node",
     }
 
 

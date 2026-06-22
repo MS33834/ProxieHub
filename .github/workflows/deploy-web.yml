@@ -8,6 +8,10 @@ on:
       - 'web/**'
       - 'nodes/**'
       - 'config/sources.json'
+  workflow_run:
+    workflows: ["Update Nodes"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 permissions:

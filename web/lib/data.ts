@@ -30,34 +30,59 @@ function parseClashYaml(filePath: string): { total: number; protocols: Record<st
   const text = fs.readFileSync(filePath, "utf-8");
   const lines = text.split("\n");
   let inProxies = false;
-  let depth = 0;
+  let itemIndent = -1;
   const protocols: Record<string, number> = {};
   let currentType: string | null = null;
   let total = 0;
 
   for (const rawLine of lines) {
     const line = rawLine.replace(/\r/g, "");
-    if (line.startsWith("proxies:")) {
-      inProxies = true;
-      depth = 0;
+    const stripped = line.trim();
+    if (stripped.startsWith("#")) continue;
+
+    if (!inProxies) {
+      if (/^\s*proxies:\s*$/.test(line)) {
+        inProxies = true;
+        itemIndent = -1;
+      }
       continue;
     }
-    if (!inProxies) continue;
 
     const leading = line.match(/^(\s*)/)?.[1].length || 0;
 
-    if (line.trim().startsWith("- name:")) {
+    // End of the proxies list: a sibling top-level key appears.
+    if (
+      itemIndent >= 0 &&
+      leading <= itemIndent &&
+      stripped.length > 0 &&
+      !/^\s*- /.test(line)
+    ) {
+      break;
+    }
+
+    // A new proxy entry starts with `- name:` or `- type:`.
+    if (
+      /^\s*- /.test(line) &&
+      (stripped.startsWith("- name:") || stripped.startsWith("- type:"))
+    ) {
       if (currentType) {
         protocols[currentType] = (protocols[currentType] || 0) + 1;
       }
       currentType = null;
-      depth = leading;
       total++;
+
+      const match = line.match(/^(\s*)- /);
+      itemIndent = match ? match[1].length : leading;
+
+      if (stripped.startsWith("- type:")) {
+        currentType = stripped.replace("- type:", "").trim();
+      }
       continue;
     }
 
-    if (total > 0 && leading > depth && line.trim().startsWith("type:")) {
-      currentType = line.trim().replace("type:", "").trim();
+    // Capture type when it appears after the name.
+    if (total > 0 && itemIndent >= 0 && leading > itemIndent && stripped.startsWith("type:")) {
+      currentType = stripped.replace("type:", "").trim();
     }
   }
 

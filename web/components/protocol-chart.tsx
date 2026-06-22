@@ -68,7 +68,7 @@ export function ProtocolChart({ counts }: ProtocolChartProps) {
                   style={{ backgroundColor: protocolColors[protocol.toLowerCase()] || "#6b7280" }}
                 />
                 <span className="flex-1 text-sm capitalize">{protocol.toUpperCase()}</span>
-                <span className="text-sm font-medium">{count}</span>
+                <span className="text-sm font-medium mr-1">{count}</span>
                 <span className="text-xs text-muted w-12 text-right">
                   {((count / total) * 100).toFixed(1)}%
                 </span>

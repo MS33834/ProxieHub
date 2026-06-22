@@ -17,6 +17,8 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,12 +55,10 @@ jobs:
 
       - name: Sync to GitCode
         if: ${{ env.GITCODE_TOKEN != '' }}
-        env:
-          GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
         run: |
           git remote add gitcode https://gitcode.com/badhope/ProxieHub.git || true
           git fetch gitcode main || true
-          git config credential.helper store
+          git config --local credential.helper store
           printf 'url=https://gitcode.com/badhope/ProxieHub.git\nusername=oauth2\npassword=%s\n' "$GITCODE_TOKEN" | git credential approve
           git push gitcode main
           git credential reject <<'EOF'

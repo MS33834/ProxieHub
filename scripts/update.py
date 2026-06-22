@@ -1,4 +1,5 @@
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -9,11 +10,13 @@ from formatter import write_outputs
 from parser import extract_node_links, parse_proxy_api_response
 from verifier import can_reach_public_internet, filter_alive
 
-MAX_NODES = 500
-MAX_PROXIES = 200
+# Limits are configurable via environment variables for future scaling.
+MAX_NODES = int(os.environ.get("PROXIEHUB_MAX_NODES", "500"))
+MAX_PROXIES = int(os.environ.get("PROXIEHUB_MAX_PROXIES", "200"))
+VERIFY_NODES = os.environ.get("PROXIEHUB_VERIFY_NODES", "false").lower() in ("1", "true", "yes")
 
 
-def main(verify: bool = False):
+def main(verify: bool = False) -> int:
     print("[update] starting pipeline")
 
     should_verify = verify and can_reach_public_internet()
@@ -21,6 +24,14 @@ def main(verify: bool = False):
         print("[update] public internet reachability test failed; skipping node verification")
 
     raw = crawl()
+
+    node_source_count = len(raw["nodes"])
+    proxy_source_count = len(raw["proxies"])
+    print(f"[update] fetched {node_source_count} node sources, {proxy_source_count} proxy sources")
+
+    if node_source_count == 0 and proxy_source_count == 0:
+        print("[update] error: no sources could be fetched", file=sys.stderr)
+        return 1
 
     all_links = []
     for item in raw["nodes"]:
@@ -47,11 +58,17 @@ def main(verify: bool = False):
 
     all_proxies = list(dict.fromkeys(all_proxies))[:MAX_PROXIES]
     write_outputs(alive_links, all_proxies)
-    print("[update] done")
+    print(f"[update] done: {len(alive_links)} nodes, {len(all_proxies)} proxies written")
+    return 0
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Update ProxieHub node and proxy lists")
-    parser.add_argument("--verify", action="store_true", help="Enable node connectivity verification")
+    parser.add_argument(
+        "--verify",
+        action="store_true",
+        default=VERIFY_NODES,
+        help="Enable node connectivity verification (also settable via PROXIEHUB_VERIFY_NODES)",
+    )
     args = parser.parse_args()
-    main(verify=args.verify)
+    sys.exit(main(verify=args.verify))

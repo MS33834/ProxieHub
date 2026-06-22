@@ -1,4 +1,5 @@
 import base64
+import ipaddress
 import re
 from pathlib import Path
 
@@ -14,6 +15,22 @@ from parser import node_to_clash_config
 
 def _clean_name(name: str) -> str:
     return re.sub(r'[^\w\-_.]', '_', name)[:64]
+
+
+def _is_private_host(host: str) -> bool:
+    """Return True if host is a private/reserved IP or localhost."""
+    if not host:
+        return True
+    lower = host.lower()
+    if lower in ("localhost", "127.0.0.1", "::1"):
+        return True
+    try:
+        ip = ipaddress.ip_address(host)
+        return ip.is_private or ip.is_reserved or ip.is_loopback or ip.is_multicast
+    except ValueError:
+        # Hostname: allow public domains; block obvious local suffixes.
+        local_suffixes = (".local", ".localhost", ".lan", ".internal")
+        return any(lower.endswith(s) for s in local_suffixes)
 
 
 def _yaml_dump(data: dict) -> str:
@@ -50,6 +67,8 @@ def to_clash_yaml(links: list[str]) -> str:
         cfg = node_to_clash_config(link)
         if not cfg or not cfg.get("server") or not cfg.get("port"):
             continue
+        if _is_private_host(cfg.get("server")):
+            continue
         base_name = _clean_name(cfg.get("name") or f"node_{idx + 1}")
         name = base_name
         suffix = 1
@@ -79,14 +98,19 @@ def to_clash_yaml(links: list[str]) -> str:
         "rules": ["MATCH,DIRECT"],
     }
 
-    if yaml:
-        header = "# ProxieHub Clash configuration\n# Auto-generated. Do not edit manually.\n"
-        return header + yaml.dump(output, allow_unicode=True, sort_keys=False)
-
-    # Fallback manual builder
-    lines = [
+    disclaimer = [
         "# ProxieHub Clash configuration",
         "# Auto-generated. Do not edit manually.",
+        "# DISCLAIMER: Free public nodes are for educational and research use only.",
+        "# No availability, security, or privacy guarantee. Use at your own risk.",
+        "# Do not log in to sensitive accounts through these proxies/nodes.",
+    ]
+
+    if yaml:
+        return "\n".join(disclaimer) + "\n" + yaml.dump(output, allow_unicode=True, sort_keys=False)
+
+    # Fallback manual builder
+    lines = disclaimer + [
         "port: 7890",
         "socks-port: 7891",
         "mixed-port: 7892",
@@ -111,13 +135,35 @@ def to_clash_yaml(links: list[str]) -> str:
 def to_v2ray_subscription(links: list[str]) -> str:
     if not links:
         return "# ProxieHub V2Ray subscription\n# Auto-generated.\n"
-    joined = "\n".join(links)
+    safe_links = []
+    for link in links:
+        cfg = node_to_clash_config(link)
+        if cfg and cfg.get("server") and not _is_private_host(cfg.get("server")):
+            safe_links.append(link)
+    if not safe_links:
+        return "# ProxieHub V2Ray subscription\n# Auto-generated.\n"
+    joined = "\n".join(safe_links)
     return base64.urlsafe_b64encode(joined.encode()).decode()
 
 
+def _proxy_host(proxy: str) -> str | None:
+    """Extract host from http(s)://host:port or socks4/5://host:port."""
+    match = re.match(r"^(?:http|https|socks4|socks5)://(?:[^@]+@)?([^:/]+)(?::\d+)?", proxy, re.I)
+    return match.group(1) if match else None
+
+
 def to_proxy_list(proxies: list[str]) -> str:
-    lines = ["# ProxieHub public proxy list", "# Auto-generated."]
-    lines.extend(proxies)
+    lines = [
+        "# ProxieHub public proxy list",
+        "# Auto-generated.",
+        "# DISCLAIMER: Free public proxies are for educational and research use only.",
+        "# No availability, security, or privacy guarantee. Use at your own risk.",
+        "# Do not log in to sensitive accounts through these proxies.",
+    ]
+    for proxy in proxies:
+        host = _proxy_host(proxy)
+        if host and not _is_private_host(host):
+            lines.append(proxy)
     return "\n".join(lines) + "\n"
 
 

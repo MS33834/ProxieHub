@@ -1,13 +1,44 @@
 import base64
 import json
+import os
 import shutil
 import ssl
 import subprocess
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from urllib.parse import urlparse
 
 CONFIG_PATH = Path(__file__).parent.parent / "config" / "sources.json"
 USER_AGENT = "ProxieHub-Crawler/1.0 (+https://github.com/MS33834/ProxieHub)"
+
+# Only HTTPS URLs from well-known public hosts are allowed as data sources.
+ALLOWED_SCHEMES = {"https"}
+DEFAULT_ALLOWED_HOSTS = {
+    "raw.githubusercontent.com",
+    "gitcode.com",
+    "api.gitcode.com",
+}
+
+
+def _allowed_hosts() -> set[str]:
+    """Return allowed hosts, optionally extended via PROXIEHUB_ALLOWED_HOSTS env var."""
+    hosts = set(DEFAULT_ALLOWED_HOSTS)
+    extra = os.environ.get("PROXIEHUB_ALLOWED_HOSTS", "")
+    if extra:
+        hosts.update(h.strip().lower() for h in extra.split(",") if h.strip())
+    return hosts
+
+
+def _validate_url(url: str) -> None:
+    """Reject non-HTTPS URLs and unexpected hosts to mitigate SSRF risks."""
+    parsed = urlparse(url)
+    if parsed.scheme not in ALLOWED_SCHEMES:
+        raise ValueError(f"URL scheme not allowed: {parsed.scheme}")
+    host = (parsed.hostname or "").lower()
+    allowed = _allowed_hosts()
+    if not any(host == allowed_host or host.endswith(f".{allowed_host}") for allowed_host in allowed):
+        raise ValueError(f"URL host not allowed: {host}")
 
 
 def _ssl_context() -> ssl.SSLContext:
@@ -18,19 +49,29 @@ def _ssl_context() -> ssl.SSLContext:
     return context
 
 
-def _fetch_with_curl(url: str, timeout: int) -> str:
-    """Fetch via curl, which is often more tolerant of flaky networks."""
+def _fetch_with_curl(url: str, timeout: int, max_bytes: int = 50 * 1024 * 1024) -> str:
+    """Fetch via curl, streaming output to avoid subprocess pipe deadlocks."""
+    _validate_url(url)
     cmd = [
         "curl",
         "-fsSL",
+        "--proto", "=https",
         "--max-time", str(timeout),
+        "--max-filesize", str(max_bytes),
         "-A", USER_AGENT,
         url,
     ]
-    result = subprocess.run(cmd, capture_output=True, text=False, timeout=timeout + 5)
-    if result.returncode != 0:
-        raise RuntimeError(f"curl failed: {result.stderr.decode('utf-8', errors='ignore')[:200]}")
-    data = result.stdout
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        stdout, stderr = proc.communicate(timeout=timeout + 5)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        stdout, stderr = proc.communicate()
+        raise RuntimeError("curl timed out")
+    if proc.returncode != 0:
+        err = stderr.decode("utf-8", errors="ignore")[:200]
+        raise RuntimeError(f"curl failed: {err}")
+    data = stdout[:max_bytes]
     for encoding in ("utf-8", "gbk", "latin-1"):
         try:
             return data.decode(encoding, errors="ignore")
@@ -40,6 +81,7 @@ def _fetch_with_curl(url: str, timeout: int) -> str:
 
 
 def _fetch_with_urllib(url: str, timeout: int) -> str:
+    _validate_url(url)
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=timeout, context=_ssl_context()) as resp:
         data = resp.read()
@@ -51,20 +93,31 @@ def _fetch_with_urllib(url: str, timeout: int) -> str:
         return data.decode("utf-8", errors="ignore")
 
 
-def fetch(url: str, timeout: int = 30) -> str:
-    """Fetch URL, preferring curl if available for better network tolerance."""
+def fetch(url: str, timeout: int = 20, retries: int = 1, max_bytes: int = 10 * 1024 * 1024) -> str:
+    """Fetch URL with retries, preferring curl if available for better network tolerance.
+
+    If curl fails because the response is too large or too slow, we avoid falling
+    back to urllib with the same parameters to save time.
+    """
+    _validate_url(url)
     last_error = None
-    if shutil.which("curl"):
+    for attempt in range(retries + 1):
         try:
-            return _fetch_with_curl(url, timeout)
+            if shutil.which("curl"):
+                try:
+                    return _fetch_with_curl(url, timeout, max_bytes=max_bytes)
+                except RuntimeError as exc:
+                    err = str(exc).lower()
+                    # Don't waste another attempt with urllib on oversized/slow payloads.
+                    if "timed out" in err or "filesize" in err or "max-filesize" in err:
+                        raise
+                    last_error = exc
+            return _fetch_with_urllib(url, timeout)
         except Exception as exc:
             last_error = exc
-    try:
-        return _fetch_with_urllib(url, timeout)
-    except Exception as exc:
-        if last_error:
-            raise last_error from exc
-        raise
+            if attempt < retries:
+                continue
+    raise last_error or RuntimeError(f"failed to fetch {url}")
 
 
 def maybe_decode_base64(text: str) -> str:
@@ -80,36 +133,59 @@ def maybe_decode_base64(text: str) -> str:
 
 
 def fetch_source(source: dict) -> str:
-    text = fetch(source["url"], timeout=source.get("timeout", 30))
+    text = fetch(
+        source["url"],
+        timeout=source.get("timeout", 20),
+        max_bytes=source.get("max_size", 10 * 1024 * 1024),
+    )
     if source.get("decode_base64", False):
         text = maybe_decode_base64(text)
     return text
 
 
-def crawl(config_path: Path | None = None) -> dict:
+def _fetch_source_safe(source: dict, category: str) -> dict | None:
+    """Fetch a single source and return its raw entry, or None on failure."""
+    try:
+        text = fetch_source(source)
+        return {"name": source["name"], "text": text, "category": category}
+    except Exception as exc:
+        print(f"[crawler] failed {source['name']}: {exc}")
+        return None
+
+
+def crawl(config_path: Path | None = None, max_workers: int | None = None) -> dict:
+    """Fetch all enabled sources concurrently.
+
+    max_workers defaults to PROXIEHUB_CRAWL_WORKERS or the number of enabled sources.
+    """
     path = config_path or CONFIG_PATH
     with open(path, "r", encoding="utf-8") as f:
         config = json.load(f)
 
-    raw = {"nodes": [], "proxies": []}
-
+    sources: list[tuple[dict, str]] = []
     for source in config.get("free_node_sources", []):
-        if not source.get("enabled"):
-            continue
-        try:
-            text = fetch_source(source)
-            raw["nodes"].append({"name": source["name"], "text": text})
-        except Exception as exc:
-            print(f"[crawler] failed {source['name']}: {exc}")
-
+        if source.get("enabled"):
+            sources.append((source, "nodes"))
     for source in config.get("free_proxy_apis", []):
-        if not source.get("enabled"):
-            continue
-        try:
-            text = fetch_source(source)
-            raw["proxies"].append({"name": source["name"], "text": text})
-        except Exception as exc:
-            print(f"[crawler] failed {source['name']}: {exc}")
+        if source.get("enabled"):
+            sources.append((source, "proxies"))
+
+    raw: dict[str, list[dict]] = {"nodes": [], "proxies": []}
+
+    if max_workers is None:
+        env_workers = os.environ.get("PROXIEHUB_CRAWL_WORKERS", "")
+        max_workers = int(env_workers) if env_workers.isdigit() else min(16, max(1, len(sources)))
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_source = {
+            executor.submit(_fetch_source_safe, source, category): source
+            for source, category in sources
+        }
+        for future in as_completed(future_to_source):
+            result = future.result()
+            if result:
+                category = result.pop("category")
+                raw[category].append(result)
 
     return raw
 

@@ -1,4 +1,4 @@
-.PHONY: install test update clean lint
+.PHONY: install test update clean lint lint-web build-web
 
 install:
 	pip install -r requirements.txt
@@ -11,9 +11,18 @@ test:
 update:
 	python scripts/update.py
 
+verify:
+	PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 
 lint:
 	python -m py_compile scripts/*.py tests/*.py
+
+lint-web:
+	cd web && npm run lint
+
+build-web:
+	cd web && npm run build

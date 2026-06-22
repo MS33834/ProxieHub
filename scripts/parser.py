@@ -97,8 +97,11 @@ def parse_ss_link(link: str) -> dict | None:
         }
 
     # SIP002 format: ss://BASE64(method:password@server:port)#name
-    b64_body = body.split("#", 1)[0]
-    decoded = safe_b64decode(b64_body)
+    fragment = ""
+    if "#" in body:
+        body, fragment = body.split("#", 1)
+        fragment = unquote(fragment)
+    decoded = safe_b64decode(body)
     if decoded:
         inner = decoded.decode("utf-8", errors="ignore")
         if "@" in inner:
@@ -118,7 +121,7 @@ def parse_ss_link(link: str) -> dict | None:
                 "port": port,
                 "cipher": method,
                 "password": password,
-                "name": "ss_node",
+                "name": fragment or "ss_node",
             }
     return None
 

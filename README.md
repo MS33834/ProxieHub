@@ -2,6 +2,10 @@
 
 > A community-curated aggregator of free proxy/VPN tools and public node lists. **For educational and research use only.**
 
+[![CI](https://github.com/MS33834/ProxieHub/actions/workflows/ci.yml/badge.svg)](https://github.com/MS33834/ProxieHub/actions/workflows/ci.yml)
+[![Update Nodes](https://github.com/MS33834/ProxieHub/actions/workflows/update-nodes.yml/badge.svg)](https://github.com/MS33834/ProxieHub/actions/workflows/update-nodes.yml)
+[![Deploy Web](https://github.com/MS33834/ProxieHub/actions/workflows/deploy-web.yml/badge.svg)](https://github.com/MS33834/ProxieHub/actions/workflows/deploy-web.yml)
+
 [English](#proxiehub) | [中文](#中文说明)
 
 ---
@@ -26,7 +30,17 @@
 | V2Ray | `https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/v2ray.txt` | `https://api.gitcode.com/api/v5/repos/badhope/ProxieHub/raw/nodes/v2ray.txt?ref=main` |
 | HTTP/SOCKS5 | `https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/proxies.txt` | `https://api.gitcode.com/api/v5/repos/badhope/ProxieHub/raw/nodes/proxies.txt?ref=main` |
 
-> GitHub Actions updates the GitHub repository every day at 02:00 UTC. GitCode is mirrored manually after each update.
+> GitHub Actions updates the GitHub repository every day at 02:00 UTC. If you configure the `GITCODE_TOKEN` secret, the same workflow will also push the update to GitCode automatically.
+
+### Browse the web interface
+
+A static web UI is automatically built from the `web/` directory and deployed to GitHub Pages:
+
+- **Home**: project overview, live stats, FAQ
+- **Subscribe**: copy subscription links for Clash / V2Ray / HTTP(S)/SOCKS5
+- **Sources**: transparent data-source list with protocol/update-frequency metadata
+- **Clients**: recommended clients and setup guides by platform
+- **Disclaimer**: full terms of use
 
 ### Browse tools by platform
 
@@ -46,6 +60,7 @@ ProxieHub/
 ├── LICENSE
 ├── requirements.txt          # Python dependencies
 ├── .env.example              # Local environment template (no secrets committed)
+├── Makefile                  # Common dev commands
 ├── docs/                     # Guides and documentation
 ├── tools/                    # Client tool index by platform
 ├── nodes/                    # Auto-updated node lists
@@ -58,8 +73,10 @@ ProxieHub/
 ├── config/                   # Data source configuration
 │   └── sources.json
 ├── tests/                    # Unit tests
+├── web/                      # Next.js static site
 └── .github/workflows/        # CI/CD automation
-    └── update-nodes.yml
+    ├── update-nodes.yml
+    └── deploy-web.yml
 ```
 
 ---
@@ -77,8 +94,27 @@ ProxieHub/
 ```bash
 pip install -r requirements.txt
 python scripts/update.py
-python tests/test_parser.py
+make test
 ```
+
+To enable node verification (slower but filters out dead nodes):
+
+```bash
+PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+```
+
+### Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `PROXIEHUB_VERIFY_NODES` | `false` | Enable TCP connectivity checks during update |
+| `PROXIEHUB_MAX_NODES` | `500` | Maximum node links to keep in output |
+| `PROXIEHUB_MAX_PROXIES` | `200` | Maximum HTTP/SOCKS5 proxies to keep in output |
+| `PROXIEHUB_ALLOWED_HOSTS` | `raw.githubusercontent.com,gitcode.com,api.gitcode.com` | Comma-separated extra allowed hosts for crawler |
+| `PROXIEHUB_CRAWL_WORKERS` | `min(16, enabled_sources)` | Concurrent source fetch workers |
+| `PROXIEHUB_GITHUB_OWNER` | `MS33834` | GitHub repository owner used in web UI links |
+| `PROXIEHUB_REPO_NAME` | `ProxieHub` | Repository name used in web UI links |
+| `PROXIEHUB_GITCODE_OWNER` | `badhope` | GitCode repository owner used in web UI links |
 
 ---
 
@@ -113,11 +149,38 @@ git push gitcode main
 
 ---
 
+## Web Development
+
+The `web/` directory is a Next.js 14 static site using TypeScript and Tailwind CSS.
+
+```bash
+cd web
+npm install
+npm run dev        # Start development server
+npm run lint       # Run ESLint
+npm run build      # Build static files to web/dist
+```
+
+The site is configured for GitHub Pages deployment with `basePath: "/ProxieHub"`.
+
+---
+
 ## Contributing
 
 - Add new public sources via PR to `config/sources.json`.
 - Report broken sources or tools in Issues.
+- Improve the web UI, docs, or scripts via PR.
 - Please do **not** submit private/paid nodes or cracked software links.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+---
+
+## Community & Support
+
+- GitHub Issues: bug reports, broken source reports, feature requests
+- GitHub Discussions: general questions and ideas
+- Security concerns: see [SECURITY.md](SECURITY.md)
 
 ---
 
@@ -133,4 +196,21 @@ git push gitcode main
 
 本项目不生产节点，所有内容均来自互联网公开渠道，不保证可用性、安全性与隐私性。使用时请遵守当地法律法规，不要在免费代理/节点环境下登录敏感账户。
 
-订阅地址同时提供 GitHub 与 GitCode 两个入口，方便不同地区用户访问。
+### 主要特性
+
+- **每日自动更新**：GitHub Actions 每天 UTC 02:00 自动抓取、解析、校验并发布节点。
+- **多格式输出**：同时提供 Clash、V2Ray、HTTP/SOCKS5 三种订阅格式。
+- **双端镜像**：订阅地址同时提供 GitHub 与 GitCode 两个入口，方便不同地区用户访问。
+- **透明开源**：所有数据源、脚本与配置完全公开，社区可审计、可贡献。
+- **静态前端**：基于 Next.js 的展示站点，提供节点统计、数据源透明度、客户端教程等。
+
+### 快速开始
+
+1. 选择适合你设备和客户端的订阅格式（Clash / V2Ray / HTTP SOCKS5）。
+2. 复制 GitHub Raw 或 GitCode Raw 订阅链接。
+3. 在客户端中粘贴订阅链接并更新。
+4. 选择一个节点连接即可使用。
+
+### 免责声明
+
+使用本项目即表示你已阅读并同意 [免责声明](docs/index.md)。公开节点存在流量被查看、记录或篡改的风险，请仅用于学习研究。

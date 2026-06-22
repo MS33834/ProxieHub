@@ -26,3 +26,11 @@ Thumbs.db
 # Runtime output
 nodes/*.tmp
 data/
+
+# Frontend build output
+.next/
+dist/
+out/
+web/.next/
+web/dist/
+web/out/

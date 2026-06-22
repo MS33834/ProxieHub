@@ -7,6 +7,12 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "update-nodes"
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -24,7 +30,11 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run update script
-        run: python scripts/update.py
+        env:
+          PROXIEHUB_VERIFY_NODES: "true"
+          PROXIEHUB_MAX_NODES: "800"
+          PROXIEHUB_MAX_PROXIES: "300"
+        run: python scripts/update.py --verify
 
       - name: Run tests
         run: make test
@@ -37,16 +47,20 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: daily node update [skip ci]"
+            git commit -m "chore: daily node update"
             git push
           fi
 
       - name: Sync to GitCode
-        # Skip this step if the GITCODE_TOKEN secret is not configured.
         if: ${{ secrets.GITCODE_TOKEN != '' }}
         env:
           GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
         run: |
-          git remote add gitcode https://oauth2:${GITCODE_TOKEN}@gitcode.com/badhope/ProxieHub.git || true
+          git remote add gitcode https://gitcode.com/badhope/ProxieHub.git || true
           git fetch gitcode main || true
+          git config credential.helper store
+          printf 'url=https://gitcode.com/badhope/ProxieHub.git\nusername=oauth2\npassword=%s\n' "$GITCODE_TOKEN" | git credential approve
           git push gitcode main
+          git credential reject <<'EOF'
+          url=https://gitcode.com/badhope/ProxieHub.git
+          EOF

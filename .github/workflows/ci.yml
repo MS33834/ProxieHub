@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint Python
+        run: make lint
+
+      - name: Run Python tests
+        run: make test
+
+      - name: Run update pipeline (without verification)
+        run: python scripts/update.py
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./web
+        run: npm ci
+
+      - name: Lint web
+        working-directory: ./web
+        run: npm run lint
+
+      - name: Build web
+        working-directory: ./web
+        run: npm run build

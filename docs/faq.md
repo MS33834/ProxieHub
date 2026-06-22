@@ -23,3 +23,21 @@ See [Contributing](../CONTRIBUTING.md). Open a PR that edits `config/sources.jso
 ## GitCode links do not work in my client
 
 GitCode raw file URLs require using the API endpoint. Use the links provided in the README, which point to `api.gitcode.com`.
+
+## What is the difference between Clash and V2Ray formats?
+
+- **Clash** format is a YAML file suitable for Clash-family clients (Clash Verge Rev, Clash Meta, Clash for Windows, Stash, Surge, etc.).
+- **V2Ray** format is a Base64-encoded list of subscription links suitable for v2rayN, v2rayNG, Shadowrocket, NekoBox, Quantumult X, and other V2Ray/Xray-core clients.
+- **HTTP/SOCKS5** format is a plain-text proxy list for browser extensions, crawlers, curl, or other tools.
+
+## Why does the update pipeline skip verification by default?
+
+Connectivity verification requires making outbound TCP connections to every node. This is time-consuming and may put load on public sources. You can enable it locally with `PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify`.
+
+## Can I self-host the web UI?
+
+Yes. The `web/` directory is a Next.js static site. Run `cd web && npm install && npm run build` to generate static files in `web/dist`, which can be served by any static host.
+
+## How do I report a security issue?
+
+Please see [SECURITY.md](../SECURITY.md) for responsible disclosure guidelines.

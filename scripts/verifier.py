@@ -3,7 +3,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
 
-from parser import decode_vmess
+from parser import decode_vmess, parse_vless_link, parse_trojan_link, parse_ss_link
 
 TIMEOUT = 5
 MAX_WORKERS = 50
@@ -41,6 +41,21 @@ def parse_endpoint(link: str) -> tuple[str | None, int | None]:
             host = cfg.get("add")
             port = int(cfg.get("port")) if cfg.get("port") else None
             return host, port
+        if scheme == "vless":
+            cfg = parse_vless_link(link)
+            if not cfg:
+                return None, None
+            return cfg.get("server"), cfg.get("port")
+        if scheme == "trojan":
+            cfg = parse_trojan_link(link)
+            if not cfg:
+                return None, None
+            return cfg.get("server"), cfg.get("port")
+        if scheme == "ss":
+            cfg = parse_ss_link(link)
+            if not cfg:
+                return None, None
+            return cfg.get("server"), cfg.get("port")
         parsed = urlparse(link)
         return parsed.hostname, parsed.port
     except Exception:

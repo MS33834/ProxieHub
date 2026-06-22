@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'web/**'
+      - 'docs-site/**'
       - 'nodes/**'
       - 'config/sources.json'
   workflow_run:
@@ -49,6 +50,24 @@ jobs:
       - name: Build
         working-directory: ./web
         run: npm run build
+
+      - name: Set up Node.js for docs-site
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install docs-site dependencies
+        working-directory: ./docs-site
+        run: npm install
+
+      - name: Build docs-site
+        working-directory: ./docs-site
+        run: npm run docs:build
+
+      - name: Copy docs-site into web dist
+        run: |
+          mkdir -p ./web/dist/docs
+          cp -r ./docs-site/.vitepress/dist/* ./web/dist/docs/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,5 +1,6 @@
 import base64
 import ipaddress
+import json
 import re
 from pathlib import Path
 
@@ -37,7 +38,7 @@ def _yaml_dump(data: dict) -> str:
     if yaml:
         return yaml.dump(data, allow_unicode=True, sort_keys=False, default_flow_style=False)
     # Fallback: minimal manual serialization for proxies list
-    lines = ["- name: \"{}\"".format(data["name"])]
+    lines = ['- name: "{}"'.format(data["name"])]
     for k, v in data.items():
         if k == "name":
             continue
@@ -59,11 +60,66 @@ def _yaml_dump(data: dict) -> str:
     return "\n".join(lines)
 
 
-def to_clash_yaml(links: list[str]) -> str:
+def _node_info(item):
+    """Normalize a node result dict or a raw link string."""
+    if isinstance(item, dict):
+        return item.get("link"), item.get("region", "unknown"), item.get("latency_ms")
+    return item, "unknown", None
+
+
+def _compute_stats(items: list, alive_only: bool = True) -> dict:
+    """Compute summary stats from node result dicts."""
+    if alive_only:
+        candidates = items
+    else:
+        candidates = [i for i in items if isinstance(i, dict) and i.get("alive")]
+    total = len(items)
+    alive_count = len(candidates)
+    latencies = [
+        i["latency_ms"] for i in candidates if isinstance(i, dict) and i.get("latency_ms") is not None
+    ]
+    avg_latency = round(sum(latencies) / len(latencies), 1) if latencies else None
+    regions: dict[str, int] = {}
+    for i in candidates:
+        if isinstance(i, dict):
+            region = i.get("region") or "unknown"
+        else:
+            region = "unknown"
+        regions[region] = regions.get(region, 0) + 1
+    survival_rate = round(alive_count / total * 100, 1) if total else 0.0
+    return {
+        "total": total,
+        "alive": alive_count,
+        "survival_rate": survival_rate,
+        "avg_latency": avg_latency,
+        "regions": regions,
+    }
+
+
+def _format_stats_lines(stats: dict) -> list[str]:
+    lines = [
+        f"# Nodes: {stats['total']} total, {stats['alive']} alive ({stats['survival_rate']}%)"
+    ]
+    if stats.get("avg_latency") is not None:
+        lines.append(f"# Average latency: {stats['avg_latency']} ms")
+    else:
+        lines.append("# Average latency: N/A")
+    if stats.get("regions"):
+        dist = ", ".join(
+            f"{k}: {v}" for k, v in sorted(stats["regions"].items(), key=lambda x: -x[1])
+        )
+        lines.append(f"# Regions: {dist}")
+    else:
+        lines.append("# Regions: N/A")
+    return lines
+
+
+def to_clash_yaml(items, stats: dict | None = None) -> str:
     proxies = []
     names = []
     seen_names = set()
-    for idx, link in enumerate(links):
+    for idx, item in enumerate(items):
+        link, region, latency_ms = _node_info(item)
         cfg = node_to_clash_config(link)
         if not cfg or not cfg.get("server") or not cfg.get("port"):
             continue
@@ -106,6 +162,9 @@ def to_clash_yaml(links: list[str]) -> str:
         "# Do not log in to sensitive accounts through these proxies/nodes.",
     ]
 
+    summary = _compute_stats(items) if stats is None else stats
+    disclaimer.extend(_format_stats_lines(summary))
+
     if yaml:
         return "\n".join(disclaimer) + "\n" + yaml.dump(output, allow_unicode=True, sort_keys=False)
 
@@ -132,11 +191,12 @@ def to_clash_yaml(links: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def to_v2ray_subscription(links: list[str]) -> str:
-    if not links:
+def to_v2ray_subscription(items, stats: dict | None = None) -> str:
+    if not items:
         return "# ProxieHub V2Ray subscription\n# Auto-generated.\n"
     safe_links = []
-    for link in links:
+    for item in items:
+        link, _region, _latency = _node_info(item)
         cfg = node_to_clash_config(link)
         if cfg and cfg.get("server") and not _is_private_host(cfg.get("server")):
             safe_links.append(link)
@@ -167,10 +227,36 @@ def to_proxy_list(proxies: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_outputs(node_links: list[str], proxy_list: list[str]):
+def _build_regions(items) -> dict[str, list[str]]:
+    """Group alive node links by region."""
+    regions: dict[str, list[str]] = {}
+    for item in items:
+        link, region, _latency = _node_info(item)
+        cfg = node_to_clash_config(link)
+        if not cfg or not cfg.get("server") or _is_private_host(cfg.get("server")):
+            continue
+        regions.setdefault(region, []).append(link)
+    return regions
+
+
+def write_outputs(node_results, proxy_list: list[str], stats: dict | None = None):
     NODES_DIR.mkdir(parents=True, exist_ok=True)
-    (NODES_DIR / "clash.yaml").write_text(to_clash_yaml(node_links), encoding="utf-8")
-    (NODES_DIR / "v2ray.txt").write_text(to_v2ray_subscription(node_links), encoding="utf-8")
+
+    summary = stats if stats is not None else _compute_stats(node_results)
+    stats_header = "\n".join(_format_stats_lines(summary)) + "\n"
+
+    (NODES_DIR / "clash.yaml").write_text(to_clash_yaml(node_results, stats=summary), encoding="utf-8")
+
+    v2ray_body = to_v2ray_subscription(node_results)
+    if not v2ray_body.startswith("#"):
+        v2ray_body = stats_header + v2ray_body
+    (NODES_DIR / "v2ray.txt").write_text(v2ray_body, encoding="utf-8")
+
+    regions = _build_regions(node_results)
+    (NODES_DIR / "regions.json").write_text(
+        json.dumps(regions, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
     (NODES_DIR / "proxies.txt").write_text(to_proxy_list(proxy_list), encoding="utf-8")
 
 

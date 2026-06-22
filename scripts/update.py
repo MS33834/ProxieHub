@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from crawler import crawl
 from formatter import write_outputs
 from parser import extract_node_links, parse_proxy_api_response
-from verifier import can_reach_public_internet, filter_alive
+from verifier import can_reach_public_internet, stats_summary, verify_nodes
 
 # Limits are configurable via environment variables for future scaling.
 MAX_NODES = int(os.environ.get("PROXIEHUB_MAX_NODES", "500"))
@@ -43,12 +43,21 @@ def main(verify: bool = False) -> int:
     print(f"[update] total unique links: {len(all_links)}")
 
     if should_verify and all_links:
-        alive_links = filter_alive(all_links)
-        print(f"[update] alive links: {len(alive_links)}")
+        results = verify_nodes(all_links)
+        stats = stats_summary(results)
+        print(
+            f"[update] verification: {stats['alive']}/{stats['total']} alive "
+            f"({stats['survival_rate']}%)"
+        )
+        if stats["avg_latency"] is not None:
+            print(f"[update] average latency: {stats['avg_latency']} ms")
+        print("[update] region distribution:")
+        for region, count in sorted(stats["regions"].items(), key=lambda x: -x[1]):
+            print(f"  {region}: {count}")
+        alive_results = [r for r in results if r["alive"]][:MAX_NODES]
     else:
-        alive_links = all_links
-
-    alive_links = alive_links[:MAX_NODES]
+        alive_results = all_links[:MAX_NODES]
+        stats = None
 
     all_proxies = []
     for item in raw["proxies"]:
@@ -57,8 +66,8 @@ def main(verify: bool = False) -> int:
         all_proxies.extend(proxies)
 
     all_proxies = list(dict.fromkeys(all_proxies))[:MAX_PROXIES]
-    write_outputs(alive_links, all_proxies)
-    print(f"[update] done: {len(alive_links)} nodes, {len(all_proxies)} proxies written")
+    write_outputs(alive_results, all_proxies, stats=stats)
+    print(f"[update] done: {len(alive_results)} nodes, {len(all_proxies)} proxies written")
     return 0
 
 

@@ -194,6 +194,143 @@
       "update_interval": "daily",
       "protocols": ["vless"],
       "note": "VLESS subscription Sub20 from Epodonios v2ray-configs (Base64)."
+    },
+    {
+      "name": "mahdibland-shadowsocks-eternity",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["ss", "vmess", "trojan", "vless"],
+      "note": "Daily updated mixed-protocol subscription from ShadowsocksAggregator (Base64)."
+    },
+    {
+      "name": "hamedp-openproxylist-v2ray",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/hamedp-71/openproxylist/main/V2RAY.txt",
+      "enabled": true,
+      "decode_base64": false,
+      "update_interval": "daily",
+      "protocols": ["vless", "vmess", "ss", "trojan"],
+      "note": "Daily updated mixed v2ray nodes from openproxylist (plain text)."
+    },
+    {
+      "name": "w1770946466-auto-proxy-sub1",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription1",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Daily updated mixed free nodes from Auto_proxy (Base64)."
+    },
+    {
+      "name": "ermaozi01-free-clash-vpn",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/ermaozi01/free_clash_vpn/main/subscribe/v2ray.txt",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vless", "vmess", "ss"],
+      "note": "Daily updated free v2ray subscription (Base64)."
+    },
+    {
+      "name": "ermaozi-get-subscribe-v2ray",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["trojan", "vmess", "ss", "vless"],
+      "note": "Daily updated mixed-protocol subscription (Base64)."
+    },
+    {
+      "name": "learnhard-cn-free-proxy-ss",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/learnhard-cn/free_proxy_ss/main/free",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["ss", "vmess"],
+      "note": "Small daily updated SS/VMess subscription (Base64). Low node count."
+    },
+    {
+      "name": "epodonios-v2ray-sub1",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub1_base64.txt",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess", "trojan", "vless"],
+      "max_size": 2097152,
+      "note": "Large mixed-protocol subscription from Epodonios v2ray-configs (Base64)."
+    },
+    {
+      "name": "epodonios-v2ray-sub3",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub3_base64.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vless"],
+      "max_size": 2097152,
+      "note": "Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
+    },
+    {
+      "name": "epodonios-v2ray-sub4",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub4_base64.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vless"],
+      "max_size": 2097152,
+      "note": "Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
+    },
+    {
+      "name": "epodonios-v2ray-sub5",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub5_base64.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess", "ss", "trojan", "vless"],
+      "max_size": 2097152,
+      "note": "Large mixed-protocol subscription from Epodonios v2ray-configs (Base64)."
+    },
+    {
+      "name": "epodonios-v2ray-sub6",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub6_base64.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["ss", "vmess"],
+      "max_size": 2097152,
+      "note": "Large SS/VMess subscription from Epodonios v2ray-configs (Base64)."
+    },
+    {
+      "name": "epodonios-v2ray-sub8",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub8_base64.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["trojan"],
+      "max_size": 2097152,
+      "note": "Large Trojan-only subscription from Epodonios v2ray-configs (Base64)."
+    },
+    {
+      "name": "epodonios-v2ray-sub12",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub12_base64.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vless"],
+      "max_size": 2097152,
+      "note": "Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
     }
   ],
   "free_proxy_apis": [

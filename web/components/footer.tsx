@@ -31,6 +31,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <a
+                  href="/ProxieHub/docs/"
+                  className="hover:text-primary"
+                >
+                  文档站
+                </a>
+              </li>
+              <li>
                 <Link href="/disclaimer" className="hover:text-primary">
                   免责声明
                 </Link>

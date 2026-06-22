@@ -52,7 +52,7 @@ jobs:
           fi
 
       - name: Sync to GitCode
-        if: ${{ secrets.GITCODE_TOKEN != '' }}
+        if: ${{ env.GITCODE_TOKEN != '' }}
         env:
           GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
         run: |

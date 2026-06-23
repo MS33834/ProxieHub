@@ -4,6 +4,7 @@ import path from "path";
 const PROJECT_ROOT = path.join(process.cwd(), "..");
 const NODES_DIR = path.join(PROJECT_ROOT, "nodes");
 const CONFIG_PATH = path.join(PROJECT_ROOT, "config", "sources.json");
+const CHANGELOG_PATH = path.join(PROJECT_ROOT, "CHANGELOG.md");
 
 export interface SourceConfig {
   name: string;
@@ -15,6 +16,7 @@ export interface SourceConfig {
   update_interval?: string;
   protocols?: string[];
   reliability?: "high" | "medium" | "low";
+  max_size?: number;
 }
 
 export interface SiteStats {
@@ -24,6 +26,22 @@ export interface SiteStats {
   sources: SourceConfig[];
   enabledSources: number;
   totalSources: number;
+}
+
+export interface ChangelogEntry {
+  version: string;
+  date: string;
+  categories: Record<string, string[]>;
+}
+
+export interface StatusStats {
+  lastUpdated: string;
+  nodeCount: number;
+  proxyCount: number;
+  enabledSources: number;
+  totalSources: number;
+  protocolCounts: Record<string, number>;
+  actionsStatus: string;
 }
 
 function parseClashYaml(filePath: string): { total: number; protocols: Record<string, number> } {
@@ -93,6 +111,15 @@ function parseClashYaml(filePath: string): { total: number; protocols: Record<st
   return { total, protocols };
 }
 
+function loadSources(): SourceConfig[] {
+  if (!fs.existsSync(CONFIG_PATH)) return [];
+  const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
+  return [
+    ...(config.free_node_sources || []),
+    ...(config.free_proxy_apis || []),
+  ];
+}
+
 export function loadStats(): SiteStats {
   const clashPath = path.join(NODES_DIR, "clash.yaml");
   let totalNodes = 0;
@@ -104,15 +131,7 @@ export function loadStats(): SiteStats {
     protocolCounts = parsed.protocols;
   }
 
-  let sources: SourceConfig[] = [];
-  if (fs.existsSync(CONFIG_PATH)) {
-    const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
-    sources = [
-      ...(config.free_node_sources || []),
-      ...(config.free_proxy_apis || []),
-    ];
-  }
-
+  const sources = loadSources();
   const enabledSources = sources.filter((s) => s.enabled).length;
 
   let generatedAt = "Unknown";
@@ -135,6 +154,86 @@ export function loadStats(): SiteStats {
     sources,
     enabledSources,
     totalSources: sources.length,
+  };
+}
+
+export function parseChangelog(): ChangelogEntry[] {
+  if (!fs.existsSync(CHANGELOG_PATH)) return [];
+  const text = fs.readFileSync(CHANGELOG_PATH, "utf-8");
+  const entries: ChangelogEntry[] = [];
+
+  const blocks = text.split(/\n(?=##\s+\[)/).filter((b) => /^##\s+\[/.test(b.trim()));
+
+  for (const block of blocks) {
+    const headerMatch = block.match(/^##\s+\[([^\]]+)\]\s+-\s+(\d{4}-\d{2}-\d{2})/);
+    if (!headerMatch) continue;
+
+    const [, version, date] = headerMatch;
+    const categories: Record<string, string[]> = {};
+    let currentCategory = "";
+
+    for (const line of block.split("\n").slice(1)) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      if (trimmed.startsWith("### ")) {
+        currentCategory = trimmed.replace("### ", "").trim();
+        categories[currentCategory] = categories[currentCategory] || [];
+      } else if (trimmed.startsWith("- ") && currentCategory) {
+        categories[currentCategory].push(trimmed.replace("- ", "").trim());
+      }
+    }
+
+    entries.push({ version, date, categories });
+  }
+
+  return entries;
+}
+
+export function loadStatusStats(): StatusStats {
+  const clashPath = path.join(NODES_DIR, "clash.yaml");
+  const proxiesPath = path.join(NODES_DIR, "proxies.txt");
+
+  let nodeCount = 0;
+  let protocolCounts: Record<string, number> = {};
+  let lastUpdated = "Unknown";
+
+  if (fs.existsSync(clashPath)) {
+    const parsed = parseClashYaml(clashPath);
+    nodeCount = parsed.total;
+    protocolCounts = parsed.protocols;
+    try {
+      const stat = fs.statSync(clashPath);
+      lastUpdated = new Date(stat.mtime).toLocaleString("zh-CN", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch {
+      // ignore
+    }
+  }
+
+  let proxyCount = 0;
+  if (fs.existsSync(proxiesPath)) {
+    proxyCount = fs
+      .readFileSync(proxiesPath, "utf-8")
+      .split("\n")
+      .filter((line) => line.trim() && !line.trim().startsWith("#")).length;
+  }
+
+  const sources = loadSources();
+  const enabledSources = sources.filter((s) => s.enabled).length;
+
+  return {
+    lastUpdated,
+    nodeCount,
+    proxyCount,
+    enabledSources,
+    totalSources: sources.length,
+    protocolCounts,
+    actionsStatus: "每日自动运行（UTC 02:00）",
   };
 }
 

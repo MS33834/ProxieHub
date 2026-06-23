@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ExternalLink, LucideIcon } from "lucide-react";
 
 interface ClientCardProps {
@@ -8,6 +7,7 @@ interface ClientCardProps {
   platforms: string[];
   href: string;
   tags?: string[];
+  importInstructions?: string;
 }
 
 export function ClientCard({
@@ -17,9 +17,10 @@ export function ClientCard({
   platforms,
   href,
   tags = [],
+  importInstructions,
 }: ClientCardProps) {
   return (
-    <Link
+    <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
@@ -40,6 +41,11 @@ export function ClientCard({
         <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-primary transition-colors" />
       </div>
       <p className="text-xs text-muted mb-2 line-clamp-2">{description}</p>
+      {importInstructions && (
+        <p className="text-[10px] text-muted leading-relaxed mb-2 border-l-2 border-primary/30 pl-2">
+          {importInstructions}
+        </p>
+      )}
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {tags.map((tag) => (
@@ -52,6 +58,6 @@ export function ClientCard({
           ))}
         </div>
       )}
-    </Link>
+    </a>
   );
 }

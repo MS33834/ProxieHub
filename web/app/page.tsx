@@ -6,8 +6,12 @@ import {
   Layers,
   Globe,
   Server,
+  Database,
   Clock,
   FileText,
+  Cpu,
+  Newspaper,
+  Users,
 } from "lucide-react";
 import { loadStats, getSubscribeUrls } from "@/lib/data";
 import { StatsSection } from "@/components/stats-section";
@@ -131,6 +135,126 @@ export default function HomePage() {
         enabledSources={stats.enabledSources}
         totalSources={stats.totalSources}
       />
+
+      {/* Latest Updates */}
+      <section className="py-14 border-b border-border">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-semibold mb-1">最新动态</h2>
+              <p className="text-sm text-muted">项目数据与版本更新的快速入口</p>
+            </div>
+            <Link
+              href="/changelog"
+              className="hidden sm:inline-flex items-center gap-1 text-sm text-primary hover:text-primary-hover"
+            >
+              查看更新日志 <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link
+              href="/status"
+              className="group border border-border bg-surface p-5 hover:border-primary/30 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 border border-border text-primary">
+                  <Server className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-medium group-hover:text-primary transition-colors">
+                  最近更新
+                </h3>
+              </div>
+              <div className="text-2xl font-semibold font-mono mb-1">
+                {stats.totalNodes}
+              </div>
+              <p className="text-xs text-muted">
+                节点已生成于 {stats.generatedAt}
+              </p>
+            </Link>
+
+            <Link
+              href="/status"
+              className="group border border-border bg-surface p-5 hover:border-primary/30 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 border border-border text-primary">
+                  <Database className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-medium group-hover:text-primary transition-colors">
+                  数据源状态
+                </h3>
+              </div>
+              <div className="text-2xl font-semibold font-mono mb-1">
+                {stats.enabledSources}/{stats.totalSources}
+              </div>
+              <p className="text-xs text-muted">当前启用的数据源数量</p>
+            </Link>
+
+            <Link
+              href="/changelog"
+              className="group border border-border bg-surface p-5 hover:border-primary/30 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 border border-border text-primary">
+                  <Newspaper className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-medium group-hover:text-primary transition-colors">
+                  版本动态
+                </h3>
+              </div>
+              <div className="text-2xl font-semibold font-mono mb-1">v1.2.0</div>
+              <p className="text-xs text-muted">新增路线图、状态页与架构说明</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Architecture Teaser */}
+      <section className="py-14 border-b border-border">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs text-muted font-mono mb-3">
+                <Cpu className="w-3.5 h-3.5" />
+                ARCHITECTURE
+              </div>
+              <h2 className="text-xl font-semibold mb-3">从数据源到你的客户端</h2>
+              <p className="text-sm text-muted leading-relaxed mb-5">
+                ProxieHub 通过一条全自动化流水线完成抓取、解析、校验与发布。你可以在架构说明页面查看每个步骤的详细文件路径与设计原则。
+              </p>
+              <Link
+                href="/architecture"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-background text-sm font-medium hover:bg-primary-hover transition-colors"
+              >
+                查看完整架构 <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <div className="border border-border bg-surface p-5">
+              <div className="space-y-3">
+                {[
+                  { step: "1", title: "配置", desc: "config/sources.json" },
+                  { step: "2", title: "抓取", desc: "scripts/crawler.py" },
+                  { step: "3", title: "解析", desc: "scripts/parser.py" },
+                  { step: "4", title: "校验", desc: "scripts/verifier.py" },
+                  { step: "5", title: "输出", desc: "scripts/formatter.py" },
+                  { step: "6", title: "部署", desc: "GitHub Actions" },
+                ].map((item) => (
+                  <div key={item.step} className="flex items-center gap-3">
+                    <div className="w-5 h-5 border border-primary text-primary text-[10px] font-medium flex items-center justify-center shrink-0">
+                      {item.step}
+                    </div>
+                    <div className="text-sm font-medium w-12">{item.title}</div>
+                    <code className="flex-1 px-2 py-1 bg-background border border-border text-[10px] font-mono text-muted truncate">
+                      {item.desc}
+                    </code>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Subscribe Preview */}
       <section className="py-14 border-b border-border">
@@ -321,7 +445,7 @@ export default function HomePage() {
           <div className="border border-border bg-surface p-6 md:p-8">
             <h2 className="text-xl font-semibold mb-2">准备好开始了吗？</h2>
             <p className="text-sm text-muted mb-6 max-w-lg">
-              选择适合你的客户端，复制订阅链接，即可导入每日更新的免费节点。
+              选择适合你的客户端，复制订阅链接，即可导入每日更新的免费节点。如果你愿意让项目变得更好，也欢迎参与贡献。
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-3">
               <Link
@@ -335,6 +459,12 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 px-4 py-2 border border-border bg-background text-sm font-medium hover:bg-surface-hover transition-colors"
               >
                 <FileText className="w-4 h-4" /> 获取订阅链接
+              </Link>
+              <Link
+                href="/contribute"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-border bg-background text-sm font-medium hover:bg-surface-hover transition-colors"
+              >
+                <Users className="w-4 h-4" /> 参与贡献
               </Link>
             </div>
           </div>

@@ -1,0 +1,53 @@
+name: 功能建议
+description: 提议新功能、改进或新数据源
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 相关痛点
+      description: 描述你遇到的问题或限制。如果只是想新增数据源，请跳至“数据源信息”。
+      placeholder: "目前无法按地区筛选节点，导致 Clash 配置过大。"
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 期望的解决方案
+      description: 描述你希望项目如何实现该功能。
+      placeholder: "在 formatter 中增加地区过滤参数，允许按 ISO 国家码导出节点。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 已考虑的替代方案
+      description: 描述你考虑过的其他解决方案或 workaround。
+    validations:
+      required: false
+
+  - type: textarea
+    id: source_info
+    attributes:
+      label: 数据源信息（如适用）
+      description: 如果提议的是新数据源，请填写以下信息。
+      placeholder: |
+        - 名称：
+        - URL：
+        - 协议类型：vmess / vless / ss / trojan / http / socks5
+        - 更新频率：
+        - 可访问性说明：
+        - 是否 Base64：
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 其他上下文
+      description: 补充截图、链接或其他有助于理解的材料。
+    validations:
+      required: false

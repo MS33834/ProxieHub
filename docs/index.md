@@ -22,11 +22,19 @@ Welcome to the ProxieHub documentation site.
 - [iOS](../tools/ios.md)
 - [Browser Extensions](../tools/browser-extensions.md)
 
+## Development & Operations
+
+- [Development Guide](development.md)
+- [Deployment Guide](deployment.md)
+- [Maintenance Guide](maintenance.md)
+
 ## Contributing
 
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Security Policy](../SECURITY.md)
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
+- [Support](../SUPPORT.md)
+- [Authors](../AUTHORS.md)
 
 ## Disclaimer
 

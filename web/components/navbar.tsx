@@ -10,6 +10,14 @@ const navItems = [
   { label: "订阅", href: "/subscribe" },
   { label: "数据源", href: "/sources" },
   { label: "客户端", href: "/clients" },
+  { label: "工具", href: "/tools" },
+  { label: "状态", href: "/status" },
+  { label: "路线图", href: "/roadmap" },
+  { label: "更新日志", href: "/changelog" },
+  { label: "架构", href: "/architecture" },
+  { label: "关于", href: "/about" },
+  { label: "社区", href: "/community" },
+  { label: "贡献", href: "/contribute" },
   { label: "免责声明", href: "/disclaimer" },
 ];
 

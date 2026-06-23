@@ -17,6 +17,8 @@ export default defineConfig({
       { text: "客户端配置", link: "/client-setup/clash" },
       { text: "数据源", link: "/data-sources" },
       { text: "自动化", link: "/automation" },
+      { text: "参与贡献", link: "/contributing" },
+      { text: "状态", link: "/status" },
     ],
 
     sidebar: [
@@ -36,13 +38,32 @@ export default defineConfig({
           { text: "v2rayN (Windows)", link: "/client-setup/v2rayn" },
           { text: "v2rayNG (Android)", link: "/client-setup/v2rayng" },
           { text: "Shadowrocket (iOS)", link: "/client-setup/shadowrocket" },
+          { text: "客户端对比", link: "/advanced/client-comparison" },
         ],
       },
       {
         text: "项目参考",
         items: [
+          { text: "项目架构", link: "/architecture" },
           { text: "数据源说明", link: "/data-sources" },
           { text: "自动化工作流", link: "/automation" },
+          { text: "项目状态", link: "/status" },
+        ],
+      },
+      {
+        text: "开发与运维",
+        items: [
+          { text: "开发指南", link: "/development" },
+          { text: "部署说明", link: "/deployment" },
+          { text: "维护手册", link: "/maintenance" },
+        ],
+      },
+      {
+        text: "参与贡献",
+        items: [
+          { text: "参与贡献", link: "/contributing" },
+          { text: "路线图", link: "/roadmap" },
+          { text: "更新日志", link: "/changelog" },
         ],
       },
     ],

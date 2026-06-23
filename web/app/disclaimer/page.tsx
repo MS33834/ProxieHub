@@ -1,4 +1,12 @@
-import { AlertTriangle, Scale, Shield, Users } from "lucide-react";
+import {
+  AlertTriangle,
+  Scale,
+  Shield,
+  Users,
+  Gavel,
+  Eye,
+  Ban,
+} from "lucide-react";
 
 export default function DisclaimerPage() {
   return (
@@ -48,6 +56,44 @@ export default function DisclaimerPage() {
             <li>用户应遵守所在国家/地区的法律法规，合法使用本项目。</li>
             <li>未成年人应在监护人指导下使用本项目。</li>
             <li>项目维护者不对任何直接或间接损失承担责任。</li>
+          </ul>
+        </section>
+
+        <section className="border border-border bg-surface p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Gavel className="w-5 h-5 text-primary" />
+            <h2 className="text-base font-semibold">使用条款与限制</h2>
+          </div>
+          <ul className="space-y-2 text-sm text-muted leading-relaxed list-disc list-inside">
+            <li>本项目仅用于学习网络协议、安全测试和隐私技术研究。</li>
+            <li>禁止将本项目用于任何违反法律法规、侵犯他人权益或逃避网络监管的活动。</li>
+            <li>禁止大规模爬取、重新分发或商业化销售本项目的节点数据。</li>
+            <li>用户应自行承担因使用公开节点而产生的全部风险与责任。</li>
+            <li>维护者保留随时修改数据源、移除违规内容或终止服务的权利。</li>
+          </ul>
+        </section>
+
+        <section className="border border-border bg-surface p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Eye className="w-5 h-5 text-primary" />
+            <h2 className="text-base font-semibold">数据与隐私</h2>
+          </div>
+          <ul className="space-y-2 text-sm text-muted leading-relaxed list-disc list-inside">
+            <li>本项目不收集、不存储用户的连接日志与访问记录。</li>
+            <li>第三方节点运营者可能查看、记录或分析你的流量，我们无法控制。</li>
+            <li>静态网站托管在 GitHub Pages，仅记录常规访问日志。</li>
+          </ul>
+        </section>
+
+        <section className="border border-border bg-surface p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Ban className="w-5 h-5 text-primary" />
+            <h2 className="text-base font-semibold">禁止行为</h2>
+          </div>
+          <ul className="space-y-2 text-sm text-muted leading-relaxed list-disc list-inside">
+            <li>不得使用本项目节点从事网络攻击、垃圾邮件、欺诈或骚扰行为。</li>
+            <li>不得将节点用于访问、传播或存储非法内容。</li>
+            <li>不得对本项目托管服务进行滥用式请求或资源耗尽攻击。</li>
           </ul>
         </section>
 

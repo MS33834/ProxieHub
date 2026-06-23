@@ -1,21 +1,41 @@
-# Code of Conduct
+# 行为准则
 
-We want ProxieHub to be a welcoming, harassment-free space for everyone interested in network tools and privacy research.
+## 我们的承诺
 
-## Our Standards
+为了营造一个开放、友好的社区环境，我们作为贡献者和维护者承诺：无论年龄、体型、残障、族裔、性别认同与表达、经验水平、国籍、个人外貌、种族、宗教信仰或性取向如何，参与本项目都是零骚扰的体验。
 
-- Be respectful and constructive in discussions.
-- Focus on technical content, not personal attacks.
-- Do not post illegal content, cracked software, or private/paid node lists.
-- Respect the original authors and sources; give credit where it is due.
+## 我们的标准
 
-## Unacceptable Behavior
+有助于创造积极环境的行为包括：
 
-- Harassment, discrimination, or abusive language.
-- Spam, advertising, or off-topic promotion.
-- Sharing malware or malicious links.
-- Posting content that violates local laws.
+- 使用友好和包容的语言。
+- 尊重不同的观点和经验。
+- 优雅地接受建设性批评。
+- 关注对社区最有利的事情。
+- 对其他社区成员表示同理心。
 
-## Enforcement
+不可接受的行为包括：
 
-Maintainers may remove comments, close issues, or ban users who violate this code. If you believe someone has violated the code, please contact the maintainers privately.
+- 使用带有性暗示的言语或图像，以及不受欢迎的性关注。
+- 发表挑衅、侮辱/贬损性评论，进行人身或政治攻击。
+- 公开或私下骚扰他人。
+- 未经明确许可发布他人的私人信息，例如物理地址或电子邮箱。
+- 其他在专业场合中可合理认定为不恰当的行为。
+
+## 我们的责任
+
+项目维护者有责任澄清可接受行为的标准，并在出现不当行为时采取适当和公平的纠正措施。
+
+维护者有权并有责任删除、编辑或拒绝不符合本行为准则的评论、提交、代码、Wiki 编辑、Issue 和其他贡献，也可暂时或永久禁止任何 contributor 的不当、威胁、冒犯或有害行为。
+
+## 适用范围
+
+本行为准则适用于本项目所有空间，也适用于个人在公共空间代表本项目或社区时的行为。代表项目或社区的示例包括使用官方电子邮箱、通过官方社交媒体账号发布内容，或在线上/线下活动中担任指定代表。
+
+##  enforcement
+
+如遇到辱骂、骚扰或其他不可接受的行为，可通过 GitHub 私信仓库 owner 或发送邮件至仓库公开的联系方式报告。维护团队将审核并调查所有投诉，并以适当方式回应。
+
+## 来源
+
+本行为准则改编自 [Contributor Covenant](https://www.contributor-covenant.org) 2.1 版。

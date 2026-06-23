@@ -31,6 +31,46 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/tools" className="hover:text-foreground">
+                  工具与生态
+                </Link>
+              </li>
+              <li>
+                <Link href="/status" className="hover:text-foreground">
+                  运行状态
+                </Link>
+              </li>
+              <li>
+                <Link href="/roadmap" className="hover:text-foreground">
+                  路线图
+                </Link>
+              </li>
+              <li>
+                <Link href="/changelog" className="hover:text-foreground">
+                  更新日志
+                </Link>
+              </li>
+              <li>
+                <Link href="/architecture" className="hover:text-foreground">
+                  架构说明
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-foreground">
+                  关于
+                </Link>
+              </li>
+              <li>
+                <Link href="/community" className="hover:text-foreground">
+                  社区
+                </Link>
+              </li>
+              <li>
+                <Link href="/contribute" className="hover:text-foreground">
+                  参与贡献
+                </Link>
+              </li>
+              <li>
                 <Link href="/disclaimer" className="hover:text-foreground">
                   免责声明
                 </Link>

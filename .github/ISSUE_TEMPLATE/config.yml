@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 数据源失效报告
+    url: https://github.com/MS33834/ProxieHub/issues/new?template=source_report.md
+    about: 如果某个公开节点源无法访问或格式变更，请使用此模板。
+  - name: 一般性问题与讨论
+    url: https://github.com/MS33834/ProxieHub/discussions
+    about: 使用方式、配置疑问或想法交流请移步 Discussions。
+  - name: 文档站点
+    url: https://github.com/MS33834/ProxieHub/tree/main/docs
+    about: 新手向导、客户端配置和常见问题请先查阅文档。

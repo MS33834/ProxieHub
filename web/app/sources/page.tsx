@@ -1,7 +1,16 @@
 import { loadStats } from "@/lib/data";
 import { SourceTable } from "@/components/source-table";
 import { ProtocolChart } from "@/components/protocol-chart";
-import { Shield, Info, Database, RefreshCw, AlertTriangle, CheckCircle2 } from "lucide-react";
+import {
+  Shield,
+  Info,
+  Database,
+  RefreshCw,
+  AlertTriangle,
+  CheckCircle2,
+  Globe,
+  Clock,
+} from "lucide-react";
 
 export default function SourcesPage() {
   const stats = loadStats();
@@ -37,6 +46,66 @@ export default function SourcesPage() {
           <Shield className="w-4 h-4 text-warning mb-2" />
           <div className="text-xl font-semibold font-mono">{stats.totalNodes}</div>
           <div className="text-[10px] text-muted">当前节点数</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+        <div className="border border-border bg-surface p-5">
+          <h3 className="font-medium text-sm mb-4 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-primary" />
+            协议覆盖
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {Array.from(
+              new Set(stats.sources.flatMap((s) => s.protocols || []))
+            )
+              .sort()
+              .map((protocol) => (
+                <span
+                  key={protocol}
+                  className="font-mono text-xs px-2 py-1 border border-border text-muted uppercase"
+                >
+                  {protocol}
+                </span>
+              ))}
+          </div>
+          <p className="mt-3 text-xs text-muted">
+            当前数据源声明覆盖 {new Set(stats.sources.flatMap((s) => s.protocols || [])).size} 种协议。
+          </p>
+        </div>
+
+        <div className="border border-border bg-surface p-5">
+          <h3 className="font-medium text-sm mb-4 flex items-center gap-2">
+            <Clock className="w-4 h-4 text-primary" />
+            更新频率分布
+          </h3>
+          <div className="space-y-2">
+            {(() => {
+              const distribution = stats.sources.reduce<Record<string, number>>(
+                (acc, source) => {
+                  const key = source.update_interval || "未标注";
+                  acc[key] = (acc[key] || 0) + 1;
+                  return acc;
+                },
+                {}
+              );
+              const max = Math.max(...Object.values(distribution));
+              return Object.entries(distribution)
+                .sort(([, a], [, b]) => b - a)
+                .map(([interval, count]) => (
+                  <div key={interval} className="flex items-center gap-3 text-xs">
+                    <span className="w-20 shrink-0 text-muted">{interval}</span>
+                    <div className="flex-1 h-2 bg-background border border-border overflow-hidden">
+                      <div
+                        className="h-full bg-primary"
+                        style={{ width: `${(count / max) * 100}%` }}
+                      />
+                    </div>
+                    <span className="w-8 text-right font-mono">{count}</span>
+                  </div>
+                ));
+            })()}
+          </div>
         </div>
       </div>
 

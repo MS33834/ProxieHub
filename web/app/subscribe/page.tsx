@@ -1,8 +1,18 @@
 import Link from "next/link";
 import { getSubscribeUrls } from "@/lib/data";
 import { SubscribeCard } from "@/components/subscribe-card";
+import { CopyButton } from "@/components/copy-button";
 import { StepCard } from "@/components/step-card";
-import { AlertTriangle, QrCode, Server, Globe, Layers, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+  AlertTriangle,
+  QrCode,
+  Server,
+  Globe,
+  Layers,
+  ArrowRight,
+  CheckCircle2,
+  BookOpen,
+} from "lucide-react";
 
 const steps = [
   {
@@ -92,6 +102,63 @@ export default function SubscribePage() {
           gitcodeUrl={urls.proxies.gitcode}
           icon={<Layers className="w-5 h-5" />}
         />
+      </div>
+
+      <div className="border border-border bg-surface p-5 mb-12">
+        <h2 className="text-lg font-semibold mb-5 flex items-center gap-2">
+          <BookOpen className="w-4 h-4 text-primary" />
+          格式说明与导入示例
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div>
+            <h3 className="font-medium text-sm mb-2 flex items-center gap-2">
+              <Server className="w-4 h-4 text-primary" /> Clash
+            </h3>
+            <p className="text-xs text-muted leading-relaxed mb-3">
+              YAML 格式，包含 proxies、proxy-groups 与 rules。适合所有 Clash 内核客户端。导入后选择节点并开启系统代理即可。
+            </p>
+            <div className="flex items-stretch gap-2">
+              <input
+                readOnly
+                value={urls.clash.github}
+                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none"
+              />
+              <CopyButton text={urls.clash.github} label="复制" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium text-sm mb-2 flex items-center gap-2">
+              <Globe className="w-4 h-4 text-primary" /> V2Ray
+            </h3>
+            <p className="text-xs text-muted leading-relaxed mb-3">
+              Base64 编码的 vmess/vless/ss/trojan 链接集合。v2rayN、v2rayNG、Shadowrocket 等客户端均可通过订阅功能导入。
+            </p>
+            <div className="flex items-stretch gap-2">
+              <input
+                readOnly
+                value={urls.v2ray.github}
+                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none"
+              />
+              <CopyButton text={urls.v2ray.github} label="复制" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium text-sm mb-2 flex items-center gap-2">
+              <Layers className="w-4 h-4 text-primary" /> HTTP / SOCKS5
+            </h3>
+            <p className="text-xs text-muted leading-relaxed mb-3">
+              纯文本代理列表，每行一个代理。可直接用于浏览器扩展、curl --proxy 或 Python requests，按需提取单个地址。
+            </p>
+            <div className="flex items-stretch gap-2">
+              <input
+                readOnly
+                value={urls.proxies.github}
+                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none"
+              />
+              <CopyButton text={urls.proxies.github} label="复制" />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">

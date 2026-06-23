@@ -1,15 +1,40 @@
-# Security Policy
+# 安全策略
 
-## Supported Versions
+## 项目定位
 
-Only the latest commit on the `main` branch is actively maintained.
+**ProxieHub 仅聚合互联网上的公开节点与代理列表，项目本身不运营任何代理服务器或 VPN 节点。** 所有 `nodes/` 目录下的文件均由自动化脚本从公开数据源抓取、解析、格式化后生成，不代表维护者提供或背书任何具体节点。
 
-## Reporting Security Issues
+## 如何报告安全漏洞
 
-If you discover a security vulnerability in ProxieHub scripts or infrastructure (not the third-party nodes themselves), please do **not** open a public issue.
+如果你发现 ProxieHub 的**脚本、工作流、文档站点或仓库配置**存在安全漏洞（例如代码注入、敏感信息泄露、CI/CD 配置风险等），**请不要通过公开 Issue 披露**。
 
-Instead, contact the maintainers by opening a private security advisory on GitHub, or send an email to the repository owner if contact information is available.
+请通过以下任一方式私密报告：
 
-## Scope
+1. 在 GitHub 仓库提交 **[Private Security Advisory](../../security/advisories/new)**。
+2. 私信仓库 owner。
+3. 发送邮件至仓库 owner 公开的邮箱（请在 GitHub 个人资料中查找），标题请注明 `[ProxieHub Security]`。
 
-This project only aggregates publicly available resources. We do not operate proxy servers. Reports about individual free nodes being malicious should be directed to the original source maintainers.
+请在报告中尽量包含：
+
+- 漏洞类型与影响范围。
+- 可复现的步骤或最小 PoC。
+- 可能受影响的文件或工作流。
+- 建议的修复方向（如有）。
+
+## 响应流程
+
+- 我们会在收到报告后 7 个工作日内确认。
+- 确认漏洞后，会评估影响范围并在修复完成前保持私密沟通。
+- 修复完成后，我们会通过发布说明或安全公告向社区披露（在必要且合规的情况下）。
+
+## 不在报告范围内的事项
+
+以下情况**不属于**本仓库的安全漏洞，请向原始来源维护者反馈：
+
+- 某个公开节点本身存在恶意、劫持或记录流量的行为。
+- 第三方数据源的内容、可用性或隐私策略。
+- 使用免费节点导致的网络延迟、连接中断或服务不可用。
+
+## 免责声明
+
+本项目按“原样”提供，维护者不对任何由使用本项目或其中节点产生的直接、间接、偶然、特殊或后果性损害承担责任。使用者应自行评估风险，并遵守所在地法律法规。

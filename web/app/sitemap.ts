@@ -4,7 +4,21 @@ export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://ms33834.github.io/ProxieHub";
-  const routes = ["", "/subscribe", "/sources", "/clients", "/disclaimer"];
+  const routes = [
+    "",
+    "/subscribe",
+    "/sources",
+    "/clients",
+    "/tools",
+    "/status",
+    "/roadmap",
+    "/changelog",
+    "/architecture",
+    "/about",
+    "/community",
+    "/contribute",
+    "/disclaimer",
+  ];
 
   return routes.map((route) => ({
     url: `${baseUrl}${route}`,

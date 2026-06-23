@@ -1,19 +1,29 @@
-## What does this PR do?
+## 本次变更做了什么？
 
-Briefly describe the change.
+简要描述本次 PR 的目的和改动范围。
 
-## Type of change
+## 变更类型
 
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] New data source
-- [ ] Code refactoring
+请选择最相关的一项或多项：
 
-## Checklist
+- [ ] Bug 修复
+- [ ] 新功能
+- [ ] 文档更新
+- [ ] 新增数据源
+- [ ] 代码重构
+- [ ] 测试补充
+- [ ] 构建/工作流调整
 
-- [ ] I have read the [Contributing Guide](../CONTRIBUTING.md).
-- [ ] I have not added any secrets or private node lists.
-- [ ] New sources are publicly accessible and allow automated fetching.
-- [ ] Tests pass (`python tests/test_parser.py`).
-- [ ] I understand that free nodes are ephemeral and availability is not guaranteed.
+## 检查清单
+
+- [ ] 我已阅读 [CONTRIBUTING.md](../CONTRIBUTING.md)。
+- [ ] 我没有提交任何密钥、token 或个人节点列表。
+- [ ] 新增的数据源来自公开渠道，且 `enabled` 初始为 `false`（如适用）。
+- [ ] `make test` 通过。
+- [ ] `make lint` 通过。
+- [ ] 若修改了前端，`make lint-web` 与 `make build-web` 通过。
+- [ ] 我已确认免费节点具有时效性，不对单个节点可用性作保证。
+
+## 附加说明
+
+如有破坏性变更、依赖升级或需要特别说明的事项，请在此补充。

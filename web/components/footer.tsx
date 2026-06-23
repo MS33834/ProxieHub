@@ -1,79 +1,67 @@
 import Link from "next/link";
-import { GithubIcon, Heart } from "lucide-react";
+import { Code2 } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-surface/30">
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="font-bold text-lg mb-3">ProxieHub</h3>
-            <p className="text-muted text-sm leading-relaxed">
+    <footer className="border-t border-border">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
+          <div className="md:col-span-2">
+            <h3 className="font-semibold mb-2">ProxieHub</h3>
+            <p className="text-muted leading-relaxed max-w-md">
               社区维护的免费代理/VPN 工具与公开节点聚合项目。仅供学习网络协议、安全测试和隐私技术研究使用。
             </p>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">快速链接</h4>
-            <ul className="space-y-2 text-sm text-muted">
+            <h4 className="font-medium mb-2 text-foreground">导航</h4>
+            <ul className="space-y-1.5 text-muted">
               <li>
-                <Link href="/subscribe" className="hover:text-primary">
+                <Link href="/subscribe" className="hover:text-foreground">
                   订阅节点
                 </Link>
               </li>
               <li>
-                <Link href="/sources" className="hover:text-primary">
+                <Link href="/sources" className="hover:text-foreground">
                   数据源
                 </Link>
               </li>
               <li>
-                <Link href="/clients" className="hover:text-primary">
+                <Link href="/clients" className="hover:text-foreground">
                   客户端教程
                 </Link>
               </li>
               <li>
-                <a
-                  href="/ProxieHub/docs/"
-                  className="hover:text-primary"
-                >
-                  文档站
-                </a>
-              </li>
-              <li>
-                <Link href="/disclaimer" className="hover:text-primary">
+                <Link href="/disclaimer" className="hover:text-foreground">
                   免责声明
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">仓库</h4>
-            <div className="flex flex-col gap-2 text-sm text-muted">
+            <h4 className="font-medium mb-2 text-foreground">仓库</h4>
+            <div className="space-y-1.5 text-muted">
               <a
                 href="https://github.com/MS33834/ProxieHub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 hover:text-primary"
+                className="flex items-center gap-1.5 hover:text-foreground"
               >
-                <GithubIcon className="w-4 h-4" />
+                <Code2 className="w-3.5 h-3.5" />
                 GitHub
               </a>
               <a
                 href="https://gitcode.com/badhope/ProxieHub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-primary"
+                className="hover:text-foreground"
               >
                 GitCode 镜像
               </a>
             </div>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-border text-center text-sm text-muted flex flex-col sm:flex-row items-center justify-center gap-2">
-          <span>Released under MIT License.</span>
-          <span className="hidden sm:inline">·</span>
-          <span className="flex items-center gap-1">
-            Made with <Heart className="w-4 h-4 text-danger" /> by the community.
-          </span>
+        <div className="mt-8 pt-4 border-t border-border text-xs text-muted">
+          Released under MIT License · 仅供学习研究使用
         </div>
       </div>
     </footer>

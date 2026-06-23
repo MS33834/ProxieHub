@@ -29,13 +29,13 @@ export function CopyButton({ text, label = "复制", className = "" }: CopyButto
   return (
     <button
       onClick={handleCopy}
-      className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all active:scale-[0.98] ${
+      className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium border transition-colors ${
         copied
-          ? "bg-success/20 text-success border border-success/30"
-          : "bg-primary text-white hover:bg-primary/90"
+          ? "border-success/30 text-success bg-success/10"
+          : "border-primary text-primary hover:bg-primary hover:text-background"
       } ${className}`}
     >
-      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+      {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
       {copied ? "已复制" : label}
     </button>
   );

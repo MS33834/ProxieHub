@@ -1,20 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --background: #030712;
-  --foreground: #f8fafc;
-  --surface: #0f172a;
-  --surface-hover: #1e293b;
-  --border: rgba(148, 163, 184, 0.1);
-  --primary: #3b82f6;
-  --primary-glow: rgba(59, 130, 246, 0.35);
-  --secondary: #06b6d4;
-  --muted: #94a3b8;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+@theme {
+  /* Background & surface */
+  --color-background: #09090b;
+  --color-foreground: #f4f4f5;
+  --color-surface: #18181b;
+  --color-surface-hover: #27272a;
+  --color-border: rgba(161, 161, 170, 0.14);
+
+  /* Accents: amber + cyan, restrained */
+  --color-primary: #f59e0b;
+  --color-primary-hover: #d97706;
+  --color-secondary: #0891b2;
+  --color-secondary-hover: #0e7490;
+
+  /* Status */
+  --color-muted: #a1a1aa;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* Typography */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Animation */
+  --animate-fade-in: fadeIn 0.3s ease-out;
+  --animate-slide-up: slideUp 0.35s ease-out;
 }
 
 html {
@@ -23,16 +35,12 @@ html {
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(6, 182, 212, 0.08), transparent);
-  background-attachment: fixed;
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background-color: var(--background);
+  font-family: var(--font-sans);
 }
 
 ::selection {
-  background: var(--primary-glow);
+  background-color: rgba(245, 158, 11, 0.25);
   color: var(--foreground);
 }
 
@@ -40,55 +48,24 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-
-  .glow {
-    box-shadow: 0 0 32px var(--primary-glow);
-  }
-
-  .glow-sm {
-    box-shadow: 0 0 16px var(--primary-glow);
-  }
-
-  .card-border {
-    border: 1px solid var(--border);
-  }
-
-  .glass {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(148, 163, 184, 0.1);
-  }
-
-  .gradient-text {
-    background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-pulse-slow {
-    animation: pulseSlow 4s ease-in-out infinite;
-  }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes pulseSlow {
-  0%, 100% {
+  to {
     opacity: 1;
   }
-  50% {
-    opacity: 0.7;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -55,52 +55,49 @@ export default function SubscribePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="text-center max-w-3xl mx-auto mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">订阅中心</h1>
-        <p className="text-muted">
+      <div className="mb-10">
+        <h1 className="text-2xl md:text-3xl font-semibold mb-2">订阅中心</h1>
+        <p className="text-sm text-muted max-w-2xl">
           选择你的客户端格式，复制订阅链接即可导入。建议优先使用 GitHub Raw，如遇网络问题可切换 GitCode 镜像。
         </p>
       </div>
 
-      <div className="bg-warning/10 border border-warning/20 rounded-2xl p-4 mb-10 flex items-start gap-3">
-        <AlertTriangle className="w-5 h-5 text-warning shrink-0 mt-0.5" />
-        <div className="text-sm">
+      <div className="border border-warning/20 bg-warning/10 p-3 mb-8 flex items-start gap-3">
+        <AlertTriangle className="w-4 h-4 text-warning shrink-0 mt-0.5" />
+        <div className="text-xs">
           <strong className="text-warning">安全提示：</strong>
           免费节点来自公开渠道，不保证安全与隐私。请勿在连接节点期间登录银行、支付、社交等敏感账户。
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
         <SubscribeCard
           title="Clash"
           description="适用于 Clash Verge、Clash Meta、Clash for Windows、Stash、Surge 等 Clash 内核客户端。"
           githubUrl={urls.clash.github}
           gitcodeUrl={urls.clash.gitcode}
-          icon={<Server className="w-6 h-6" />}
-          color="blue"
+          icon={<Server className="w-5 h-5" />}
         />
         <SubscribeCard
           title="V2Ray"
           description="适用于 v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X 等支持 V2Ray 订阅的客户端。"
           githubUrl={urls.v2ray.github}
           gitcodeUrl={urls.v2ray.gitcode}
-          icon={<Globe className="w-6 h-6" />}
-          color="purple"
+          icon={<Globe className="w-5 h-5" />}
         />
         <SubscribeCard
           title="HTTP / SOCKS5"
           description="公开代理列表，适用于浏览器扩展、爬虫、curl、Python requests 等场景。"
           githubUrl={urls.proxies.github}
           gitcodeUrl={urls.proxies.gitcode}
-          icon={<Layers className="w-6 h-6" />}
-          color="green"
+          icon={<Layers className="w-5 h-5" />}
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
         <div>
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-            <QrCode className="w-5 h-5 text-primary" />
+          <h2 className="text-lg font-semibold mb-5 flex items-center gap-2">
+            <QrCode className="w-4 h-4 text-primary" />
             使用步骤
           </h2>
           <div>
@@ -110,48 +107,48 @@ export default function SubscribePage() {
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-bold mb-6">推荐搭配</h2>
-          <div className="space-y-4">
+          <h2 className="text-lg font-semibold mb-5">推荐搭配</h2>
+          <div className="space-y-3">
             {recommendations.map((rec) => (
               <div
                 key={rec.title}
-                className="rounded-2xl bg-surface border border-border p-5 hover:border-primary/20 transition-colors"
+                className="border border-border bg-surface p-4 hover:border-primary/30 transition-colors"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                    <rec.icon className="w-5 h-5" />
+                <div className="flex items-center gap-2.5 mb-2">
+                  <div className="p-1.5 border border-border text-primary">
+                    <rec.icon className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="font-bold">{rec.title}</h3>
-                    <p className="text-xs text-muted">{rec.clients}</p>
+                    <h3 className="font-medium text-sm">{rec.title}</h3>
+                    <p className="text-[10px] text-muted">{rec.clients}</p>
                   </div>
                 </div>
-                <p className="text-sm text-muted">{rec.tip}</p>
+                <p className="text-xs text-muted">{rec.tip}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="rounded-2xl bg-surface border border-border p-6 mb-12">
-        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-          <CheckCircle2 className="w-5 h-5 text-success" />
+      <div className="border border-border bg-surface p-4 mb-10">
+        <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-success" />
           使用须知
         </h2>
-        <ul className="space-y-3 text-muted">
+        <ul className="space-y-2 text-xs text-muted">
           {notes.map((note, index) => (
             <li key={index} className="flex items-start gap-2">
-              <span className="text-primary mt-1">•</span>
+              <span className="text-primary mt-0.5">·</span>
               {note}
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="text-center">
+      <div className="text-left">
         <Link
           href="/clients"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-semibold hover:bg-primary/90 transition-all active:scale-[0.98] shadow-glow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-background text-sm font-medium hover:bg-primary-hover transition-colors"
         >
           查看详细客户端教程 <ArrowRight className="w-4 h-4" />
         </Link>

@@ -6,16 +6,16 @@ interface StepCardProps {
 
 export function StepCard({ step, title, description }: StepCardProps) {
   return (
-    <div className="relative flex gap-4">
+    <div className="relative flex gap-3">
       <div className="flex flex-col items-center">
-        <div className="w-10 h-10 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center border border-primary/20 shrink-0">
+        <div className="w-6 h-6 border border-primary text-primary text-xs font-medium flex items-center justify-center shrink-0">
           {step}
         </div>
-        {step < 4 && <div className="w-px flex-1 bg-border my-2" />}
+        {step < 4 && <div className="w-px flex-1 bg-border my-1" />}
       </div>
-      <div className="pb-8">
-        <h3 className="font-bold text-lg mb-1">{title}</h3>
-        <p className="text-muted text-sm leading-relaxed">{description}</p>
+      <div className="pb-5">
+        <h3 className="font-medium text-sm mb-0.5">{title}</h3>
+        <p className="text-muted text-xs leading-relaxed">{description}</p>
       </div>
     </div>
   );

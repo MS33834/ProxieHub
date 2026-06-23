@@ -124,32 +124,32 @@ const beginnerGuides = [
 export default function ClientsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="text-center max-w-3xl mx-auto mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">客户端教程</h1>
-        <p className="text-muted">
+      <div className="mb-10">
+        <h1 className="text-2xl md:text-3xl font-semibold mb-2">客户端教程</h1>
+        <p className="text-sm text-muted max-w-2xl">
           根据你的设备和需求选择合适的客户端，并查看对应配置教程。所有链接均指向官方或开源仓库。
         </p>
       </div>
 
-      <div className="bg-warning/10 border border-warning/20 rounded-2xl p-4 mb-10 flex items-start gap-3">
-        <AlertTriangle className="w-5 h-5 text-warning shrink-0 mt-0.5" />
-        <div className="text-sm">
+      <div className="border border-warning/20 bg-warning/10 p-3 mb-8 flex items-start gap-3">
+        <AlertTriangle className="w-4 h-4 text-warning shrink-0 mt-0.5" />
+        <div className="text-xs">
           <strong className="text-warning">安全提示：</strong>
           客户端本身不会保护你的隐私，免费节点的运营者仍可能查看你的流量。请仅从官方渠道下载客户端，避免使用来路不明的破解版或修改版。
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-16">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
         {platforms.map((p) => (
           <div
             key={p.name}
-            className="rounded-2xl bg-surface border border-border p-5 text-center hover:-translate-y-1 transition-transform"
+            className="border border-border bg-surface p-4 text-center"
           >
-            <div className="w-12 h-12 mx-auto rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-              <p.icon className="w-6 h-6" />
+            <div className="p-1.5 border border-border text-primary inline-flex mb-3">
+              <p.icon className="w-4 h-4" />
             </div>
-            <h3 className="font-bold mb-2">{p.name}</h3>
-            <ul className="text-sm text-muted space-y-1 mb-4">
+            <h3 className="font-medium text-sm mb-2">{p.name}</h3>
+            <ul className="text-xs text-muted space-y-1 mb-3">
               {p.clients.map((c) => (
                 <li key={c}>{c}</li>
               ))}
@@ -158,7 +158,7 @@ export default function ClientsPage() {
               href={p.guide}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary-hover"
             >
               查看教程 <ArrowRight className="w-3 h-3" />
             </a>
@@ -166,39 +166,39 @@ export default function ClientsPage() {
         ))}
       </div>
 
-      <h2 className="text-2xl font-bold mb-6">推荐客户端</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <h2 className="text-lg font-semibold mb-4">推荐客户端</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-12">
         {clients.map((c) => (
           <ClientCard key={c.name} {...c} />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
         <div>
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-primary" />
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-primary" />
             图文教程
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {beginnerGuides.map((g) => (
               <a
                 key={g.title}
                 href={g.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group rounded-2xl bg-surface border border-border p-5 hover:border-primary/30 transition-colors"
+                className="group border border-border bg-surface p-4 hover:border-primary/30 transition-colors"
               >
-                <h3 className="font-bold group-hover:text-primary transition-colors mb-1">
+                <h3 className="font-medium text-sm group-hover:text-primary transition-colors mb-1">
                   {g.title}
                 </h3>
-                <p className="text-sm text-muted">{g.desc}</p>
+                <p className="text-xs text-muted">{g.desc}</p>
               </a>
             ))}
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-bold mb-6">如何选择客户端？</h2>
-          <div className="space-y-4">
+          <h2 className="text-lg font-semibold mb-4">如何选择客户端？</h2>
+          <div className="space-y-3">
             <FeatureCard
               icon={Monitor}
               title="新手用户"
@@ -218,23 +218,23 @@ export default function ClientsPage() {
         </div>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-surface to-surface border border-primary/20 p-8 text-center">
-        <h2 className="text-2xl font-bold mb-3">还没决定用哪个？</h2>
-        <p className="text-muted mb-6 max-w-xl mx-auto">
+      <div className="border border-border bg-surface p-6">
+        <h2 className="text-lg font-semibold mb-2">还没决定用哪个？</h2>
+        <p className="text-sm text-muted mb-4 max-w-lg">
           先阅读新手快速上手指南，了解代理的基本概念和使用流程，再根据自己的设备选择客户端。
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-start gap-3">
           <a
             href={`${REPO_DOCS_BASE}/beginner-guide.md`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-semibold hover:bg-primary/90 transition-all active:scale-[0.98] shadow-glow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-background text-sm font-medium hover:bg-primary-hover transition-colors"
           >
             阅读新手指南 <ArrowRight className="w-4 h-4" />
           </a>
           <Link
             href="/subscribe"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface border border-border font-semibold hover:bg-surface-hover transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2 border border-border bg-background text-sm font-medium hover:bg-surface-hover transition-colors"
           >
             去复制订阅链接
           </Link>

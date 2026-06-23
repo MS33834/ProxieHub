@@ -21,20 +21,20 @@ export function StatsSection({
   ];
 
   return (
-    <section className="py-8">
+    <section className="border-y border-border bg-surface">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border">
           {items.map((item) => (
             <div
               key={item.label}
-              className="rounded-2xl bg-surface border border-border p-5 flex items-center gap-4 animate-slide-up"
+              className="px-4 py-5 flex items-center gap-3 animate-slide-up"
             >
-              <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                <item.icon className="w-5 h-5" />
-              </div>
+              <item.icon className="w-4 h-4 text-muted" />
               <div>
-                <div className="text-2xl font-bold">{item.value}</div>
-                <div className="text-sm text-muted">{item.label}</div>
+                <div className="text-xl md:text-2xl font-semibold font-mono tracking-tight">
+                  {item.value}
+                </div>
+                <div className="text-xs text-muted">{item.label}</div>
               </div>
             </div>
           ))}

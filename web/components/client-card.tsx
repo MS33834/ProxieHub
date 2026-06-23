@@ -23,27 +23,29 @@ export function ClientCard({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-2xl bg-surface border border-border p-5 hover:border-primary/30 transition-all hover:-translate-y-1 hover:shadow-card"
+      className="group block border border-border bg-surface p-4 hover:border-primary/30 transition-colors"
     >
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-            <Icon className="w-5 h-5" />
+      <div className="flex items-start justify-between mb-2">
+        <div className="flex items-center gap-2.5">
+          <div className="p-1.5 border border-border text-primary">
+            <Icon className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-bold group-hover:text-primary transition-colors">{name}</h3>
-            <p className="text-xs text-muted">{platforms.join(" · ")}</p>
+            <h3 className="font-medium text-sm group-hover:text-primary transition-colors">
+              {name}
+            </h3>
+            <p className="text-[10px] text-muted">{platforms.join(" · ")}</p>
           </div>
         </div>
-        <ExternalLink className="w-4 h-4 text-muted group-hover:text-primary transition-colors" />
+        <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-primary transition-colors" />
       </div>
-      <p className="text-sm text-muted mb-3 line-clamp-2">{description}</p>
+      <p className="text-xs text-muted mb-2 line-clamp-2">{description}</p>
       {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="text-xs px-2 py-1 rounded-md bg-background border border-border text-muted"
+              className="text-[10px] px-1.5 py-0.5 border border-border text-muted"
             >
               {tag}
             </span>

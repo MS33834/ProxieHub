@@ -115,6 +115,28 @@ def test_parse_proxy_api_response_ignores_duplicates():
     assert len(proxies) == 1
 
 
+def test_parse_proxy_api_response_plain_ip_port():
+    text = "1.2.3.4:8080\n5.6.7.8:1080\ninvalid\n999.1.1.1:80"
+    proxies = parse_proxy_api_response(text)
+    assert len(proxies) == 2
+    assert "http://1.2.3.4:8080" in proxies
+    assert "http://5.6.7.8:1080" in proxies
+
+
+def test_parse_proxy_api_response_default_scheme():
+    text = "1.2.3.4:8080\nsocks5://5.6.7.8:1080"
+    proxies = parse_proxy_api_response(text, default_scheme="socks4")
+    assert "socks4://1.2.3.4:8080" in proxies
+    assert "socks5://5.6.7.8:1080" in proxies
+
+
+def test_parse_proxy_api_response_ipv6_plain():
+    text = "[2001:db8::1]:8080"
+    proxies = parse_proxy_api_response(text)
+    assert len(proxies) == 1
+    assert "http://[2001:db8::1]:8080" in proxies
+
+
 if __name__ == "__main__":
     test_extract_node_links()
     test_extract_node_links_deduplicates()
@@ -128,4 +150,7 @@ if __name__ == "__main__":
     test_node_to_clash_config()
     test_parse_proxy_api_response()
     test_parse_proxy_api_response_ignores_duplicates()
+    test_parse_proxy_api_response_plain_ip_port()
+    test_parse_proxy_api_response_default_scheme()
+    test_parse_proxy_api_response_ipv6_plain()
     print("parser tests passed")

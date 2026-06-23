@@ -235,16 +235,41 @@ def node_to_clash_config(link: str) -> dict | None:
     return None
 
 
-def parse_proxy_api_response(text: str | None) -> list[str]:
+def parse_proxy_api_response(text: str | None, default_scheme: str = "http") -> list[str]:
+    """Parse proxy API/list responses.
+
+    Supports explicit scheme URLs (http/https/socks4/socks5) and plain
+    ``host:port`` lines, which are prefixed with *default_scheme*.
+    """
     if not text:
         return []
+    scheme_pattern = re.compile(r"^(http|https|socks4|socks5)://", re.I)
+    ipv4_pattern = re.compile(r"^((?:\d{1,3}\.){3}\d{1,3}):(\d{1,5})\s*$")
+    ipv6_pattern = re.compile(r"^(\[[\da-fA-F:]+\]):(\d{1,5})\s*$")
+
+    def _is_valid_ipv4(host: str) -> bool:
+        try:
+            return all(0 <= int(octet) <= 255 for octet in host.split("."))
+        except ValueError:
+            return False
+
     proxies = []
     for line in text.splitlines():
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        if re.match(r"^(http|https|socks4|socks5)://", line):
+        if scheme_pattern.match(line):
             proxies.append(line)
+            continue
+        match = ipv4_pattern.match(line) or ipv6_pattern.match(line)
+        if match:
+            host, port_str = match.group(1), match.group(2)
+            port = int(port_str)
+            if not 1 <= port <= 65535:
+                continue
+            if "." in host and not _is_valid_ipv4(host):
+                continue
+            proxies.append(f"{default_scheme}://{host}:{port}")
     return list(dict.fromkeys(proxies))
 
 

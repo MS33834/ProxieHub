@@ -17,6 +17,7 @@ export interface SourceConfig {
   protocols?: string[];
   reliability?: "high" | "medium" | "low";
   max_size?: number;
+  proxy_scheme?: string;
 }
 
 export interface SiteStats {

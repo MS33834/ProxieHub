@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/subscribe",
     "/sources",
+    "/sources/guide",
     "/clients",
     "/tools",
     "/status",

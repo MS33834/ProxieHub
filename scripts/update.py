@@ -65,7 +65,7 @@ def main(verify: bool = False) -> int:
 
     all_proxies = []
     for item in raw["proxies"]:
-        proxies = parse_proxy_api_response(item["text"])
+        proxies = parse_proxy_api_response(item["text"], default_scheme=item.get("proxy_scheme", "http"))
         print(f"[update] {item['name']}: {len(proxies)} proxies extracted")
         all_proxies.extend(proxies)
 

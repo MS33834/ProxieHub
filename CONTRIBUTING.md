@@ -12,7 +12,7 @@
 
 ## 如何提议新数据源
 
-新增数据源建议通过 Issue 或 Pull Request 提交。请提供以下信息：
+新增数据源建议通过 Issue 或 Pull Request 提交。详细标准、格式示例与提交步骤请见 [docs/data-source-guide.md](../docs/data-source-guide.md)。请提供以下信息：
 
 - **数据源名称**：便于识别的名称。
 - **URL**：公开可访问的链接，例如 GitHub Raw 或公开 API。

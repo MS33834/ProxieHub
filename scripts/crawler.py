@@ -147,7 +147,10 @@ def _fetch_source_safe(source: dict, category: str) -> dict | None:
     """Fetch a single source and return its raw entry, or None on failure."""
     try:
         text = fetch_source(source)
-        return {"name": source["name"], "text": text, "category": category}
+        entry = {"name": source["name"], "text": text, "category": category}
+        if "proxy_scheme" in source:
+            entry["proxy_scheme"] = source["proxy_scheme"]
+        return entry
     except Exception as exc:
         print(f"[crawler] failed {source['name']}: {exc}")
         return None

@@ -1,6 +1,7 @@
 import { loadStats } from "@/lib/data";
 import { SourceTable } from "@/components/source-table";
 import { ProtocolChart } from "@/components/protocol-chart";
+import Link from "next/link";
 import {
   Shield,
   Info,
@@ -10,6 +11,8 @@ import {
   CheckCircle2,
   Globe,
   Clock,
+  PlusCircle,
+  ExternalLink,
 } from "lucide-react";
 
 export default function SourcesPage() {
@@ -145,6 +148,46 @@ export default function SourcesPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="border border-border bg-surface p-5">
+          <h3 className="font-medium text-sm mb-2 flex items-center gap-2">
+            <PlusCircle className="w-4 h-4 text-primary" />
+            缺少你想要的源？
+          </h3>
+          <p className="text-xs text-muted leading-relaxed mb-4">
+            如果你知道其他公开、持续更新的节点或代理源，欢迎通过 Issue 模板提交。审核通过后会加入每日自动抓取列表。
+          </p>
+          <div className="flex flex-col sm:flex-row items-start gap-2">
+            <a
+              href="https://github.com/MS33834/ProxieHub/issues/new?template=source_report.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-background text-xs font-medium hover:bg-primary-hover transition-colors"
+            >
+              提交新数据源 <ExternalLink className="w-3 h-3" />
+            </a>
+            <Link
+                href="/sources/guide"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border text-xs font-medium hover:bg-surface-hover transition-colors"
+              >
+                查看贡献指南
+              </Link>
+          </div>
+        </div>
+        <div className="border border-border bg-surface p-5">
+          <h3 className="font-medium text-sm mb-2 flex items-center gap-2">
+            <Database className="w-4 h-4 text-primary" />
+            数据源质量说明
+          </h3>
+          <ul className="space-y-1.5 text-xs text-muted">
+            <li>· 所有源默认每 24 小时抓取一次（部分高频率源每小时或每 5 分钟）。</li>
+            <li>· 大文件源默认禁用，避免拖慢 CI；需要时可手动启用。</li>
+            <li>· 节点经过去重、私有 IP 过滤，部分工作流还会进行连通性验证。</li>
+            <li>· 公开源可能随时失效，数量波动属于正常现象。</li>
+          </ul>
         </div>
       </div>
 

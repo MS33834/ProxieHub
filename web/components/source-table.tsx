@@ -22,8 +22,10 @@ interface SourceTableProps {
 export function SourceTable({ sources }: SourceTableProps) {
   const [filter, setFilter] = useState<"all" | "enabled" | "disabled">("all");
   const [typeFilter, setTypeFilter] = useState<"all" | string>("all");
+  const [protocolFilter, setProtocolFilter] = useState<"all" | string>("all");
 
   const types = Array.from(new Set(sources.map((s) => s.type)));
+  const protocols = Array.from(new Set(sources.flatMap((s) => s.protocols || []))).sort();
 
   const filtered = sources
     .filter((s) => {
@@ -34,6 +36,10 @@ export function SourceTable({ sources }: SourceTableProps) {
     .filter((s) => {
       if (typeFilter === "all") return true;
       return s.type === typeFilter;
+    })
+    .filter((s) => {
+      if (protocolFilter === "all") return true;
+      return (s.protocols || []).includes(protocolFilter);
     });
 
   return (
@@ -46,6 +52,7 @@ export function SourceTable({ sources }: SourceTableProps) {
           </h3>
           <p className="text-xs text-muted mt-0.5">
             共 {sources.length} 个源，已启用 {sources.filter((s) => s.enabled).length} 个
+            {protocolFilter !== "all" && `，符合协议 ${protocolFilter.toUpperCase()} 的有 ${filtered.length} 个`}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -73,6 +80,18 @@ export function SourceTable({ sources }: SourceTableProps) {
             {types.map((t) => (
               <option key={t} value={t}>
                 {t}
+              </option>
+            ))}
+          </select>
+          <select
+            value={protocolFilter}
+            onChange={(e) => setProtocolFilter(e.target.value)}
+            className="border border-border bg-background px-2.5 py-1 text-xs text-muted focus:outline-none focus:border-primary"
+          >
+            <option value="all">所有协议</option>
+            {protocols.map((p) => (
+              <option key={p} value={p}>
+                {p.toUpperCase()}
               </option>
             ))}
           </select>

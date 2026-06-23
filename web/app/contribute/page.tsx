@@ -13,14 +13,15 @@ import {
 
 const REPO_URL = "https://github.com/MS33834/ProxieHub";
 const ISSUES_URL = "https://github.com/MS33834/ProxieHub/issues";
+const SOURCE_ISSUE_URL = "https://github.com/MS33834/ProxieHub/issues/new?template=source_report.md";
 
 const ways = [
   {
     icon: Database,
     title: "提交新数据源",
-    desc: "发现新的公开节点/代理源？按下方模板填写信息，并在 GitHub Issues 中提交，我们会评估后合并到 config/sources.json。",
+    desc: "发现新的公开节点/代理源？按下方模板填写信息，在 GitHub Issues 中提交，我们会评估后合并到 config/sources.json。",
     action: "提交数据源",
-    href: ISSUES_URL,
+    href: SOURCE_ISSUE_URL,
   },
   {
     icon: Code2,
@@ -148,7 +149,11 @@ export default function ContributePage() {
             数据源提交模板
           </h2>
           <p className="text-xs text-muted mb-3">
-            提交新数据源时，请复制下方模板并填写完整信息。
+            提交新数据源时，请复制下方模板并填写完整信息。也可以先阅读
+            <Link href="/sources/guide" className="text-primary hover:text-primary-hover mx-1">
+              数据源贡献指南
+            </Link>
+            了解收录标准与格式要求。
           </p>
           <div className="relative">
             <textarea

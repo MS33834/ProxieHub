@@ -56,7 +56,7 @@ def _yaml_dump(data: dict) -> str:
                 else:
                     lines.append("    {}: {}".format(sk, sv))
         else:
-            lines.append("  {}: {}".format(k, v))
+            lines.append('  {}: "{}"'.format(k, v))
     return "\n".join(lines)
 
 
@@ -70,8 +70,12 @@ def _node_info(item):
 def _compute_stats(items: list) -> dict:
     """Compute summary stats from node result dicts or raw link strings."""
     total = len(items)
-    alive_items = [i for i in items if isinstance(i, dict) and i.get("alive")]
-    candidates = alive_items if alive_items else items
+    has_alive_flag = any(isinstance(i, dict) and "alive" in i for i in items)
+    if has_alive_flag:
+        alive_items = [i for i in items if isinstance(i, dict) and i.get("alive")]
+        candidates = alive_items
+    else:
+        candidates = items
     alive_count = len(candidates)
     latencies = [
         i["latency_ms"] for i in candidates if isinstance(i, dict) and i.get("latency_ms") is not None

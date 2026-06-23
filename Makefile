@@ -4,9 +4,7 @@ install:
 	pip install -r requirements.txt
 
 test:
-	python tests/test_parser.py
-	python tests/test_formatter.py
-	python tests/test_verifier.py
+	python tests/test_parser.py && python tests/test_formatter.py && python tests/test_verifier.py
 
 update:
 	python scripts/update.py

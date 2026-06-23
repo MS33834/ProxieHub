@@ -4,13 +4,13 @@ import re
 from urllib.parse import urlparse, unquote, parse_qs
 
 LINK_PATTERNS = [
-    r'(?<!\S)ss://[^\s<>"\)\]]+',
-    r'(?<!\S)ssr://[^\s<>"\)\]]+',
-    r'(?<!\S)vmess://[^\s<>"\)\]]+',
-    r'(?<!\S)vless://[^\s<>"\)\]]+',
-    r'(?<!\S)trojan://[^\s<>"\)\]]+',
-    r'(?<!\S)hysteria://[^\s<>"\)\]]+',
-    r'(?<!\S)hysteria2://[^\s<>"\)\]]+',
+    r'(?<!\S)ss://[^\s<>"\)]+',
+    r'(?<!\S)ssr://[^\s<>"\)]+',
+    r'(?<!\S)vmess://[^\s<>"\)]+',
+    r'(?<!\S)vless://[^\s<>"\)]+',
+    r'(?<!\S)trojan://[^\s<>"\)]+',
+    r'(?<!\S)hysteria://[^\s<>"\)]+',
+    r'(?<!\S)hysteria2://[^\s<>"\)]+',
 ]
 
 SUPPORTED_SCHEMES = {"ss", "ssr", "vmess", "vless", "trojan", "hysteria", "hysteria2"}
@@ -96,7 +96,7 @@ def parse_ss_link(link: str) -> dict | None:
             "name": name or "ss_node",
         }
 
-    # SIP002 format: ss://BASE64(method:password@server:port)#name
+    # Legacy format: ss://BASE64(method:password@server:port)#name
     fragment = ""
     if "#" in body:
         body, fragment = body.split("#", 1)
@@ -213,13 +213,18 @@ def node_to_clash_config(link: str) -> dict | None:
         cfg = decode_vmess(link)
         if not cfg:
             return None
+        try:
+            port = int(cfg.get("port") or 0)
+            alter_id = int(cfg.get("aid") or 0)
+        except (TypeError, ValueError):
+            return None
         return {
             "name": cfg.get("ps") or cfg.get("remark") or "vmess_node",
             "type": "vmess",
             "server": cfg.get("add"),
-            "port": int(cfg.get("port", 0)),
+            "port": port,
             "uuid": cfg.get("id"),
-            "alterId": int(cfg.get("aid", 0)),
+            "alterId": alter_id,
             "cipher": "auto",
             "tls": cfg.get("tls") in ("tls", True, "true"),
             "network": cfg.get("net", "tcp"),

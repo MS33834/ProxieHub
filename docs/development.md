@@ -100,6 +100,6 @@ npm run docs:dev
 
 ## 调试技巧
 
-- 使用 `python scripts/crawler.py --dry-run` 测试单个数据源。
+- 直接运行 `python scripts/crawler.py` 可测试数据源抓取，输出节点源与代理源数量。
 - 查看 `nodes/` 目录下的输出文件，确认格式是否符合预期。
 - 前端页面使用 `npm run dev` 实时预览，静态导出结果位于 `web/dist/`。

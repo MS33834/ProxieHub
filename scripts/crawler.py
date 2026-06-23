@@ -30,6 +30,16 @@ def _allowed_hosts() -> set[str]:
     return hosts
 
 
+def _decode_bytes(data: bytes) -> str:
+    """Decode bytes to text, trying utf-8 then gbk then latin-1."""
+    for encoding in ("utf-8", "gbk", "latin-1"):
+        try:
+            return data.decode(encoding)
+        except (UnicodeDecodeError, LookupError):
+            continue
+    return data.decode("utf-8", errors="ignore")
+
+
 def _validate_url(url: str) -> None:
     """Reject non-HTTPS URLs and unexpected hosts to mitigate SSRF risks."""
     parsed = urlparse(url)
@@ -72,12 +82,7 @@ def _fetch_with_curl(url: str, timeout: int, max_bytes: int = 50 * 1024 * 1024) 
         err = stderr.decode("utf-8", errors="ignore")[:200]
         raise RuntimeError(f"curl failed: {err}")
     data = stdout[:max_bytes]
-    for encoding in ("utf-8", "gbk", "latin-1"):
-        try:
-            return data.decode(encoding, errors="ignore")
-        except Exception:
-            continue
-    return data.decode("utf-8", errors="ignore")
+    return _decode_bytes(data)
 
 
 def _fetch_with_urllib(url: str, timeout: int) -> str:
@@ -85,12 +90,7 @@ def _fetch_with_urllib(url: str, timeout: int) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=timeout, context=_ssl_context()) as resp:
         data = resp.read()
-        for encoding in ("utf-8", "gbk", "latin-1"):
-            try:
-                return data.decode(encoding, errors="ignore")
-            except Exception:
-                continue
-        return data.decode("utf-8", errors="ignore")
+        return _decode_bytes(data)
 
 
 def fetch(url: str, timeout: int = 20, retries: int = 1, max_bytes: int = 10 * 1024 * 1024) -> str:
@@ -177,7 +177,10 @@ def crawl(config_path: Path | None = None, max_workers: int | None = None) -> di
 
     if max_workers is None:
         env_workers = os.environ.get("PROXIEHUB_CRAWL_WORKERS", "")
-        max_workers = int(env_workers) if env_workers.isdigit() else min(16, max(1, len(sources)))
+        if env_workers.isdigit():
+            max_workers = max(1, int(env_workers))
+        else:
+            max_workers = min(16, max(1, len(sources)))
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_source = {

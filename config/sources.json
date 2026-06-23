@@ -102,51 +102,7 @@
       "note": "Aggregated public nodes, plain text links."
     },
     {
-      "name": "gfpcom-trojan",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/trojan.txt",
-      "enabled": false,
-      "decode_base64": false,
-      "update_interval": "hourly",
-      "protocols": ["trojan"],
-      "max_size": 5242880,
-      "note": "Hourly updated public trojan nodes (plain text). Large/slow file; enable only if you need a huge pool."
-    },
-    {
-      "name": "gfpcom-vless",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/vless.txt",
-      "enabled": false,
-      "decode_base64": false,
-      "update_interval": "hourly",
-      "protocols": ["vless"],
-      "max_size": 5242880,
-      "note": "Hourly updated public vless nodes (plain text). Large/slow file; enable only if you need a huge pool."
-    },
-    {
-      "name": "gfpcom-vmess",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/vmess.txt",
-      "enabled": false,
-      "decode_base64": false,
-      "update_interval": "hourly",
-      "protocols": ["vmess"],
-      "max_size": 5242880,
-      "note": "Hourly updated public vmess nodes (plain text). Large file; enable only if you need a huge pool."
-    },
-    {
-      "name": "gfpcom-ss",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/ss.txt",
-      "enabled": false,
-      "decode_base64": false,
-      "update_interval": "hourly",
-      "protocols": ["ss"],
-      "max_size": 5242880,
-      "note": "Hourly updated public Shadowsocks nodes (plain text). Large file; enable only if you need a huge pool."
-    },
-    {
-      "name": "ermaozi-get-subscribe-v2ray",
+      "name": "ermaozi-web-subscribe-v2ray",
       "type": "web_url",
       "url": "https://www.ermao.net/sub/v2ray/ermao.net",
       "enabled": false,
@@ -407,7 +363,7 @@
     {
       "name": "Barabama-FreeNodes-nodev2ray",
       "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/Barabama/FreeNodes/feat/ai-crawler-v2/nodes/nodev2ray.txt",
+      "url": "https://raw.githubusercontent.com/Barabama/FreeNodes/main/nodes/nodev2ray.txt",
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
@@ -444,42 +400,6 @@
       "update_interval": "5min",
       "protocols": ["http", "https", "socks4", "socks5"],
       "note": "Public HTTP(S)/SOCKS4/SOCKS5 proxy list, validated every 5 minutes."
-    },
-    {
-      "name": "gfpcom-http",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/http.txt",
-      "enabled": false,
-      "update_interval": "hourly",
-      "protocols": ["http"],
-      "note": "Hourly updated public HTTP proxy list. Large file (~400k entries), enable only if you need a huge pool."
-    },
-    {
-      "name": "gfpcom-https",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/https.txt",
-      "enabled": false,
-      "update_interval": "hourly",
-      "protocols": ["https"],
-      "note": "Hourly updated public HTTPS proxy list. Large file (~400k entries), enable only if you need a huge pool."
-    },
-    {
-      "name": "gfpcom-socks4",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/socks4.txt",
-      "enabled": false,
-      "update_interval": "hourly",
-      "protocols": ["socks4"],
-      "note": "Hourly updated public SOCKS4 proxy list. Very large file (~450k entries), enable only if you need a huge pool."
-    },
-    {
-      "name": "gfpcom-socks5",
-      "type": "github_raw",
-      "url": "https://raw.githubusercontent.com/wiki/gfpcom/free-proxy-list/lists/socks5.txt",
-      "enabled": false,
-      "update_interval": "hourly",
-      "protocols": ["socks5"],
-      "note": "Hourly updated public SOCKS5 proxy list. Very large file (~470k entries), enable only if you need a huge pool."
     },
     {
       "name": "TheSpeedX-http",

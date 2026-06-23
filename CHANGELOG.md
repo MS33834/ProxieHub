@@ -23,6 +23,20 @@ All notable changes to this project will be documented in this file.
 - 统一全站协议表述为 HTTP(S)/SOCKS4/SOCKS5，修正页面与文档中的不一致。
 - 客户端卡片统一使用外部锚点标签打开官方仓库，符合静态导出链接规范。
 - 去除部分页面中的套话，使文案更直接、贴合 ProxieHub 风格。
+- 修复 formatter.py 存活率统计在全部节点失效时误报 100% 的逻辑错误。
+- 修复 crawler.py 编码检测死代码（errors="ignore" 导致 gbk/latin-1 分支永不执行）。
+- 修复 PROXIEHUB_CRAWL_WORKERS=0 时 ThreadPoolExecutor 崩溃。
+- 修复 parser.py 正则截断 IPv6 地址（排除 ] 导致 [2001:db8::1] 被切断）。
+- 修复 vmess JSON 中 port/aid 为 null 时 int() 崩溃。
+- 修复 verifier.py port=0 因 falsy 判断被误判为无端口。
+- 修复 sources.json 数据源名称重复（ermaozi-get-subscribe-v2ray）。
+- 移除 sources.json 中无效的 gfpcom wiki raw URL（GitHub Wiki 不可通过 raw 路径访问）。
+- 修复 sources/page.tsx 免责声明链接未走 basePath 导致 GitHub Pages 404。
+- 修复 formatter.py YAML 回退路径字符串未加引号可能生成无效 YAML。
+- 修复 verifier.py geo 缓存读写未加锁的竞态条件。
+- 修正 docs/development.md 中不存在的 --dry-run 参数说明。
+- 修正 docs/deployment.md 工作流步骤顺序与实际不一致。
+- Barabama-FreeNodes 数据源 URL 从 feature 分支改为 main 分支。
 
 ## [1.1.0] - 2026-06-15
 

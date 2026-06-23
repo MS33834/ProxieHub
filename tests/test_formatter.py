@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from formatter import to_clash_yaml, to_v2ray_subscription, to_proxy_list, _is_private_host
+from formatter import to_clash_yaml, to_v2ray_subscription, to_proxy_list, _is_private_host, _compute_stats
 
 
 def test_to_clash_yaml_basic():
@@ -89,6 +89,36 @@ def test_is_private_host():
     assert _is_private_host("localhost.local") is True
 
 
+def test_compute_stats_all_dead():
+    items = [
+        {"link": "ss://a", "alive": False, "latency_ms": None, "region": "unknown"},
+        {"link": "ss://b", "alive": False, "latency_ms": None, "region": "unknown"},
+    ]
+    stats = _compute_stats(items)
+    assert stats["total"] == 2
+    assert stats["alive"] == 0
+    assert stats["survival_rate"] == 0.0
+
+
+def test_compute_stats_mixed():
+    items = [
+        {"link": "ss://a", "alive": True, "latency_ms": 120, "region": "HK"},
+        {"link": "ss://b", "alive": False, "latency_ms": None, "region": "unknown"},
+    ]
+    stats = _compute_stats(items)
+    assert stats["total"] == 2
+    assert stats["alive"] == 1
+    assert stats["survival_rate"] == 50.0
+    assert stats["avg_latency"] == 120.0
+
+
+def test_compute_stats_raw_links():
+    items = ["ss://a", "ss://b"]
+    stats = _compute_stats(items)
+    assert stats["total"] == 2
+    assert stats["alive"] == 2
+
+
 if __name__ == "__main__":
     test_to_clash_yaml_basic()
     test_to_clash_yaml_duplicate_names()
@@ -99,4 +129,7 @@ if __name__ == "__main__":
     test_to_proxy_list()
     test_to_proxy_list_private_ip_filtered()
     test_is_private_host()
+    test_compute_stats_all_dead()
+    test_compute_stats_mixed()
+    test_compute_stats_raw_links()
     print("formatter tests passed")

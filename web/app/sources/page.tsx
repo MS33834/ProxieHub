@@ -198,9 +198,9 @@ export default function SourcesPage() {
           <p className="text-xs text-muted leading-relaxed">
             公开节点由第三方维护，其运营者可能查看、记录或篡改你的流量。我们仅做格式转换与聚合，无法验证每个节点的真实运营者。
             使用前请仔细阅读
-            <a href="/disclaimer" className="text-primary hover:text-primary-hover ml-1">
+            <Link href="/disclaimer" className="text-primary hover:text-primary-hover ml-1">
               完整免责声明
-            </a>
+            </Link>
             。
           </p>
         </div>

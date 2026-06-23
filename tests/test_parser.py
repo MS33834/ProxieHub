@@ -1,3 +1,4 @@
+import json
 import sys
 from pathlib import Path
 
@@ -95,6 +96,24 @@ def test_parse_vless_link_ipv6():
     assert cfg["port"] == 443
 
 
+def test_extract_node_links_ipv6():
+    text = "vless://uuid@[2001:db8::1]:443?type=tcp#ipv6"
+    links = extract_node_links(text)
+    assert len(links) == 1
+    assert "[2001:db8::1]" in links[0]
+
+
+def test_node_to_clash_config_vmess_null_port():
+    import base64
+    cfg = {"add": "a.com", "port": None, "id": "uuid", "aid": None}
+    b64 = base64.b64encode(json.dumps(cfg).encode()).decode().rstrip("=")
+    link = f"vmess://{b64}"
+    result = node_to_clash_config(link)
+    assert result is not None
+    assert result["port"] == 0
+    assert result["alterId"] == 0
+
+
 def test_node_to_clash_config():
     link = "ss://YWVzLTI1Ni1nY206cGFzc3dvcmQ=@example.com:443#test"
     cfg = node_to_clash_config(link)
@@ -147,6 +166,8 @@ if __name__ == "__main__":
     test_parse_trojan_link()
     test_parse_vless_link()
     test_parse_vless_link_ipv6()
+    test_extract_node_links_ipv6()
+    test_node_to_clash_config_vmess_null_port()
     test_node_to_clash_config()
     test_parse_proxy_api_response()
     test_parse_proxy_api_response_ignores_duplicates()

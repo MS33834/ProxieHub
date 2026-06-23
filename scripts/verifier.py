@@ -64,7 +64,11 @@ def parse_endpoint(link: str) -> tuple[str | None, int | None]:
             if not cfg:
                 return None, None
             host = cfg.get("add")
-            port = int(cfg.get("port")) if cfg.get("port") else None
+            port_raw = cfg.get("port")
+            try:
+                port = int(port_raw) if port_raw is not None and str(port_raw).strip() else None
+            except (TypeError, ValueError):
+                port = None
             return host, port
         if scheme == "vless":
             cfg = parse_vless_link(link)
@@ -164,11 +168,13 @@ def query_geo_api(ip: str) -> str:
     """Return region for an IP, using cache and falling back to 'unknown'."""
     if not ip or is_private_host(ip):
         return "private"
-    cached = _geo_cache.get(ip)
+    with _geo_lock:
+        cached = _geo_cache.get(ip)
     if cached is not None:
         return cached
     region = _format_geo(_fetch_geo_data(ip))
-    _geo_cache[ip] = region
+    with _geo_lock:
+        _geo_cache[ip] = region
     return region
 
 

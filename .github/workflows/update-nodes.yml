@@ -36,6 +36,7 @@ jobs:
       - name: Run update script
         env:
           PROXIEHUB_VERIFY_NODES: "true"
+          PROXIEHUB_GEO_ENABLED: "false"
           PROXIEHUB_MAX_NODES: "800"
           PROXIEHUB_MAX_PROXIES: "300"
         run: python scripts/update.py --verify

@@ -67,13 +67,11 @@ def _node_info(item):
     return item, "unknown", None
 
 
-def _compute_stats(items: list, alive_only: bool = True) -> dict:
-    """Compute summary stats from node result dicts."""
-    if alive_only:
-        candidates = items
-    else:
-        candidates = [i for i in items if isinstance(i, dict) and i.get("alive")]
+def _compute_stats(items: list) -> dict:
+    """Compute summary stats from node result dicts or raw link strings."""
     total = len(items)
+    alive_items = [i for i in items if isinstance(i, dict) and i.get("alive")]
+    candidates = alive_items if alive_items else items
     alive_count = len(candidates)
     latencies = [
         i["latency_ms"] for i in candidates if isinstance(i, dict) and i.get("latency_ms") is not None

@@ -41,6 +41,11 @@ A static web UI is automatically built from the `web/` directory and deployed to
 - **Sources**: transparent data-source list with protocol/update-frequency metadata
 - **Clients**: recommended clients and setup guides by platform
 - **Disclaimer**: full terms of use
+- **Docs**: VitePress documentation site at `/docs/` — new user guide, client setup, data sources and automation workflow
+
+### Node quality
+
+The daily update workflow can optionally verify node connectivity and measure latency. Region identification is available but disabled by default in CI to keep runtime reasonable; enable it locally with `PROXIEHUB_GEO_ENABLED=true`.
 
 ### Browse tools by platform
 

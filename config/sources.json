@@ -443,7 +443,7 @@
       "enabled": true,
       "update_interval": "5min",
       "protocols": ["http", "https", "socks4", "socks5"],
-      "note": "Public HTTP/SOCKS5 proxy list, validated every 5 minutes."
+      "note": "Public HTTP(S)/SOCKS4/SOCKS5 proxy list, validated every 5 minutes."
     },
     {
       "name": "gfpcom-http",

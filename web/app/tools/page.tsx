@@ -40,11 +40,11 @@ const categories = [
   {
     icon: Globe,
     title: "浏览器扩展",
-    description: "配合 HTTP/SOCKS5 代理列表使用，适合临时访问、爬虫或分场景代理。",
+    description: "配合 HTTP(S)/SOCKS4/SOCKS5 代理列表使用，适合临时访问、爬虫或分场景代理。",
     items: [
       { name: "SwitchyOmega", href: "https://github.com/FelisCatus/SwitchyOmega", note: "Chrome/Firefox 经典" },
       { name: "FoxyProxy", href: "https://github.com/foxyproxy/browser-extension", note: "多浏览器支持" },
-      { name: "Proxy SwitchySharp", href: "#", note: "轻量切换" },
+      { name: "SmartProxy", href: "https://github.com/salarcode/SmartProxy", note: "规则自动切换" },
     ],
   },
   {
@@ -65,7 +65,7 @@ const categories = [
     items: [
       { name: "OpenClash", href: "https://github.com/vernesong/OpenClash", note: "OpenWrt Clash 插件" },
       { name: "PassWall", href: "https://github.com/xiaorouji/openwrt-passwall", note: "OpenWrt 代理集合" },
-      { name: "HomeLede / ImmortalWrt", href: "https://github.com/immortalwrt/immortalwrt", note: "自带代理插件的固件" },
+      { name: "ImmortalWrt", href: "https://github.com/immortalwrt/immortalwrt", note: "OpenWrt 衍生固件，可安装代理插件" },
     ],
   },
   {
@@ -74,8 +74,8 @@ const categories = [
     description: "节点解析、格式转换、延迟测试等小工具，可与 ProxieHub 配合使用。",
     items: [
       { name: "subconverter", href: "https://github.com/tindy2013/subconverter", note: "订阅格式转换" },
-      { name: "v2rayN 订阅解析", href: "https://github.com/2dust/v2rayN", note: "内置解析" },
       { name: "Clash Dashboard", href: "https://github.com/Dreamacro/clash-dashboard", note: "Clash 面板" },
+      { name: "yacd-meta", href: "https://github.com/MetaCubeX/Yacd-meta", note: "Clash Meta 面板" },
     ],
   },
 ];
@@ -139,7 +139,7 @@ export default function ToolsPage() {
           </p>
           <p>
             <strong className="text-foreground">批量/自动化：</strong>
-            使用 ProxieHub 的 HTTP/SOCKS5 代理列表，配合 curl、proxychains-ng 或 subconverter 做二次处理。
+            使用 ProxieHub 的 HTTP(S)/SOCKS4/SOCKS5 代理列表，配合 curl、proxychains-ng 或 subconverter 做二次处理。
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-start gap-3">

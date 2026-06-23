@@ -85,7 +85,11 @@ cd ../docs-site && npm install && npm run docs:build
 |---|---|---|
 | `PROXIEHUB_VERIFY_NODES` | `false` | 更新时是否启用 TCP 连通性校验 |
 | `PROXIEHUB_MAX_NODES` | `500` | 输出节点链接最大数量 |
-| `PROXIEHUB_MAX_PROXIES` | `200` | 输出 HTTP/SOCKS 代理最大数量 |
+| `PROXIEHUB_MAX_PROXIES` | `200` | 输出 HTTP(S)/SOCKS4/SOCKS5 代理最大数量 |
 | `PROXIEHUB_ALLOWED_HOSTS` | `raw.githubusercontent.com,gitcode.com,api.gitcode.com` | 爬虫额外允许的域名 |
 | `PROXIEHUB_CRAWL_WORKERS` | `min(16, enabled_sources)` | 并发抓取源数量 |
+| `PROXIEHUB_GEO_ENABLED` | `false` | 是否启用 GeoIP 地区分组 |
+| `PROXIEHUB_GITHUB_OWNER` | `MS33834` | 前端链接使用的 GitHub owner |
+| `PROXIEHUB_REPO_NAME` | `ProxieHub` | 前端链接使用的仓库名 |
+| `PROXIEHUB_GITCODE_OWNER` | `badhope` | 前端链接使用的 GitCode owner |
 | `GITCODE_TOKEN` | 无 | GitCode 同步所需的个人访问令牌 |

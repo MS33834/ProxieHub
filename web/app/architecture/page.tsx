@@ -26,19 +26,19 @@ const pipeline = [
   },
   {
     title: "解析节点",
-    desc: "scripts/parser.py 提取 VLESS、VMess、Trojan、Shadowsocks 与 HTTP/SOCKS5 链接，完成去重与格式标准化。",
+    desc: "scripts/parser.py 提取 VLESS、VMess、Trojan、Shadowsocks 与 HTTP(S)/SOCKS4/SOCKS5 链接，完成去重与格式标准化。",
     files: ["scripts/parser.py"],
     icon: Puzzle,
   },
   {
     title: "验证存活",
-    desc: "scripts/verifier.py 执行可选的 TCP 连通性校验，过滤掉明显不可用的节点（默认不启用深度验证）。",
+    desc: "scripts/verifier.py 执行 TCP 连通性校验，过滤明显不可用的节点。CI 每日默认启用 --verify，本地可关闭以加速测试。",
     files: ["scripts/verifier.py"],
     icon: Activity,
   },
   {
     title: "格式化输出",
-    desc: "scripts/formatter.py 将节点转换为 Clash YAML、V2Ray 订阅与 HTTP/SOCKS5 代理列表，写入 nodes/ 目录。",
+    desc: "scripts/formatter.py 将节点转换为 Clash YAML、V2Ray 订阅与 HTTP(S)/SOCKS4/SOCKS5 代理列表，写入 nodes/ 目录。",
     files: ["scripts/formatter.py", "nodes/clash.yaml", "nodes/v2ray.txt", "nodes/proxies.txt"],
     icon: FileJson,
   },
@@ -72,7 +72,7 @@ export default function ArchitecturePage() {
         </div>
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">架构说明</h1>
         <p className="text-sm text-muted max-w-2xl">
-          整条流水线从数据源到用户界面完全自动化，所有脚本与配置均开源，可审计、可替换、可贡献。
+          整条流水线从数据源到用户界面完全自动化，所有脚本与配置均开源。你可以直接查看、修改或替换任何环节。
         </p>
       </div>
 
@@ -139,7 +139,7 @@ export default function ArchitecturePage() {
             <span className="text-primary mt-0.5">·</span>
             <span>
               <strong className="text-foreground">可复现：</strong>
-              本地执行一条命令即可跑完整条流水线。
+              本地执行 <code className="px-1 py-0.5 bg-background border border-border text-[10px] font-mono text-muted">python scripts/update.py</code> 即可跑完整条流水线。
             </span>
           </li>
           <li className="flex items-start gap-2">

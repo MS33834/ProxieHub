@@ -101,8 +101,8 @@ export default function StatusPage() {
               <h2 className="font-medium text-sm">验证说明</h2>
             </div>
             <ul className="space-y-1.5 text-xs text-muted">
-              <li>· 流水线默认只做基础解析与去重。</li>
-              <li>· 可在本地运行校验以获得更严格筛选。</li>
+              <li>· CI 每日默认启用 TCP 连通性校验。</li>
+              <li>· 本地可运行 --verify 获得更严格筛选。</li>
               <li>· 节点可用性受用户网络环境影响。</li>
             </ul>
           </div>

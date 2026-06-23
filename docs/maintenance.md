@@ -16,7 +16,7 @@
 1. 编辑 `config/sources.json`。
 2. 在 `free_node_sources` 或 `free_proxy_apis` 中新增条目。
 3. 设置 `enabled: true` 前，先本地测试抓取是否成功。
-4. 更新 [数据源页面](https://ms33834.github.io/ProxieHub/sources) 相关说明。
+4. 更新 [数据源页面](https://ms33834.github.io/ProxieHub/data-sources) 相关说明。
 5. 提交 PR 并确保测试通过。
 
 ### 禁用失效数据源
@@ -60,4 +60,4 @@
 
 - 检查 GitCode Token 是否有效。
 - 手动拉取 GitCode 仓库，查看冲突。
-- 必要时强制同步前备份重要分支。
+- 解决冲突后再推送，避免强制覆盖远程历史。

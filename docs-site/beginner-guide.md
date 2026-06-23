@@ -2,7 +2,7 @@
 
 ## 什么是代理 / VPN？
 
-代理或 VPN 是一种将你的网络流量通过另一台服务器中转的工具，常用于隐私保护、安全测试或绕过网络限制。
+代理或 VPN 是一种将你的网络流量通过另一台服务器中转的工具，常用于隐私保护、安全测试与理解网络路由。
 
 ## 快速开始
 
@@ -16,9 +16,10 @@
 
 | 客户端 | 推荐格式 |
 |---|---|
-| Clash Verge Rev、Clash Meta、Clash for Windows | Clash |
-| v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X | V2Ray |
-| SwitchyOmega、FoxyProxy、curl、Python requests | HTTP/SOCKS5 |
+| Clash Verge Rev、Clash Meta、Clash for Windows、Stash | Clash |
+| v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X、Hiddify | V2Ray |
+| Surge、Sing-box | Clash / V2Ray（取决于导入方式） |
+| SwitchyOmega、FoxyProxy、SmartProxy、curl、Python requests | HTTP(S)/SOCKS4/SOCKS5 |
 
 ## 分步示例：Windows 上的 v2rayN
 

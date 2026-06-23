@@ -36,8 +36,8 @@ const channels = [
 
 const contributors = [
   { role: "维护者", name: "MS33834", desc: "项目发起人与主要维护者" },
-  { role: "核心贡献者", name: "社区贡献者", desc: "数据源、代码、文档的持续贡献者" },
-  { role: "审阅者", name: "Pull Request Reviewers", desc: "对代码与文档进行质量把关" },
+  { role: "贡献者", name: "社区贡献者", desc: "数据源、代码、文档的持续贡献者" },
+  { role: "审阅者", name: "代码审阅者", desc: "对代码与文档进行质量把关" },
 ];
 
 const recognitions = [
@@ -57,7 +57,7 @@ export default function CommunityPage() {
         </div>
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">社区与贡献</h1>
         <p className="text-sm text-muted max-w-2xl">
-          ProxieHub 是社区驱动的项目。你的反馈、贡献与传播都能让这个项目变得更完善、更透明。
+          ProxieHub 由社区驱动。你的反馈、贡献与传播都会让项目更完善、更透明。
         </p>
       </div>
 
@@ -166,7 +166,7 @@ export default function CommunityPage() {
       <div className="border border-border bg-surface p-6">
         <h2 className="text-lg font-semibold mb-3">行为准则</h2>
         <p className="text-sm text-muted leading-relaxed mb-4">
-          参与 ProxieHub 社区时，请尊重他人、保持建设性、遵守法律法规。我们致力于营造一个开放、友好、专业的交流环境。
+          参与 ProxieHub 社区时，请尊重他人、保持建设性、遵守法律法规。这里倡导开放、友好、专业的交流氛围。
         </p>
         <a
           href="https://github.com/MS33834/ProxieHub/blob/main/CODE_OF_CONDUCT.md"

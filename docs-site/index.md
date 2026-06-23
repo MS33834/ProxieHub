@@ -16,13 +16,13 @@ hero:
       text: 查看数据源
       link: /data-sources
     - theme: alt
-      text: GitHub 仓库
-      link: https://github.com/MS33834/ProxieHub
+      text: 访问主站
+      link: https://ms33834.github.io/ProxieHub/
 
 features:
   - icon: 📡
     title: 多格式订阅
-    details: 同时提供 Clash、V2Ray 与 HTTP/SOCKS5 三种格式，覆盖主流客户端与使用场景。
+    details: 同时提供 Clash、V2Ray 与 HTTP(S)/SOCKS4/SOCKS5 三种格式，覆盖主流客户端与使用场景。
   - icon: 🔄
     title: 每日自动更新
     details: GitHub Actions 每天 UTC 02:00 自动抓取、解析、校验并发布最新节点。
@@ -34,7 +34,7 @@ features:
     details: 明确的使用边界与免责声明，帮助用户安全、合法地使用公开节点。
   - icon: 🏗️
     title: 架构清晰
-    details: 配置、抓取、解析、验证、格式化、部署六层分离，便于理解与扩展。
+    details: 配置、抓取、解析、校验、格式化、部署六个步骤流水线化，便于理解与扩展。
   - icon: 🤝
     title: 社区共建
     details: 完善的新手文档、贡献指南与客户端对比，欢迎提交数据源、代码与文档改进。
@@ -43,7 +43,7 @@ features:
 ## 快速开始
 
 1. **选择客户端**：根据设备平台查看 [客户端配置](/client-setup/clash)。
-2. **复制订阅链接**：在 [README](https://github.com/MS33834/ProxieHub#quick-start) 中选择 Clash、V2Ray 或 HTTP/SOCKS5 订阅地址。
+2. **复制订阅链接**：在 [README](https://github.com/MS33834/ProxieHub#quick-start) 中选择 Clash、V2Ray 或 HTTP(S)/SOCKS4/SOCKS5 订阅地址。
 3. **导入并更新**：将订阅链接粘贴到客户端中，点击更新即可获取当日节点。
 4. **连接使用**：选择一个节点连接。免费节点稳定性有限，可等待次日自动更新。
 

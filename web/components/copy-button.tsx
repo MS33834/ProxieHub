@@ -18,11 +18,21 @@ export function CopyButton({ text, label = "复制", className = "" }: CopyButto
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback: select the text for manual copying
-      const selection = window.getSelection();
-      if (selection) {
-        selection.selectAllChildren(document.getElementById("copy-target") || document.body);
+      // Fallback: use a temporary textarea for older browsers / insecure contexts
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch {
+        // Both Clipboard API and execCommand failed; nothing more we can do
       }
+      document.body.removeChild(textarea);
     }
   };
 

@@ -10,11 +10,11 @@ import {
 interface ProtocolItemProps {
   icon: React.ReactNode;
   name: string;
-  fullName: string;
+  tag: string;
   description: string;
 }
 
-function ProtocolItem({ icon, name, fullName, description }: ProtocolItemProps) {
+function ProtocolItem({ icon, name, tag, description }: ProtocolItemProps) {
   return (
     <div className="flex gap-3 border border-border bg-surface p-4">
       <div className="p-1.5 border border-border h-fit text-primary shrink-0">
@@ -23,7 +23,7 @@ function ProtocolItem({ icon, name, fullName, description }: ProtocolItemProps) 
       <div>
         <div className="flex items-baseline gap-2 mb-1">
           <h3 className="font-mono text-sm font-medium uppercase">{name}</h3>
-          <span className="text-[10px] text-muted">{fullName}</span>
+          <span className="text-[10px] text-muted">{tag}</span>
         </div>
         <p className="text-xs text-muted leading-relaxed">{description}</p>
       </div>
@@ -35,44 +35,44 @@ const protocols = [
   {
     icon: <Zap className="w-4 h-4" />,
     name: "VLESS",
-    fullName: "Lightweight Encrypted Security Standard",
+    tag: "V2Ray 轻量协议",
     description:
-      "V2Ray 生态中的轻量级协议，流量特征更简洁，常与 XTLS/Reality 搭配以获得更好的性能和隐蔽性。",
+      "V2Ray 生态中的轻量级协议，流量特征更简洁，常与 XTLS/Reality 搭配使用。",
   },
   {
     icon: <Shield className="w-4 h-4" />,
     name: "VMess",
-    fullName: "Versatile Multiplexing Encryption",
+    tag: "V2Ray 核心传输协议",
     description:
       "V2Ray 的核心传输协议，支持多路复用和多种传输层（TCP / WebSocket / gRPC 等）。",
   },
   {
     icon: <Lock className="w-4 h-4" />,
     name: "Trojan",
-    fullName: "Trojan-GFW",
+    tag: "TLS 伪装协议",
     description:
-      "将代理流量伪装成 HTTPS 流量，协议本身与正常 TLS 网站难以区分，强调隐蔽性。",
+      "将代理流量伪装成 HTTPS 流量，与正常 TLS 网站难以区分，强调隐蔽性。",
   },
   {
     icon: <Server className="w-4 h-4" />,
     name: "Shadowsocks",
-    fullName: "SS / SIP002",
+    tag: "SS / SIP002",
     description:
       "经典的轻量级加密代理协议，被众多客户端原生支持，适合移动设备和路由器。",
   },
   {
     icon: <Globe className="w-4 h-4" />,
     name: "HTTP(S)",
-    fullName: "Web Proxy",
+    tag: "Web 代理",
     description:
       "通用的应用层代理格式，适合浏览器扩展、爬虫、命令行工具等临时场景。",
   },
   {
     icon: <Network className="w-4 h-4" />,
     name: "SOCKS5",
-    fullName: "Socket Secure 5",
+    tag: "Socket Secure",
     description:
-      "支持 UDP 和身份验证的传输层代理，常用于游戏、P2P 或需要 UDP 转发的场景。",
+      "支持 UDP 转发的传输层代理，常用于游戏、P2P 或需要 UDP 的场景。",
   },
 ];
 

@@ -1,43 +1,43 @@
-# Frequently Asked Questions
+# 常见问题
 
-## Why are all nodes dead?
+## 为什么所有节点都失效了？
 
-Free public nodes have a short lifespan. It is normal for many or all of them to be offline within hours. Wait for the next daily update or report the source as broken.
+免费公开节点生命周期很短，几小时内可能全部或大部分离线属于正常现象。等待下一次每日更新，或在 Issues 中报告失效的数据源。
 
-## Is this project legal?
+## 这个项目合法吗？
 
-This project only aggregates publicly available resources for educational and research purposes. You are responsible for complying with the laws of your jurisdiction.
+本项目仅聚合公开可访问的资源，用于教育和研究目的。用户需自行遵守所在国家或地区的法律法规。
 
-## Can I use these nodes for sensitive activities?
+## 可以使用这些节点进行敏感操作吗？
 
-No. Do not use free public nodes for banking, payments, or logging into sensitive accounts. The operators of these nodes can potentially intercept your traffic.
+不可以。不要在免费公开节点下登录银行、支付或社交等敏感账户。节点运营者可能查看、记录或篡改你的流量。
 
-## How often are nodes updated?
+## 节点多久更新一次？
 
-GitHub Actions runs the updater every day at 02:00 UTC. You can also trigger it manually from the Actions tab.
+GitHub Actions 每天 UTC 02:00 运行一次更新流程。你也可以在 Actions 标签页中手动触发。
 
-## How do I add a new source?
+## 如何添加新的数据源？
 
-See [Contributing](../CONTRIBUTING.md). Open a PR that edits `config/sources.json`.
+参见 [CONTRIBUTING.md](../CONTRIBUTING.md)。提交一个编辑 `config/sources.json` 的 Pull Request 即可。
 
-## GitCode links do not work in my client
+## 我的客户端里 GitCode 链接无法使用
 
-GitCode raw file URLs require using the API endpoint. Use the links provided in the README, which point to `api.gitcode.com`.
+GitCode 原始文件 URL 需要使用 API 端点。请使用 README 中提供的、指向 `api.gitcode.com` 的链接。
 
-## What is the difference between Clash and V2Ray formats?
+## Clash 和 V2Ray 格式有什么区别？
 
-- **Clash** format is a YAML file suitable for Clash-family clients (Clash Verge Rev, Clash Meta, Clash for Windows, Stash, Surge, etc.).
-- **V2Ray** format is a Base64-encoded list of subscription links suitable for v2rayN, v2rayNG, Shadowrocket, NekoBox, Quantumult X, and other V2Ray/Xray-core clients.
-- **HTTP/SOCKS5** format is a plain-text proxy list for browser extensions, crawlers, curl, or other tools.
+- **Clash** 格式是一个 YAML 文件，适用于 Clash 系客户端（Clash Verge Rev、Clash Meta、Clash for Windows、Stash、Surge 等）。
+- **V2Ray** 格式是一个 Base64 编码的订阅链接列表，适用于 v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X 等基于 V2Ray/Xray 内核的客户端。
+- **HTTP(S)/SOCKS4/SOCKS5** 格式是明文代理列表，适用于浏览器扩展、爬虫、curl 等工具。
 
-## Why does the update pipeline skip verification by default?
+## 为什么更新流程默认跳过验证？
 
-Connectivity verification requires making outbound TCP connections to every node. This is time-consuming and may put load on public sources. You can enable it locally with `PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify`.
+连通性验证需要对每个节点发起出站 TCP 连接，耗时较长，也可能对公开源造成压力。你可以在本地通过 `PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify` 开启。
 
-## Can I self-host the web UI?
+## 可以自己部署 Web UI 吗？
 
-Yes. The `web/` directory is a Next.js static site. Run `cd web && npm install && npm run build` to generate static files in `web/dist`, which can be served by any static host.
+可以。`web/` 目录是一个 Next.js 静态站点。运行 `cd web && npm install && npm run build` 即可在 `web/dist` 中生成静态文件，可部署到任何静态托管服务。
 
-## How do I report a security issue?
+## 如何报告安全问题？
 
-Please see [SECURITY.md](../SECURITY.md) for responsible disclosure guidelines.
+请参见 [SECURITY.md](../SECURITY.md) 中的负责任披露指南。

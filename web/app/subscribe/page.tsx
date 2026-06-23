@@ -17,7 +17,7 @@ import {
 const steps = [
   {
     title: "选择格式",
-    description: "Clash 格式适合 Clash 系列客户端；V2Ray 格式适合 v2rayN/v2rayNG/Shadowrocket 等；HTTP/SOCKS5 适合浏览器扩展或爬虫。",
+    description: "Clash 格式适合 Clash 系列客户端；V2Ray 格式适合 v2rayN/v2rayNG/Shadowrocket 等；HTTP(S)/SOCKS4/SOCKS5 适合浏览器扩展或爬虫。",
   },
   {
     title: "切换镜像",
@@ -50,7 +50,7 @@ const recommendations = [
     icon: Layers,
     title: "临时/爬虫",
     clients: "SwitchyOmega / FoxyProxy / curl / Python requests",
-    tip: "复制 HTTP/SOCKS5 列表，按需提取单个代理使用。",
+    tip: "复制 HTTP(S)/SOCKS4/SOCKS5 列表，按需提取单个代理使用。",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function SubscribePage() {
           icon={<Globe className="w-5 h-5" />}
         />
         <SubscribeCard
-          title="HTTP / SOCKS5"
+          title="HTTP(S) / SOCKS4 / SOCKS5"
           description="公开代理列表，适用于浏览器扩展、爬虫、curl、Python requests 等场景。"
           githubUrl={urls.proxies.github}
           gitcodeUrl={urls.proxies.gitcode}
@@ -144,7 +144,7 @@ export default function SubscribePage() {
           </div>
           <div>
             <h3 className="font-medium text-sm mb-2 flex items-center gap-2">
-              <Layers className="w-4 h-4 text-primary" /> HTTP / SOCKS5
+              <Layers className="w-4 h-4 text-primary" /> HTTP(S) / SOCKS4 / SOCKS5
             </h3>
             <p className="text-xs text-muted leading-relaxed mb-3">
               纯文本代理列表，每行一个代理。可直接用于浏览器扩展、curl --proxy 或 Python requests，按需提取单个地址。

@@ -53,7 +53,7 @@ PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
 |---|---|---|---|
 | `clash.yaml` | YAML | Clash 配置文件，包含 `proxies` 与 `proxy-groups` | Clash Verge Rev、Clash Meta、Clash for Windows、Stash、Surge |
 | `v2ray.txt` | Base64 文本 | 经 Base64 编码的节点链接列表 | v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X |
-| `proxies.txt` | 明文 | 每行一个 `ip:port`，适用于 HTTP/SOCKS 代理场景 | SwitchyOmega、FoxyProxy、curl、Python requests |
+| `proxies.txt` | 明文 | 每行一个 `ip:port`，适用于 HTTP(S)/SOCKS4/SOCKS5 代理场景 | SwitchyOmega、FoxyProxy、curl、Python requests |
 | `regions.json` | JSON | 可选的地域分布统计 | 主站展示、数据分析 |
 
 ### 文件内容示例
@@ -132,7 +132,7 @@ vmess://uuid@example.com:443?...#Node_002
 |---|---|---|
 | Clash | `https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/clash.yaml` | `https://api.gitcode.com/api/v5/repos/badhope/ProxieHub/raw/nodes/clash.yaml?ref=main` |
 | V2Ray | `https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/v2ray.txt` | `https://api.gitcode.com/api/v5/repos/badhope/ProxieHub/raw/nodes/v2ray.txt?ref=main` |
-| HTTP/SOCKS5 | `https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/proxies.txt` | `https://api.gitcode.com/api/v5/repos/badhope/ProxieHub/raw/nodes/proxies.txt?ref=main` |
+| HTTP(S)/SOCKS4/SOCKS5 | `https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/proxies.txt` | `https://api.gitcode.com/api/v5/repos/badhope/ProxieHub/raw/nodes/proxies.txt?ref=main` |
 
 ### 自动同步条件
 

@@ -28,7 +28,7 @@ GitCode 原始文件 URL 需要使用 API 端点。请使用 README 中提供的
 
 - **Clash** 格式是一个 YAML 文件，适用于 Clash 系客户端（Clash Verge Rev、Clash Meta、Clash for Windows、Stash、Surge 等）。
 - **V2Ray** 格式是一个 Base64 编码的订阅链接列表，适用于 v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X 等基于 V2Ray/Xray 内核的客户端。
-- **HTTP/SOCKS5** 格式是明文代理列表，适用于浏览器扩展、爬虫、curl 等工具。
+- **HTTP(S)/SOCKS4/SOCKS5** 格式是明文代理列表，适用于浏览器扩展、爬虫、curl 等工具。
 
 ## 为什么更新流程默认跳过验证？
 

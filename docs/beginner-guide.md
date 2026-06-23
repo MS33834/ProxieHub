@@ -1,56 +1,57 @@
-# Beginner Guide
+# 新手指南
 
-## What is a proxy/VPN?
+## 什么是代理 / VPN？
 
-A proxy or VPN is a tool that routes your internet traffic through another server, often used for privacy, security testing, or bypassing network restrictions.
+代理或 VPN 是一种将你的网络流量通过另一台服务器中转的工具，常用于隐私保护、安全测试与理解网络路由。
 
-## Quick Start
+## 快速开始
 
-1. Choose a client for your platform from the [tool index](../tools/).
-2. Download and install it from the official source.
-3. Subscribe to a node list from the [README](../README.md).
-4. Import the subscription into your client.
-5. Select a node and connect.
+1. 根据你的设备平台从 [工具索引](https://github.com/MS33834/ProxieHub/tree/main/tools) 选择客户端。
+2. 从官方来源下载并安装。
+3. 从 [README](https://github.com/MS33834/ProxieHub/blob/main/README.md) 复制订阅链接。
+4. 将订阅导入客户端。
+5. 选择一个节点并连接。
 
-## Choose the right subscription format
+## 选择正确的订阅格式
 
-| Client | Recommended format |
+| 客户端 | 推荐格式 |
 |---|---|
-| Clash Verge Rev, Clash Meta, Clash for Windows | Clash |
-| v2rayN, v2rayNG, Shadowrocket, NekoBox, Quantumult X | V2Ray |
-| SwitchyOmega, FoxyProxy, curl, Python requests | HTTP/SOCKS5 |
+| Clash Verge Rev、Clash Meta、Clash for Windows、Stash | Clash |
+| v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X、Hiddify | V2Ray |
+| Surge、Sing-box | Clash / V2Ray（取决于导入方式） |
+| SwitchyOmega、FoxyProxy、SmartProxy、curl、Python requests | HTTP(S)/SOCKS4/SOCKS5 |
 
-## Step-by-step example: v2rayN on Windows
+## 分步示例：Windows 上的 v2rayN
 
-1. Download v2rayN from [2dust/v2rayN](https://github.com/2dust/v2rayN/releases).
-2. Extract and run the application.
-3. Copy the V2Ray subscription link from the README.
-4. In v2rayN, go to **Subscription** → **Import subscription from clipboard**.
-5. Click **Subscription** → **Update subscription**.
-6. Select a node from the list and press **Enter** to activate.
+1. 从 [2dust/v2rayN](https://github.com/2dust/v2rayN/releases) 下载 v2rayN。
+2. 解压并运行程序。
+3. 从 README 复制 V2Ray 订阅链接。
+4. 在 v2rayN 中，进入 **订阅** → **从剪贴板导入订阅**。
+5. 点击 **订阅** → **更新订阅**。
+6. 从列表中选择一个节点并按 **回车键** 激活。
 
-## Step-by-step example: Clash Verge Rev
+## 分步示例：Clash Verge Rev
 
-1. Download Clash Verge Rev from the [official releases](https://github.com/clash-verge-rev/clash-verge-rev/releases).
-2. Install and run the application.
-3. Copy the Clash subscription link from the README.
-4. In Clash Verge Rev, go to **Profiles** and paste the link.
-5. Download the profile and select it.
-6. Choose a proxy node in the **Proxies** tab and enable **System Proxy**.
+1. 从 [官方发布页](https://github.com/clash-verge-rev/clash-verge-rev/releases) 下载 Clash Verge Rev。
+2. 安装并运行程序。
+3. 从 README 复制 Clash 订阅链接。
+4. 在 Clash Verge Rev 中，进入 **配置文件** 并粘贴链接。
+5. 下载配置文件并选中它。
+6. 在 **代理** 标签页中选择一个节点，并启用 **系统代理**。
 
-## Safety Tips
+## 安全提示
 
-- Do not log in to banking or payment sites through free public nodes.
-- Prefer open-source clients when possible.
-- Keep your client and subscription URLs up to date.
-- Only download clients from official repositories or app stores.
-- If a node asks for personal information, stop using it immediately.
+- 不要在免费公开节点下登录银行或支付网站。
+- 尽可能选择开源客户端。
+- 保持客户端和订阅 URL 为最新。
+- 只从官方仓库或应用商店下载客户端。
+- 如果某个节点要求提供个人信息，请立即停止使用。
 
-## Troubleshooting
+## 故障排查
 
-| Problem | Possible cause | Solution |
+| 问题 | 可能原因 | 解决方案 |
 |---|---|---|
-| Subscription cannot be updated | Network blocked GitHub Raw | Try the GitCode Raw mirror |
-| All nodes show timeout | Nodes expired | Wait for the next daily update or try another source |
-| Client shows "invalid config" | Format mismatch | Make sure you imported the correct format (Clash vs V2Ray) |
-| Connection is very slow | Node quality varies | Try multiple nodes or enable verification locally |
+| 订阅无法更新 | 网络屏蔽了 GitHub Raw | 尝试 GitCode Raw 镜像 |
+| 所有节点都超时 | 节点已过期 | 等待下一次每日更新或换用其他数据源 |
+| 客户端提示“配置无效” | 格式不匹配 | 确保导入了正确格式（Clash 或 V2Ray） |
+| 连接速度很慢 | 节点质量不一 | 尝试多个节点，或在本地启用验证 |

@@ -16,13 +16,13 @@ const principles = [
     icon: Eye,
     title: "完全透明",
     description:
-      "所有数据源、脚本、配置和输出文件均公开可查。任何人都可以审计数据流向，确认项目没有隐藏节点或私有服务器。",
+      "所有数据源、脚本、配置和输出文件均公开可查。你可以直接查看 config/sources.json 和 scripts/，确认没有隐藏节点或私有服务器。",
   },
   {
     icon: RefreshCw,
     title: "自动化优先",
     description:
-      "节点每天自动抓取、解析、格式化并发布。人工只需维护数据源配置与代码，降低因手动操作导致的延迟和错误。",
+      "节点每天自动抓取、解析、格式化并发布。维护者只需管理 config/sources.json 和脚本，减少手动操作带来的延迟和错误。",
   },
   {
     icon: Shield,
@@ -34,25 +34,25 @@ const principles = [
     icon: Users,
     title: "社区驱动",
     description:
-      "数据源由社区推荐，代码由社区 Review。项目走向通过 Issue、PR 和路线图公开讨论，没有封闭的决策。",
+      "数据源由社区推荐，代码由社区审阅。项目方向通过 GitHub Issues、Pull Request 和路线图公开讨论，决策过程透明。",
   },
   {
     icon: Scale,
     title: "合规使用",
     description:
-      "项目定位为网络协议学习、安全测试与隐私技术研究的公共资源索引，不鼓励、不协助任何违法行为。",
+      "项目定位为网络协议学习、安全测试与隐私技术研究的公共资源索引，不鼓励也不协助任何违法行为。",
   },
   {
     icon: BookOpen,
     title: "文档完整",
     description:
-      "从新手快速上手到架构说明、开发部署、维护排错，文档覆盖多个层次，降低使用者与贡献者的门槛。",
+      "从新手快速上手到架构说明、开发部署、维护排错，文档覆盖多个层次，帮助使用者与贡献者更快入门。",
   },
 ];
 
 const milestones = [
   { date: "2026-06", title: "项目启动", desc: "确定 ProxieHub 定位，搭建自动化流水线与初始数据源。" },
-  { date: "2026-06", title: "多格式输出", desc: "支持 Clash、V2Ray、HTTP/SOCKS5 三种订阅格式。" },
+  { date: "2026-06", title: "多格式输出", desc: "支持 Clash、V2Ray、HTTP(S)/SOCKS4/SOCKS5 三种订阅格式。" },
   { date: "2026-06", title: "双仓库同步", desc: "GitHub 主仓库与 GitCode 镜像同步，提升访问稳定性。" },
   { date: "2026-06", title: "前端与文档站", desc: "Next.js 展示站与 VitePress 文档站上线，内容持续扩展。" },
 ];
@@ -67,7 +67,7 @@ export default function AboutPage() {
         </div>
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">关于 ProxieHub</h1>
         <p className="text-sm text-muted max-w-2xl">
-          一个社区维护的免费代理与公开节点聚合项目，致力于让网络协议学习、安全测试与隐私技术研究变得更透明、更高效。
+          一个社区维护的免费代理与公开节点聚合项目，让网络协议学习、安全测试与隐私技术研究更透明、更高效。
         </p>
       </div>
 

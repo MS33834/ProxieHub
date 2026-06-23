@@ -42,8 +42,8 @@ const platforms = [
   {
     icon: Globe,
     name: "Browser",
-    clients: ["SwitchyOmega", "FoxyProxy", "浏览器扩展"],
-    guide: "#",
+    clients: ["SwitchyOmega", "FoxyProxy", "SmartProxy"],
+    guide: "https://github.com/MS33834/ProxieHub/blob/main/tools/browser-extensions.md",
   },
 ];
 
@@ -272,7 +272,7 @@ export default function ClientsPage() {
             <FeatureCard
               icon={Globe}
               title="临时/轻量"
-              description="浏览器扩展 + HTTP/SOCKS5 代理列表，适合临时访问或爬虫场景，不建议长期使用。"
+              description="浏览器扩展 + HTTP(S)/SOCKS4/SOCKS5 代理列表，适合临时访问或爬虫场景，不建议长期使用。"
             />
           </div>
         </div>

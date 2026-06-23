@@ -25,7 +25,7 @@ const requirements = [
   {
     icon: FileText,
     title: "格式兼容",
-    description: "目前支持：v2ray Base64 订阅、纯文本 vmess/vless/ss/trojan 链接、HTTP/SOCKS ip:port 列表。",
+    description: "目前支持：v2ray Base64 订阅、纯文本 vmess/vless/ss/trojan 链接、HTTP(S)/SOCKS4/SOCKS5 ip:port 列表。",
   },
   {
     icon: Shield,

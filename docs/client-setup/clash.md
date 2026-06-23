@@ -1,18 +1,18 @@
-# Clash Setup
+# Clash 配置教程
 
-## Clash Verge / Clash for Windows
+## Clash Verge Rev / Clash for Windows
 
-1. Download the client for your OS.
-2. Open **Profiles** (配置 / 订阅).
-3. Paste the subscription URL:
+1. 下载适合你系统的客户端。
+2. 打开 **配置文件**（Profiles / 配置 / 订阅）。
+3. 粘贴订阅链接：
    ```
    https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/clash.yaml
    ```
-4. Click Download / 下载.
-5. Go to **Proxies** and select a node.
-6. Toggle **System Proxy** to ON.
+4. 点击下载 / 更新配置。
+5. 进入 **代理** 页面选择一个节点。
+6. 开启 **系统代理**。
 
-## Troubleshooting
+## 故障排查
 
-- If no node works, wait for the next daily update or report the source as broken.
-- Make sure your client supports the protocols in the config.
+- 如果所有节点都无法连接，等待下一次每日更新或在 Issues 中报告数据源失效。
+- 确认客户端支持你当前配置中的协议。

@@ -57,7 +57,7 @@ const sourceTemplate = `## 数据源提交模板
 
 - **名称：** （简短标识，如 example-free-v2ray）
 - **URL：** （公开可访问的 raw 链接）
-- **协议：** （VLESS / VMess / Trojan / Shadowsocks / HTTP / SOCKS5 等）
+- **协议：** （VLESS / VMess / Trojan / Shadowsocks / HTTP / HTTPS / SOCKS4 / SOCKS5 等）
 - **更新频率：** （daily / hourly / 30min / 其他）
 - **来源类型：** （github_raw / web_url / base64_subscription）
 - **是否需要 Base64 解码：** （是 / 否）
@@ -75,7 +75,7 @@ export default function ContributePage() {
         </div>
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">参与贡献</h1>
         <p className="text-sm text-muted max-w-2xl">
-          ProxieHub 是社区驱动的开源项目。无论是提交新数据源、改进代码、完善文档还是翻译，你的贡献都能让项目变得更好。
+          ProxieHub 是社区驱动的开源项目。无论是提交新数据源、改进代码、完善文档还是翻译，都欢迎参与。
         </p>
       </div>
 

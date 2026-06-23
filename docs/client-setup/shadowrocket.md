@@ -1,16 +1,16 @@
-# Shadowrocket Setup (iOS)
+# Shadowrocket 配置教程（iOS）
 
-1. Purchase and install Shadowrocket from the App Store.
-2. Open the app and tap **Add Node**.
-3. Choose **Type** → **Subscribe**.
-4. Paste the subscription URL:
+1. 从 App Store 购买并安装 Shadowrocket。
+2. 打开应用，点击右上角 **+** 添加节点。
+3. 选择 **类型** → **Subscribe**。
+4. 粘贴订阅链接：
    ```
    https://raw.githubusercontent.com/MS33834/ProxieHub/main/nodes/v2ray.txt
    ```
-5. Tap **Save**.
-6. Select a node and toggle the connection switch.
+5. 点击 **保存**。
+6. 选择一个节点，打开连接开关。
 
-## Tips
+## 使用建议
 
-- Shadowrocket is a paid app. There is no official free version.
-- If the subscription fails, try switching between Wi-Fi and cellular data.
+- Shadowrocket 为付费应用，没有官方免费版本。
+- 如果订阅更新失败，尝试切换 Wi-Fi 与蜂窝数据。

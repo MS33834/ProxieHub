@@ -33,13 +33,13 @@ const features = [
     icon: Layers,
     title: "多格式输出",
     description:
-      "同时提供 Clash、V2Ray 与 HTTP/SOCKS5 三种订阅格式，覆盖主流客户端与使用场景。",
+      "同时提供 Clash、V2Ray 与 HTTP(S)/SOCKS4/SOCKS5 三种订阅格式，覆盖主流客户端与使用场景。",
   },
   {
     icon: Shield,
     title: "数据源透明",
     description:
-      "所有数据源、脚本与配置完全公开，社区可审计、可替换、可贡献新公开源。",
+      "所有数据源、脚本与配置完全公开。社区可以直接查看、替换或新增 config/sources.json 中的公开源。",
   },
 ];
 
@@ -107,7 +107,7 @@ export default function HomePage() {
               <span className="text-primary">节点聚合站</span>
             </h1>
             <p className="text-sm md:text-base text-muted mb-8 leading-relaxed max-w-xl">
-              ProxieHub 自动抓取、解析、校验互联网公开节点，输出 Clash、V2Ray、HTTP/SOCKS5
+              ProxieHub 自动抓取、解析、校验互联网公开节点，输出 Clash、V2Ray、HTTP(S)/SOCKS4/SOCKS5
               三种订阅格式。仅供学习网络协议、安全测试和隐私技术研究使用。
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-3">
@@ -134,6 +134,7 @@ export default function HomePage() {
         totalNodes={stats.totalNodes}
         enabledSources={stats.enabledSources}
         totalSources={stats.totalSources}
+        protocolCount={Object.keys(stats.protocolCounts).length || 0}
       />
 
       {/* Latest Updates */}
@@ -288,7 +289,7 @@ export default function HomePage() {
               icon={<Globe className="w-5 h-5" />}
             />
             <SubscribeCard
-              title="HTTP / SOCKS5"
+              title="HTTP(S) / SOCKS4 / SOCKS5"
               description="浏览器扩展、爬虫、命令行工具使用的公开代理列表"
               githubUrl={urls.proxies.github}
               gitcodeUrl={urls.proxies.gitcode}
@@ -445,7 +446,7 @@ export default function HomePage() {
           <div className="border border-border bg-surface p-6 md:p-8">
             <h2 className="text-xl font-semibold mb-2">准备好开始了吗？</h2>
             <p className="text-sm text-muted mb-6 max-w-lg">
-              选择适合你的客户端，复制订阅链接，即可导入每日更新的免费节点。如果你愿意让项目变得更好，也欢迎参与贡献。
+              选择适合你的客户端，复制订阅链接，即可导入每日更新的免费节点。发现数据源失效或有改进建议，欢迎提交 Issue 或 PR。
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-3">
               <Link

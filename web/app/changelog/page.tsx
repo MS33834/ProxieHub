@@ -46,7 +46,16 @@ export default function ChangelogPage() {
         </div>
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">更新日志</h1>
         <p className="text-sm text-muted max-w-2xl">
-          记录 ProxieHub 每个版本的重要变更。你也可以直接查看仓库根目录的 CHANGELOG.md。
+          记录 ProxieHub 每个版本的重要变更。也可在 GitHub 上查看{" "}
+          <a
+            href="https://github.com/MS33834/ProxieHub/blob/main/CHANGELOG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary-hover"
+          >
+            CHANGELOG.md
+          </a>
+          。
         </p>
       </div>
 

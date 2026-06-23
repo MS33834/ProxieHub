@@ -10,86 +10,66 @@ import {
 const phases = [
   {
     title: "短期",
-    subtitle: "已完成 / 进行中",
+    subtitle: "稳定性与数据源",
     icon: CheckCircle2,
     items: [
       {
-        label: "多格式输出",
-        desc: "同时生成 Clash、V2Ray、HTTP/SOCKS5 三种订阅格式。",
-        status: "已完成",
-      },
-      {
-        label: "自动化流水线",
-        desc: "GitHub Actions 每日 UTC 02:00 自动抓取、解析、校验并发布。",
-        status: "已完成",
-      },
-      {
-        label: "双仓库同步",
-        desc: "主仓库与 GitCode 镜像同步更新，提升国内访问稳定性。",
-        status: "已完成",
-      },
-      {
-        label: "数据源透明化",
-        desc: "在 /sources 页面公开所有数据源、协议与更新频率。",
+        label: "监控失效数据源",
+        desc: "持续清理抓取失败、更新停滞或质量明显下降的公开源。",
         status: "进行中",
       },
       {
-        label: "状态仪表盘",
-        desc: "/status 页面展示节点数量、代理池数量与协议分布。",
+        label: "优化校验器性能",
+        desc: "调整 verifier.py 的并发与超时策略，降低 CI 运行耗时。",
+        status: "进行中",
+      },
+      {
+        label: "完善测试覆盖",
+        desc: "补充更多协议解析与边界场景的单元测试。",
         status: "进行中",
       },
     ],
   },
   {
     title: "中期",
-    subtitle: "Q3 2026",
+    subtitle: "验证策略与地区分组",
     icon: Calendar,
     items: [
       {
-        label: "更精细的校验",
-        desc: "引入延迟测试与协议级握手检测，提升可用节点比例。",
+        label: "节点质量评分",
+        desc: "引入延迟、丢包与协议支持度指标，按质量排序输出。",
         status: "规划中",
       },
       {
-        label: "区域与运营商标签",
-        desc: "为节点补充国家、城市与运营商 ASN 信息，便于用户筛选。",
+        label: "地区识别与拆分",
+        desc: "默认开启轻量 GeoIP 分组，按国家/地区生成独立订阅文件。",
         status: "规划中",
       },
       {
-        label: "数据源健康度评分",
-        desc: "基于抓取成功率与节点可用率，给数据源打分并自动降级。",
-        status: "规划中",
-      },
-      {
-        label: "订阅分组与规则模板",
-        desc: "为 Clash/Sing-box 输出内置分流规则模板。",
+        label: "自定义过滤规则",
+        desc: "支持按协议、地区、延迟上限等条件筛选输出节点。",
         status: "规划中",
       },
     ],
   },
   {
     title: "长期",
-    subtitle: "2026+",
+    subtitle: "API 与社区",
     icon: Target,
     items: [
       {
-        label: "社区贡献门户",
-        desc: "提供 Web 表单，降低提交新数据源与翻译文档的门槛。",
+        label: "JSON API",
+        desc: "基于每日生成的 nodes/ 产物提供稳定 API，方便第三方客户端拉取。",
         status: "规划中",
       },
       {
-        label: "历史节点存档",
-        desc: "保留每日节点快照，支持回溯分析与长期稳定性研究。",
+        label: "数据源反馈机制",
+        desc: "通过 Issue 模板与运行状态数据，标记高质量或已失效的数据源。",
         status: "规划中",
       },
       {
-        label: "API 与 RSS",
-        desc: "提供 JSON API 与更新 RSS，方便第三方集成与监控。",
-        status: "规划中",
-      },
-      {
-        label: "多语言支持",
-        desc: "在中文基础上逐步支持英文文档与页面。",
+        label: "英文文档",
+        desc: "在中文文档稳定后，逐步补充核心页面的英文版本。",
         status: "规划中",
       },
     ],
@@ -130,7 +110,7 @@ export default function RoadmapPage() {
         </div>
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">项目路线图</h1>
         <p className="text-sm text-muted max-w-2xl">
-          ProxieHub 的发展方向分为短期落地、中期优化与长期生态三个阶段。你可以通过
+          ProxieHub 的发展方向分为短期落地、中期优化与长期规划三个阶段。你可以通过
           <a
             href="https://github.com/MS33834/ProxieHub/issues"
             target="_blank"

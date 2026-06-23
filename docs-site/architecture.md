@@ -1,6 +1,6 @@
 # 项目架构
 
-ProxieHub 的核心目标是把互联网上公开、可免费访问的代理与 VPN 节点聚合成统一的订阅格式。整个系统按职责划分为六个层次：配置层、抓取层、解析层、验证层、格式化层、部署层。每一层只依赖下一层的输出，便于独立测试、替换与扩展。
+ProxieHub 的核心目标是把互联网上公开、可免费访问的代理与 VPN 节点聚合成统一的订阅格式。整条流水线从数据源到站点发布完全自动化，本地也能一键复现。
 
 ## 架构总览
 
@@ -23,7 +23,7 @@ flowchart LR
 
 | 文件/目录 | 说明 |
 |---|---|
-| `config/sources.json` | 数据源清单，分为 `free_node_sources`（节点订阅源）与 `free_proxy_apis`（HTTP/SOCKS 代理源） |
+| `config/sources.json` | 数据源清单，分为 `free_node_sources`（节点订阅源）与 `free_proxy_apis`（HTTP(S)/SOCKS4/SOCKS5 代理源） |
 
 每个源对象包含以下关键字段：
 
@@ -41,7 +41,7 @@ flowchart LR
 
 | 文件/目录 | 说明 |
 |---|---|
-| `scripts/crawler.py` | 核心抓取脚本，使用线程池并发拉取，优先使用 curl |
+| `scripts/crawler.py` | 核心抓取脚本，使用线程池并发拉取；如果系统安装了 curl，会优先用 curl 下载以提升兼容性 |
 
 主要逻辑：
 
@@ -84,7 +84,7 @@ flowchart LR
 4. `verify_nodes(links, geo_enabled=...)`：使用线程池批量检测。
 5. `stats_summary(results)`：计算存活数、存活率、平均延迟与地域分布。
 
-> 验证步骤默认在 CI 中关闭，在每日自动更新中开启。本地可通过 `PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify` 启用。
+> CI 检查默认不开启验证；每日自动更新工作流默认启用 `--verify`。本地可通过 `PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify` 启用。
 
 ### 5. 格式化层
 
@@ -161,7 +161,7 @@ ProxieHub/
 config/sources.json
        │
        ▼
-scripts/crawler.py ──► 并发拉取 20+ 个启用源
+scripts/crawler.py ──► 并发拉取所有启用源
        │
        ▼
 原始文本（Base64 / 明文 / YAML 混合）
@@ -170,13 +170,13 @@ scripts/crawler.py ──► 并发拉取 20+ 个启用源
 scripts/parser.py ──► 提取 ss/vmess/vless/trojan 等链接
        │
        ▼
-唯一链接列表（可能含数万个）
+唯一链接列表（去重后数量随数据源波动）
        │
        ▼
 scripts/verifier.py ──► TCP 检测，筛选存活节点
        │
        ▼
-存活节点 + HTTP/SOCKS 代理
+存活节点 + HTTP(S)/SOCKS4/SOCKS5 代理
        │
        ▼
 scripts/formatter.py ──► 生成 clash.yaml / v2ray.txt / proxies.txt

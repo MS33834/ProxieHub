@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - 新增网站页面：路线图、更新日志、参与贡献、架构说明、运行状态、关于、工具生态、社区。
+- 数据源页面新增协议筛选、更新频率分布与数据源提交入口。
 - 客户端教程扩展至 Clash Verge Rev、FlClash、v2rayN、v2rayNG、Shadowrocket、Surge、Nekoray、Hiddify、Sing-box 等。
 - 运行状态面板，基于构建时读取节点文件生成实时统计。
 - 数据源页面新增协议覆盖与更新频率分布概览。
@@ -19,7 +20,9 @@ All notable changes to this project will be documented in this file.
 - 首页新增架构流程 teaser、最新动态卡片与参与贡献 CTA。
 
 ### Fixed
+- 统一全站协议表述为 HTTP(S)/SOCKS4/SOCKS5，修正页面与文档中的不一致。
 - 客户端卡片统一使用外部锚点标签打开官方仓库，符合静态导出链接规范。
+- 去除部分页面中的套话，使文案更直接、贴合 ProxieHub 风格。
 
 ## [1.1.0] - 2026-06-15
 

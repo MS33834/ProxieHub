@@ -115,7 +115,7 @@ npm run docs:build  # 构建静态站点
 | `make test` | 运行所有 Python 单元测试 |
 | `make update` | 运行完整节点更新（不验证） |
 | `make verify` | 运行完整节点更新（开启验证） |
-| `make lint` | 编译检查所有 Python 脚本与测试 |
+| `make lint` | 语法检查所有 Python 脚本与测试 |
 | `make lint-web` | 运行 Next.js 主站的 ESLint |
 | `make build-web` | 构建 Next.js 主站 |
 | `make clean` | 清理 `__pycache__` 与 `.pyc` 文件 |
@@ -154,14 +154,15 @@ python scripts/update.py
 | `test` | 测试相关 |
 | `chore` | 构建、依赖、CI 等杂项 |
 
-示例：
+示例（代码/脚本提交可用英文，面向用户的文档也可用中文）：
 
-```
+```text
 feat(sources): add new daily vless subscription
-
+fix(verifier): handle missing port in trojan links
 docs(architecture): add mermaid flowchart
 
-fix(verifier): handle missing port in trojan links
+feat(sources): 新增每日更新的 VLESS 订阅源
+docs(faq): 补充 GitCode 镜像访问说明
 ```
 
 每日自动更新由机器人提交，统一使用 `chore: daily node update`。

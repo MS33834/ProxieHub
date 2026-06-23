@@ -64,7 +64,7 @@
 示例：
 
 ```text
-feat: 添加 proxifly HTTP/SOCKS5 代理源
+feat: 添加 proxifly HTTP(S)/SOCKS4/SOCKS5 代理源
 fix: 修复 verifier 在高并发下连接泄漏的问题
 docs: 更新 Clash 客户端配置说明
 ```

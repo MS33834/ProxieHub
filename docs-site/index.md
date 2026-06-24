@@ -48,3 +48,46 @@ features:
 4. **连接使用**：选择一个节点连接。免费节点稳定性有限，可等待次日自动更新。
 
 > ⚠️ **免责声明**：本项目所有节点均来自互联网公开渠道，仅供学习网络协议、安全测试和隐私技术研究使用。使用时请遵守当地法律法规，不要在免费代理/节点环境下登录敏感账户。
+
+## 文档导航
+
+### 🚀 开始使用
+
+刚接触 ProxieHub？从这里起步。
+
+- [新手指南](/beginner-guide) — 从零理解代理/节点概念，3 步完成首次配置。
+- [常见问题 FAQ](/faq) — 节点失效、订阅更新、格式选择等高频问题解答。
+- [客户端对比](/advanced/client-comparison) — 各平台客户端功能与适用场景对比。
+
+### 💻 客户端配置
+
+按平台查看图文配置教程。
+
+- [Clash / Clash Verge Rev](/client-setup/clash) — Windows / macOS / Linux
+- [v2rayN](/client-setup/v2rayn) — Windows
+- [v2rayNG](/client-setup/v2rayng) — Android
+- [Shadowrocket](/client-setup/shadowrocket) — iOS
+
+### 📚 项目参考
+
+了解 ProxieHub 的工作原理与数据来源。
+
+- [项目架构](/architecture) — 配置、抓取、解析、校验、格式化、部署流水线说明。
+- [数据源说明](/data-sources) — 当前聚合的所有公开数据源清单。
+- [数据源贡献指南](/data-source-guide) — 如何提交新的数据源。
+- [自动化工作流](/automation) — GitHub Actions 定时更新机制。
+- [项目状态](/status) — 当前运行状态与历史记录。
+
+### 🛠️ 开发与运维
+
+面向贡献者与自部署用户。
+
+- [开发指南](/development) — 本地环境搭建与代码规范。
+- [部署说明](/deployment) — 自部署 Web 站点与订阅服务。
+- [维护手册](/maintenance) — 日常维护与故障排查。
+
+### 🤝 参与贡献
+
+- [参与贡献](/contributing) — 贡献代码、数据源与文档的方式。
+- [路线图](/roadmap) — 项目未来规划。
+- [更新日志](/changelog) — 版本变更记录。

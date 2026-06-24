@@ -31,15 +31,30 @@ def can_reach_public_internet(timeout: int = 5) -> bool:
     return False
 
 
-def tcp_check(host: str, port: int, timeout: int = TIMEOUT) -> tuple[bool, float]:
-    """Measure TCP connect time and return (success, latency_ms)."""
+def tcp_check(host: str, port: int, timeout: int = TIMEOUT) -> tuple[bool, float, str | None]:
+    """Measure TCP connect time and return (success, latency_ms, error_reason).
+
+    The error_reason categorizes failures so callers can report *why* a node
+    could not be reached:
+      - ``timeout``: the connect attempt exceeded the timeout.
+      - ``connection refused``: the host actively rejected the connection.
+      - ``network error: <detail>``: any other socket-level failure.
+      - ``error: <type>``: an unexpected non-socket exception.
+    """
     start = time.perf_counter()
     try:
         with socket.create_connection((host, port), timeout=timeout):
             latency_ms = (time.perf_counter() - start) * 1000
-            return True, latency_ms
-    except Exception:
-        return False, float("inf")
+            return True, latency_ms, None
+    except socket.timeout:
+        return False, float("inf"), "timeout"
+    except ConnectionRefusedError:
+        return False, float("inf"), "connection refused"
+    except OSError as exc:
+        detail = exc.strerror or str(exc) or "unknown"
+        return False, float("inf"), f"network error: {detail}"
+    except Exception as exc:
+        return False, float("inf"), f"error: {type(exc).__name__}"
 
 
 def parse_endpoint(link: str) -> tuple[str | None, int | None]:
@@ -176,7 +191,7 @@ def verify_node(link: str, timeout: int = TIMEOUT, geo_enabled: bool = True) -> 
             "error": "parse failed",
         }
 
-    alive, latency_ms = tcp_check(host, port, timeout)
+    alive, latency_ms, error = tcp_check(host, port, timeout)
     latency_ms = int(round(latency_ms)) if alive else None
 
     if is_private_host(host):
@@ -193,16 +208,20 @@ def verify_node(link: str, timeout: int = TIMEOUT, geo_enabled: bool = True) -> 
         "latency": round(latency_ms / 1000, 3) if latency_ms is not None else None,
         "latency_ms": latency_ms,
         "region": region,
+        "error": error,
     }
 
 
 def verify_nodes(
-    links: list[str], max_workers: int = MAX_WORKERS, geo_enabled: bool = True
+    links: list[str],
+    max_workers: int = MAX_WORKERS,
+    geo_enabled: bool = True,
+    timeout: int = TIMEOUT,
 ) -> list[dict]:
     results = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_link = {
-            executor.submit(verify_node, link, TIMEOUT, geo_enabled): link for link in links
+            executor.submit(verify_node, link, timeout, geo_enabled): link for link in links
         }
         for future in as_completed(future_to_link):
             try:
@@ -216,7 +235,7 @@ def verify_nodes(
                         "latency": None,
                         "latency_ms": None,
                         "region": "unknown",
-                        "error": str(exc),
+                        "error": f"error: {type(exc).__name__}",
                     }
                 )
     return results
@@ -228,10 +247,16 @@ def filter_alive(links: list[str], max_workers: int = MAX_WORKERS) -> list[str]:
 
 
 def stats_summary(results: list[dict]) -> dict:
-    """Compute survival rate, average latency and region distribution."""
+    """Compute survival rate, average latency and region distribution.
+
+    Also aggregates ``failed`` count and ``failure_reasons`` so callers can
+    report how many nodes failed and *why* (timeout / connection refused /
+    network error / parse failed / other).
+    """
     total = len(results)
     alive = [r for r in results if r.get("alive")]
     alive_count = len(alive)
+    failed_count = total - alive_count
     latencies = [r["latency_ms"] for r in alive if r.get("latency_ms") is not None]
     avg_latency = round(sum(latencies) / len(latencies), 1) if latencies else None
 
@@ -240,13 +265,21 @@ def stats_summary(results: list[dict]) -> dict:
         region = r.get("region") or "unknown"
         regions[region] = regions.get(region, 0) + 1
 
+    failure_reasons: dict[str, int] = {}
+    for r in results:
+        if not r.get("alive"):
+            reason = r.get("error") or "unknown"
+            failure_reasons[reason] = failure_reasons.get(reason, 0) + 1
+
     survival_rate = round(alive_count / total * 100, 1) if total else 0.0
     return {
         "total": total,
         "alive": alive_count,
+        "failed": failed_count,
         "survival_rate": survival_rate,
         "avg_latency": avg_latency,
         "regions": regions,
+        "failure_reasons": failure_reasons,
     }
 
 

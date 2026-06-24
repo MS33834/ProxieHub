@@ -5,7 +5,7 @@ import eslintReact from "@eslint-react/eslint-plugin";
 import nextPlugin from "@next/eslint-plugin-next";
 
 export default defineConfig([
-  { ignores: [".next/**", "dist/**", "node_modules/**", "next-env.d.ts"] },
+  { ignores: [".next/**", "dist/**", "node_modules/**", "next-env.d.ts", "next.config.mjs"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   eslintReact.configs["recommended-typescript"],

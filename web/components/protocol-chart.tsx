@@ -3,15 +3,15 @@ interface ProtocolChartProps {
 }
 
 const protocolColors: Record<string, string> = {
-  vless: "#f59e0b",
-  vmess: "#0891b2",
+  vless: "#f5a623",
+  vmess: "#22b8d0",
   trojan: "#f97316",
-  ss: "#22c55e",
+  ss: "#3ad76b",
   ssr: "#06b6d4",
-  http: "#71717a",
-  https: "#a1a1aa",
-  socks4: "#52525b",
-  socks5: "#3f3f46",
+  http: "#8b8b9e",
+  https: "#b8b8c8",
+  socks4: "#6b6b7a",
+  socks5: "#52525b",
 };
 
 export function ProtocolChart({ counts }: ProtocolChartProps) {

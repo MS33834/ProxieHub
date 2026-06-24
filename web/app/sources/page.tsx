@@ -1,6 +1,7 @@
 import { loadStats } from "@/lib/data";
 import { SourceTable } from "@/components/source-table";
 import { ProtocolChart } from "@/components/protocol-chart";
+import { RegionCloud } from "@/components/region-cloud";
 import Link from "next/link";
 import {
   Shield,
@@ -13,6 +14,7 @@ import {
   Clock,
   PlusCircle,
   ExternalLink,
+  MapPin,
 } from "lucide-react";
 
 export default function SourcesPage() {
@@ -110,6 +112,14 @@ export default function SourcesPage() {
                 ))}
           </div>
         </div>
+      </div>
+
+      <div className="border border-border bg-surface p-5 mb-8">
+        <h3 className="font-medium text-sm mb-4 flex items-center gap-2">
+          <MapPin className="w-4 h-4 text-primary" />
+          地区覆盖
+        </h3>
+        <RegionCloud regions={stats.regions} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">

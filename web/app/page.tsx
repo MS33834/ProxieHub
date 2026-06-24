@@ -12,8 +12,12 @@ import {
   Cpu,
   Newspaper,
   Users,
+  Star,
+  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import { loadStats, getSubscribeUrls } from "@/lib/data";
+import { platforms } from "@/lib/platforms";
 import { StatsSection } from "@/components/stats-section";
 import { ProtocolChart } from "@/components/protocol-chart";
 import { SubscribeCard } from "@/components/subscribe-card";
@@ -206,6 +210,89 @@ export default function HomePage() {
               </div>
               <div className="text-2xl font-semibold font-mono mb-1">v1.2.0</div>
               <p className="text-xs text-muted">新增路线图、状态页与架构说明</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Index Preview */}
+      <section className="py-14 border-b border-border">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-semibold mb-1">平台索引</h2>
+              <p className="text-sm text-muted">
+                精选 GitHub 上知名的代理节点分享仓库，按需选择订阅源
+              </p>
+            </div>
+            <Link
+              href="/platforms"
+              className="hidden sm:inline-flex items-center gap-1 text-sm text-primary hover:text-primary-hover"
+            >
+              查看全部 <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {platforms
+              .filter((p) => p.featured)
+              .slice(0, 3)
+              .map((platform) => (
+                <a
+                  key={`${platform.owner}/${platform.name}`}
+                  href={platform.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex flex-col border border-border bg-surface p-5 transition-colors hover:border-primary/30"
+                >
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="min-w-0">
+                      <h3 className="inline-flex items-center gap-1.5 text-base font-semibold group-hover:text-primary transition-colors">
+                        <span className="truncate">{platform.name}</span>
+                        <ExternalLink className="w-3.5 h-3.5 shrink-0 text-muted group-hover:text-primary" />
+                      </h3>
+                      <p className="text-xs text-muted font-mono mt-0.5 truncate">
+                        {platform.owner}/{platform.name}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 border border-border text-muted shrink-0">
+                      <Star className="w-3 h-3 text-primary" />
+                      {platform.stars}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-muted leading-relaxed mb-4 flex-1 line-clamp-3">
+                    {platform.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {platform.protocols.slice(0, 4).map((p) => (
+                      <span
+                        key={p}
+                        className="font-mono text-[10px] px-1.5 py-0.5 border border-border text-muted uppercase"
+                      >
+                        {p}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted pt-2 border-t border-border">
+                    <Sparkles className="w-3 h-3 text-primary" />
+                    <span className="text-primary font-medium">推荐</span>
+                    <span className="mx-1">·</span>
+                    <Clock className="w-3 h-3" />
+                    <span>{platform.updateFrequency}</span>
+                  </div>
+                </a>
+              ))}
+          </div>
+
+          <div className="mt-6 sm:hidden">
+            <Link
+              href="/platforms"
+              className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary-hover"
+            >
+              查看全部 <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>

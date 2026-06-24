@@ -1,9 +1,17 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig = {
   output: "export",
   distDir: "dist",
-  basePath: "/ProxieHub",
-  assetPrefix: "/ProxieHub",
+  ...(isProd
+    ? { basePath: "/ProxieHub", assetPrefix: "/ProxieHub" }
+    : {
+        allowedDevOrigins: [
+          "127.0.0.1",
+          "*.trae.cn",
+        ],
+      }),
   images: {
     unoptimized: true,
   },

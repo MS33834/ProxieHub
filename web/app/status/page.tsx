@@ -9,6 +9,7 @@ import {
   Workflow,
   Shield,
   Zap,
+  MapPin,
 } from "lucide-react";
 
 export default function StatusPage() {
@@ -16,6 +17,14 @@ export default function StatusPage() {
   const protocolTotal = Object.values(stats.protocolCounts).reduce(
     (sum, v) => sum + v,
     0
+  );
+
+  const regionEntries = Object.entries(stats.regions)
+    .filter(([, v]) => v > 0)
+    .sort(([, a], [, b]) => b - a);
+  const maxRegionCount = Math.max(
+    ...regionEntries.map(([, count]) => count),
+    1
   );
 
   const cards = [
@@ -120,6 +129,35 @@ export default function StatusPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="border border-border bg-surface p-5 mb-8">
+        <div className="flex items-center gap-2 mb-4">
+          <MapPin className="w-4 h-4 text-primary" />
+          <h2 className="font-medium text-sm">节点地区分布</h2>
+        </div>
+        {regionEntries.length === 0 ? (
+          <p className="text-xs text-muted">
+            地区数据暂未生成，可在本地启用 PROXIEHUB_GEO_ENABLED=true 生成
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {regionEntries.map(([region, count]) => (
+              <div key={region} className="flex items-center gap-3 text-xs">
+                <span className="w-24 shrink-0 text-muted font-mono uppercase">
+                  {region}
+                </span>
+                <div className="flex-1 h-2 bg-background border border-border overflow-hidden">
+                  <div
+                    className="h-full bg-primary"
+                    style={{ width: `${(count / maxRegionCount) * 100}%` }}
+                  />
+                </div>
+                <span className="w-10 text-right font-mono">{count}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="border border-warning/20 bg-warning/10 p-4 flex items-start gap-3">

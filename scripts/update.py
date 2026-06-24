@@ -18,6 +18,9 @@ MAX_NODES = int(os.environ.get("PROXIEHUB_MAX_NODES", "500"))
 MAX_PROXIES = int(os.environ.get("PROXIEHUB_MAX_PROXIES", "200"))
 VERIFY_NODES = os.environ.get("PROXIEHUB_VERIFY_NODES", "false").lower() in ("1", "true", "yes")
 GEO_ENABLED = os.environ.get("PROXIEHUB_GEO_ENABLED", "false").lower() in ("1", "true", "yes")
+# Verification tuning: per-node connect timeout (seconds) and concurrency.
+VERIFY_TIMEOUT = int(os.environ.get("PROXIEHUB_VERIFY_TIMEOUT", "5"))
+VERIFY_WORKERS = int(os.environ.get("PROXIEHUB_VERIFY_WORKERS", "50"))
 
 
 def _extract_node_links_safe(item: dict) -> tuple[list[str], str | None]:
@@ -73,16 +76,33 @@ def main(verify: bool = False) -> int:
     logger.info("total unique links: %d", len(all_links))
 
     if should_verify and all_links:
-        results = verify_nodes(all_links, geo_enabled=GEO_ENABLED)
+        before_count = len(all_links)
+        logger.info(
+            "verifying %d nodes (timeout=%ds, workers=%d)",
+            before_count,
+            VERIFY_TIMEOUT,
+            VERIFY_WORKERS,
+        )
+        results = verify_nodes(
+            all_links,
+            max_workers=VERIFY_WORKERS,
+            geo_enabled=GEO_ENABLED,
+            timeout=VERIFY_TIMEOUT,
+        )
         stats = stats_summary(results)
         logger.info(
-            "verification: %d/%d alive (%.1f%%)",
+            "verification summary: before=%d, passed=%d, failed=%d, pass_rate=%.1f%%",
+            before_count,
             stats["alive"],
-            stats["total"],
+            stats["failed"],
             stats["survival_rate"],
         )
         if stats["avg_latency"] is not None:
             logger.info("average latency: %.1f ms", stats["avg_latency"])
+        if stats.get("failure_reasons"):
+            logger.info("failure reasons:")
+            for reason, count in sorted(stats["failure_reasons"].items(), key=lambda x: -x[1]):
+                logger.info("  %s: %d", reason, count)
         if GEO_ENABLED:
             logger.info("region distribution:")
             for region, count in sorted(stats["regions"].items(), key=lambda x: -x[1]):

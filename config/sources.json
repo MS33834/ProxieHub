@@ -390,6 +390,186 @@
       "update_interval": "daily",
       "protocols": ["vmess", "vless", "ss", "trojan"],
       "note": "Raw plain-text backup list from NoMoreWalls."
+    },
+    {
+      "name": "mahdibland-v2rayaggregator-merge-base64",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/airport_merge_base64.txt",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Daily updated merged-protocol subscription from V2RayAggregator (Base64)."
+    },
+    {
+      "name": "mahdibland-v2rayaggregator-sub-merge",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/airport_sub_merge.txt",
+      "enabled": true,
+      "decode_base64": false,
+      "update_interval": "daily",
+      "protocols": ["trojan", "vmess", "vless", "ss"],
+      "note": "Daily updated plain-text merged subscription from V2RayAggregator."
+    },
+    {
+      "name": "mhditaheri-v2raycollector-mixbase64",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/mixbase64",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Daily updated mixed-protocol subscription from V2rayCollector (Base64)."
+    },
+    {
+      "name": "mhditaheri-v2raycollector-vless",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/vless",
+      "enabled": true,
+      "decode_base64": false,
+      "update_interval": "daily",
+      "protocols": ["vless"],
+      "note": "VLESS nodes from V2rayCollector (plain text)."
+    },
+    {
+      "name": "mhditaheri-v2raycollector-trojan",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/trojan",
+      "enabled": true,
+      "decode_base64": false,
+      "update_interval": "daily",
+      "protocols": ["trojan"],
+      "note": "Trojan nodes from V2rayCollector (plain text)."
+    },
+    {
+      "name": "mhditaheri-v2raycollector-ss",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/ss",
+      "enabled": true,
+      "decode_base64": false,
+      "update_interval": "daily",
+      "protocols": ["ss"],
+      "note": "Shadowsocks nodes from V2rayCollector (plain text)."
+    },
+    {
+      "name": "mhditaheri-v2raycollector-vlessbase64",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/vlessbase64",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vless"],
+      "note": "VLESS subscription from V2rayCollector (Base64)."
+    },
+    {
+      "name": "mhditaheri-v2raycollector-vmessbase64",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/vmessbase64",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess"],
+      "note": "VMess subscription from V2rayCollector (Base64)."
+    },
+    {
+      "name": "free18-v2ray-vtxt",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/free18/v2ray/main/v.txt",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vless", "vmess"],
+      "note": "Daily updated v2ray subscription from free18/v2ray (Base64)."
+    },
+    {
+      "name": "roosterkid-openproxylist-v2ray-base64",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt",
+      "enabled": true,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Daily updated v2ray subscription from openproxylist (Base64)."
+    },
+    {
+      "name": "barry-far-v2ray-configs",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub1.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "inactive",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Currently unavailable (404). Repository disabled/removed (DMCA)."
+    },
+    {
+      "name": "aiboboxx-v2rayfree",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "daily",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Currently unavailable. Uses rotating daily filenames (e.g. v202606252), no stable raw URL."
+    },
+    {
+      "name": "mfbpn-treble",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/mfbpn/treble/main/v2ray.txt",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "inactive",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Currently unavailable (404). Repository not found."
+    },
+    {
+      "name": "openrunner-clash-freenode",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/openrunner/clash-freenode/main/README.md",
+      "enabled": false,
+      "decode_base64": false,
+      "update_interval": "inactive",
+      "protocols": ["vmess", "vless"],
+      "note": "Currently unavailable. Config served externally at free.datiya.com, no raw file in repo. Also Clash YAML format (not supported by parser)."
+    },
+    {
+      "name": "clowndoy-v2ray",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/clowndoy/v2ray/main/v2ray",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "inactive",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Currently unavailable (404). Repository not found."
+    },
+    {
+      "name": "v2raycollector-v2ray",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/V2rayCollector/v2ray/main/v2ray",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "inactive",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Currently unavailable (404). Repository not found."
+    },
+    {
+      "name": "soroushmirzaei-telegram-configs-collector",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/README.md",
+      "enabled": false,
+      "decode_base64": false,
+      "update_interval": "inactive",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Currently unavailable (404). Repository not found."
+    },
+    {
+      "name": "yebekhe-telegramv2raycollector",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/mix",
+      "enabled": false,
+      "decode_base64": true,
+      "update_interval": "inactive",
+      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "note": "Currently unavailable (404). Repository not found."
     }
   ],
   "free_proxy_apis": [
@@ -501,6 +681,116 @@
       "protocols": ["socks5"],
       "proxy_scheme": "socks5",
       "note": "Hourly tested online SOCKS5 proxies (ip:port) from jetkai/proxy-list."
+    },
+    {
+      "name": "monosans-proxy-list-http",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["http"],
+      "proxy_scheme": "http",
+      "note": "Daily updated validated HTTP proxy list (ip:port) from monosans/proxy-list."
+    },
+    {
+      "name": "monosans-proxy-list-socks4",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks4.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["socks4"],
+      "proxy_scheme": "socks4",
+      "note": "Daily updated validated SOCKS4 proxy list (ip:port) from monosans/proxy-list."
+    },
+    {
+      "name": "monosans-proxy-list-socks5",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["socks5"],
+      "proxy_scheme": "socks5",
+      "note": "Daily updated validated SOCKS5 proxy list (ip:port) from monosans/proxy-list."
+    },
+    {
+      "name": "clarketm-proxy-list-raw",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["http", "https"],
+      "proxy_scheme": "http",
+      "note": "Daily updated raw HTTP/HTTPS proxy list (ip:port) from clarketm/proxy-list."
+    },
+    {
+      "name": "ShiftyTR-proxy-list-http",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["http"],
+      "proxy_scheme": "http",
+      "note": "HTTP proxy list (ip:port) from ShiftyTR/Proxy-List."
+    },
+    {
+      "name": "mmpx12-proxy-list-http",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/mmpx12/proxy-list/master/http.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["http"],
+      "proxy_scheme": "http",
+      "note": "HTTP proxy list (ip:port) from mmpx12/proxy-list."
+    },
+    {
+      "name": "mmpx12-proxy-list-socks5",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks5.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["socks5"],
+      "proxy_scheme": "socks5",
+      "note": "SOCKS5 proxy list (ip:port) from mmpx12/proxy-list."
+    },
+    {
+      "name": "roosterkid-openproxylist-https",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["https"],
+      "proxy_scheme": "https",
+      "note": "HTTPS proxy list (ip:port) from roosterkid/openproxylist."
+    },
+    {
+      "name": "roosterkid-openproxylist-socks4",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS4.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["socks4"],
+      "proxy_scheme": "socks4",
+      "note": "SOCKS4 proxy list (ip:port) from roosterkid/openproxylist."
+    },
+    {
+      "name": "roosterkid-openproxylist-socks5",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS5.txt",
+      "enabled": true,
+      "update_interval": "daily",
+      "protocols": ["socks5"],
+      "proxy_scheme": "socks5",
+      "note": "SOCKS5 proxy list (ip:port) from roosterkid/openproxylist."
+    },
+    {
+      "name": "sanjusss-free-proxy-list",
+      "type": "github_raw",
+      "url": "https://raw.githubusercontent.com/sanjusss/free-proxy-list/master/proxy.txt",
+      "enabled": false,
+      "update_interval": "inactive",
+      "protocols": ["http", "https"],
+      "proxy_scheme": "http",
+      "note": "Currently unavailable (404). Repository not found."
     }
   ]
 }

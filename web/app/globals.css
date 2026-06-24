@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  /* Background & surface */
-  --color-background: #09090b;
-  --color-foreground: #f4f4f5;
-  --color-surface: #18181b;
-  --color-surface-hover: #27272a;
-  --color-border: rgba(161, 161, 170, 0.14);
+  /* Background & surface - 提升层次对比 */
+  --color-background: #0a0a0f;
+  --color-foreground: #ededf2;
+  --color-surface: #16161d;
+  --color-surface-hover: #232330;
+  --color-border: rgba(200, 200, 215, 0.18);
 
-  /* Accents: amber + cyan, restrained */
-  --color-primary: #f59e0b;
-  --color-primary-hover: #d97706;
-  --color-secondary: #0891b2;
-  --color-secondary-hover: #0e7490;
+  /* Accents: amber + cyan */
+  --color-primary: #f5a623;
+  --color-primary-hover: #e8941a;
+  --color-secondary: #22b8d0;
+  --color-secondary-hover: #1ca0b8;
 
-  /* Status */
-  --color-muted: #a1a1aa;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
+  /* Status - 提亮以增强可读性 */
+  --color-muted: #b8b8c8;
+  --color-success: #3ad76b;
+  --color-warning: #f5a623;
+  --color-danger: #f5555a;
 
   /* Typography */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
@@ -34,14 +34,35 @@ html {
 }
 
 body {
-  color: var(--foreground);
-  background-color: var(--background);
+  color: var(--color-foreground);
+  background-color: var(--color-background);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background-color: rgba(245, 158, 11, 0.25);
-  color: var(--foreground);
+  background-color: rgba(245, 166, 35, 0.3);
+  color: var(--color-foreground);
+}
+
+/* 滚动条配色 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-hover);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
 }
 
 @layer utilities {

@@ -5,6 +5,7 @@ const PROJECT_ROOT = path.join(process.cwd(), "..");
 const NODES_DIR = path.join(PROJECT_ROOT, "nodes");
 const CONFIG_PATH = path.join(PROJECT_ROOT, "config", "sources.json");
 const CHANGELOG_PATH = path.join(PROJECT_ROOT, "CHANGELOG.md");
+const REGIONS_PATH = path.join(NODES_DIR, "regions.json");
 
 export interface SourceConfig {
   name: string;
@@ -24,6 +25,7 @@ export interface SiteStats {
   generatedAt: string;
   totalNodes: number;
   protocolCounts: Record<string, number>;
+  regions: Record<string, number>;
   sources: SourceConfig[];
   enabledSources: number;
   totalSources: number;
@@ -42,6 +44,7 @@ export interface StatusStats {
   enabledSources: number;
   totalSources: number;
   protocolCounts: Record<string, number>;
+  regions: Record<string, number>;
   actionsStatus: string;
 }
 
@@ -121,6 +124,22 @@ function loadSources(): SourceConfig[] {
   ];
 }
 
+function loadRegions(): Record<string, number> {
+  if (!fs.existsSync(REGIONS_PATH)) return {};
+  try {
+    const data = JSON.parse(fs.readFileSync(REGIONS_PATH, "utf-8"));
+    const regions: Record<string, number> = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (Array.isArray(value)) {
+        regions[key] = value.length;
+      }
+    }
+    return regions;
+  } catch {
+    return {};
+  }
+}
+
 export function loadStats(): SiteStats {
   const clashPath = path.join(NODES_DIR, "clash.yaml");
   let totalNodes = 0;
@@ -152,6 +171,7 @@ export function loadStats(): SiteStats {
     generatedAt,
     totalNodes,
     protocolCounts,
+    regions: loadRegions(),
     sources,
     enabledSources,
     totalSources: sources.length,
@@ -234,6 +254,7 @@ export function loadStatusStats(): StatusStats {
     enabledSources,
     totalSources: sources.length,
     protocolCounts,
+    regions: loadRegions(),
     actionsStatus: "每日自动运行（UTC 02:00）",
   };
 }

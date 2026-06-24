@@ -152,8 +152,8 @@ export default function CommunityPage() {
           <div className="mt-5 pt-4 border-t border-border">
             <h3 className="text-xs font-medium mb-2 text-foreground">特别感谢</h3>
             <ul className="space-y-1.5 text-xs text-muted">
-              {recognitions.map((r, i) => (
-                <li key={i} className="flex items-start gap-2">
+              {recognitions.map((r) => (
+                <li key={r} className="flex items-start gap-2">
                   <span className="text-primary mt-1">·</span>
                   {r}
                 </li>

@@ -203,8 +203,8 @@ export default function SubscribePage() {
           使用须知
         </h2>
         <ul className="space-y-2 text-xs text-muted">
-          {notes.map((note, index) => (
-            <li key={index} className="flex items-start gap-2">
+          {notes.map((note) => (
+            <li key={note} className="flex items-start gap-2">
               <span className="text-primary mt-0.5">·</span>
               {note}
             </li>

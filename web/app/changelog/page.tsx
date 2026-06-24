@@ -103,9 +103,9 @@ export default function ChangelogPage() {
                         </span>
                       </div>
                       <ul className="space-y-1.5">
-                        {items.map((item, index) => (
+                        {items.map((item) => (
                           <li
-                            key={index}
+                            key={item}
                             className="flex items-start gap-2 text-sm text-muted leading-relaxed"
                           >
                             <span className="text-primary mt-1.5">·</span>

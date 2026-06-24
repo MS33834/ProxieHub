@@ -20,7 +20,7 @@ export function FaqSection({ items }: FaqSectionProps) {
       {items.map((item, index) => {
         const open = openIndex === index;
         return (
-          <div key={index}>
+          <div key={item.question}>
             <button
               onClick={() => setOpenIndex(open ? null : index)}
               className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-surface-hover/50 transition-colors"

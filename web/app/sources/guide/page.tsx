@@ -78,8 +78,8 @@ export default function SourceGuidePage() {
           提交步骤
         </h2>
         <ol className="space-y-3 text-sm text-muted list-decimal pl-5">
-          {steps.map((step, idx) => (
-            <li key={idx}>{step}</li>
+          {steps.map((step) => (
+            <li key={step}>{step}</li>
           ))}
         </ol>
       </div>

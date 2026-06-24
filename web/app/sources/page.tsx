@@ -18,6 +18,19 @@ import {
 export default function SourcesPage() {
   const stats = loadStats();
 
+  const intervalDistribution = Object.entries(
+    stats.sources.reduce<Record<string, number>>(
+      (acc, source) => {
+        const key = source.update_interval || "未标注";
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      },
+      {}
+    )
+  ).sort(([, a], [, b]) => b - a);
+
+  const maxIntervalCount = Math.max(...intervalDistribution.map(([, count]) => count));
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="mb-10">
@@ -83,31 +96,18 @@ export default function SourcesPage() {
             更新频率分布
           </h3>
           <div className="space-y-2">
-            {(() => {
-              const distribution = stats.sources.reduce<Record<string, number>>(
-                (acc, source) => {
-                  const key = source.update_interval || "未标注";
-                  acc[key] = (acc[key] || 0) + 1;
-                  return acc;
-                },
-                {}
-              );
-              const max = Math.max(...Object.values(distribution));
-              return Object.entries(distribution)
-                .sort(([, a], [, b]) => b - a)
-                .map(([interval, count]) => (
-                  <div key={interval} className="flex items-center gap-3 text-xs">
+            {intervalDistribution.map(([interval, count]) => (
+              <div key={interval} className="flex items-center gap-3 text-xs">
                     <span className="w-20 shrink-0 text-muted">{interval}</span>
                     <div className="flex-1 h-2 bg-background border border-border overflow-hidden">
                       <div
                         className="h-full bg-primary"
-                        style={{ width: `${(count / max) * 100}%` }}
+                        style={{ width: `${(count / maxIntervalCount) * 100}%` }}
                       />
                     </div>
                     <span className="w-8 text-right font-mono">{count}</span>
                   </div>
-                ));
-            })()}
+                ))}
           </div>
         </div>
       </div>

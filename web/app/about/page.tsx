@@ -148,8 +148,8 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold mb-6">项目里程碑</h2>
         <div className="border border-border bg-surface p-5">
           <div className="space-y-4">
-            {milestones.map((m, idx) => (
-              <div key={idx} className="flex items-start gap-4">
+            {milestones.map((m) => (
+              <div key={`${m.date}-${m.title}`} className="flex items-start gap-4">
                 <div className="w-16 shrink-0 text-xs font-mono text-primary pt-1">{m.date}</div>
                 <div>
                   <h3 className="text-sm font-medium mb-1">{m.title}</h3>

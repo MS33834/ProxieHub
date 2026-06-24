@@ -20,6 +20,27 @@ VERIFY_NODES = os.environ.get("PROXIEHUB_VERIFY_NODES", "false").lower() in ("1"
 GEO_ENABLED = os.environ.get("PROXIEHUB_GEO_ENABLED", "false").lower() in ("1", "true", "yes")
 
 
+def _extract_node_links_safe(item: dict) -> tuple[list[str], str | None]:
+    """Extract node links from a source, returning (links, error_message)."""
+    try:
+        return extract_node_links(item["text"]), None
+    except Exception as exc:
+        return [], f"parse error: {exc}"
+
+
+def _extract_proxies_safe(item: dict) -> tuple[list[str], str | None]:
+    """Extract proxies from a source, returning (proxies, error_message)."""
+    try:
+        return (
+            parse_proxy_api_response(
+                item["text"], default_scheme=item.get("proxy_scheme", "http")
+            ),
+            None,
+        )
+    except Exception as exc:
+        return [], f"parse error: {exc}"
+
+
 def main(verify: bool = False) -> int:
     logger.info("starting pipeline")
 
@@ -37,11 +58,16 @@ def main(verify: bool = False) -> int:
         logger.error("no sources could be fetched")
         return 1
 
+    failed_sources: list[tuple[str, str]] = []
     all_links = []
     for item in raw["nodes"]:
-        links = extract_node_links(item["text"])
-        logger.info("%s: %d links extracted", item["name"], len(links))
-        all_links.extend(links)
+        links, error = _extract_node_links_safe(item)
+        if error:
+            failed_sources.append((item["name"], error))
+            logger.warning("%s: %s", item["name"], error)
+        else:
+            logger.info("%s: %d links extracted", item["name"], len(links))
+            all_links.extend(links)
 
     all_links = list(dict.fromkeys(all_links))
     logger.info("total unique links: %d", len(all_links))
@@ -70,13 +96,23 @@ def main(verify: bool = False) -> int:
 
     all_proxies = []
     for item in raw["proxies"]:
-        proxies = parse_proxy_api_response(item["text"], default_scheme=item.get("proxy_scheme", "http"))
-        logger.info("%s: %d proxies extracted", item["name"], len(proxies))
-        all_proxies.extend(proxies)
+        proxies, error = _extract_proxies_safe(item)
+        if error:
+            failed_sources.append((item["name"], error))
+            logger.warning("%s: %s", item["name"], error)
+        else:
+            logger.info("%s: %d proxies extracted", item["name"], len(proxies))
+            all_proxies.extend(proxies)
 
     all_proxies = list(dict.fromkeys(all_proxies))[:MAX_PROXIES]
     write_outputs(alive_results, all_proxies, stats=stats)
     logger.info("done: %d nodes, %d proxies written", len(alive_results), len(all_proxies))
+
+    if failed_sources:
+        logger.warning("%d source(s) had extraction issues:", len(failed_sources))
+        for name, error in failed_sources:
+            logger.warning("  - %s: %s", name, error)
+
     return 0
 
 

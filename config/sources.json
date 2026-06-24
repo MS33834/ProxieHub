@@ -137,6 +137,7 @@
       "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub11_base64.txt",
       "enabled": true,
       "decode_base64": true,
+      "timeout": 40,
       "update_interval": "daily",
       "protocols": ["vless"],
       "note": "VLESS subscription Sub11 from Epodonios v2ray-configs (Base64)."
@@ -352,13 +353,13 @@
       "name": "0xRadikal-Free-v2ray-Configs",
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/all/configs_base64.txt",
-      "enabled": true,
+      "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
       "protocols": ["vmess", "vless", "ss", "trojan"],
-      "timeout": 30,
+      "timeout": 60,
       "max_size": 5242880,
-      "note": "Aggregated free v2ray configs (Base64, ~1 MB). Large but regularly updated."
+      "note": "INACTIVE: frequently times out (>60s for ~1 MB). Aggregated free v2ray configs (Base64)."
     },
     {
       "name": "Barabama-FreeNodes-nodev2ray",

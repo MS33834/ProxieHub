@@ -41,6 +41,17 @@ jobs:
           PROXIEHUB_MAX_PROXIES: "300"
         run: python scripts/update.py --verify
 
+      - name: Validate generated files
+        run: |
+          set -e
+          for f in nodes/clash.yaml nodes/v2ray.txt nodes/proxies.txt nodes/regions.json; do
+            if [ ! -s "$f" ]; then
+              echo "ERROR: $f is missing or empty" >&2
+              exit 1
+            fi
+          done
+          echo "Generated node/proxy files are non-empty."
+
       - name: Run tests
         run: make test
 

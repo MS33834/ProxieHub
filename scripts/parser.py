@@ -1,7 +1,8 @@
-import base64
 import json
 import re
-from urllib.parse import urlparse, unquote, parse_qs
+from urllib.parse import unquote, parse_qs
+
+from utils import safe_b64decode
 
 LINK_PATTERNS = [
     r'(?<!\S)ss://[^\s<>"\)]+',
@@ -14,20 +15,6 @@ LINK_PATTERNS = [
 ]
 
 SUPPORTED_SCHEMES = {"ss", "ssr", "vmess", "vless", "trojan", "hysteria", "hysteria2"}
-
-
-def _pad_base64(data: str) -> str:
-    return data + "=" * (-len(data) % 4)
-
-
-def safe_b64decode(data: str) -> bytes | None:
-    try:
-        return base64.urlsafe_b64decode(_pad_base64(data))
-    except Exception:
-        try:
-            return base64.b64decode(_pad_base64(data))
-        except Exception:
-            return None
 
 
 def extract_node_links(text: str | None) -> list[str]:

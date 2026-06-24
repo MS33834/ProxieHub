@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
 
 from parser import decode_vmess, parse_vless_link, parse_trojan_link, parse_ss_link
+from utils import is_private_host
 
 TIMEOUT = 5
 MAX_WORKERS = 50
@@ -28,21 +29,6 @@ def can_reach_public_internet(timeout: int = 5) -> bool:
         except Exception:
             continue
     return False
-
-
-def is_private_host(host: str) -> bool:
-    """Return True if host is a private/reserved IP or localhost."""
-    if not host:
-        return True
-    lower = host.lower()
-    if lower in ("localhost", "127.0.0.1", "::1"):
-        return True
-    try:
-        ip = ipaddress.ip_address(host)
-        return ip.is_private or ip.is_reserved or ip.is_loopback or ip.is_multicast
-    except ValueError:
-        local_suffixes = (".local", ".localhost", ".lan", ".internal")
-        return any(lower.endswith(s) for s in local_suffixes)
 
 
 def tcp_check(host: str, port: int, timeout: int = TIMEOUT) -> tuple[bool, float]:

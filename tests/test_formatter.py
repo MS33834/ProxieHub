@@ -3,7 +3,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from formatter import to_clash_yaml, to_v2ray_subscription, to_proxy_list, _is_private_host, _compute_stats
+from formatter import to_clash_yaml, to_v2ray_subscription, to_proxy_list, _compute_stats
+from utils import is_private_host
 
 
 def test_to_clash_yaml_basic():
@@ -82,11 +83,11 @@ def test_to_proxy_list_private_ip_filtered():
 
 
 def test_is_private_host():
-    assert _is_private_host("127.0.0.1") is True
-    assert _is_private_host("192.168.1.1") is True
-    assert _is_private_host("10.0.0.1") is True
-    assert _is_private_host("example.com") is False
-    assert _is_private_host("localhost.local") is True
+    assert is_private_host("127.0.0.1") is True
+    assert is_private_host("192.168.1.1") is True
+    assert is_private_host("10.0.0.1") is True
+    assert is_private_host("example.com") is False
+    assert is_private_host("localhost.local") is True
 
 
 def test_compute_stats_all_dead():

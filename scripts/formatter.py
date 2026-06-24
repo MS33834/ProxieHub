@@ -1,37 +1,18 @@
 import base64
-import ipaddress
 import json
 import re
-from pathlib import Path
 
 try:
     import yaml
 except ImportError:  # pragma: no cover
     yaml = None
 
-NODES_DIR = Path(__file__).parent.parent / "nodes"
-
 from parser import node_to_clash_config
+from utils import NODES_DIR, is_private_host
 
 
 def _clean_name(name: str) -> str:
     return re.sub(r'[^\w\-_.]', '_', name)[:64]
-
-
-def _is_private_host(host: str) -> bool:
-    """Return True if host is a private/reserved IP or localhost."""
-    if not host:
-        return True
-    lower = host.lower()
-    if lower in ("localhost", "127.0.0.1", "::1"):
-        return True
-    try:
-        ip = ipaddress.ip_address(host)
-        return ip.is_private or ip.is_reserved or ip.is_loopback or ip.is_multicast
-    except ValueError:
-        # Hostname: allow public domains; block obvious local suffixes.
-        local_suffixes = (".local", ".localhost", ".lan", ".internal")
-        return any(lower.endswith(s) for s in local_suffixes)
 
 
 def _yaml_dump(data: dict) -> str:
@@ -125,7 +106,7 @@ def to_clash_yaml(items, stats: dict | None = None) -> str:
         cfg = node_to_clash_config(link)
         if not cfg or not cfg.get("server") or not cfg.get("port"):
             continue
-        if _is_private_host(cfg.get("server")):
+        if is_private_host(cfg.get("server")):
             continue
         base_name = _clean_name(cfg.get("name") or f"node_{idx + 1}")
         name = base_name
@@ -200,7 +181,7 @@ def to_v2ray_subscription(items, stats: dict | None = None) -> str:
     for item in items:
         link, _region, _latency = _node_info(item)
         cfg = node_to_clash_config(link)
-        if cfg and cfg.get("server") and not _is_private_host(cfg.get("server")):
+        if cfg and cfg.get("server") and not is_private_host(cfg.get("server")):
             safe_links.append(link)
     if not safe_links:
         return "# ProxieHub V2Ray subscription\n# Auto-generated.\n"
@@ -224,7 +205,7 @@ def to_proxy_list(proxies: list[str]) -> str:
     ]
     for proxy in proxies:
         host = _proxy_host(proxy)
-        if host and not _is_private_host(host):
+        if host and not is_private_host(host):
             lines.append(proxy)
     return "\n".join(lines) + "\n"
 
@@ -235,7 +216,7 @@ def _build_regions(items) -> dict[str, list[str]]:
     for item in items:
         link, region, _latency = _node_info(item)
         cfg = node_to_clash_config(link)
-        if not cfg or not cfg.get("server") or _is_private_host(cfg.get("server")):
+        if not cfg or not cfg.get("server") or is_private_host(cfg.get("server")):
             continue
         regions.setdefault(region, []).append(link)
     return regions

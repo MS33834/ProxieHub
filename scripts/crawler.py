@@ -1,67 +1,31 @@
+"""Concurrent crawler for free node/proxy sources."""
+
+from __future__ import annotations
+
 import base64
-import json
 import os
 import shutil
-import ssl
 import subprocess
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import urlparse
 
-CONFIG_PATH = Path(__file__).parent.parent / "config" / "sources.json"
-USER_AGENT = "ProxieHub-Crawler/1.0 (+https://github.com/MS33834/ProxieHub)"
+from utils import (
+    USER_AGENT,
+    FetchError,
+    decode_bytes,
+    get_logger,
+    load_sources,
+    ssl_context,
+    validate_url,
+)
 
-# Only HTTPS URLs from well-known public hosts are allowed as data sources.
-ALLOWED_SCHEMES = {"https"}
-DEFAULT_ALLOWED_HOSTS = {
-    "raw.githubusercontent.com",
-    "gitcode.com",
-    "api.gitcode.com",
-}
-
-
-def _allowed_hosts() -> set[str]:
-    """Return allowed hosts, optionally extended via PROXIEHUB_ALLOWED_HOSTS env var."""
-    hosts = set(DEFAULT_ALLOWED_HOSTS)
-    extra = os.environ.get("PROXIEHUB_ALLOWED_HOSTS", "")
-    if extra:
-        hosts.update(h.strip().lower() for h in extra.split(",") if h.strip())
-    return hosts
-
-
-def _decode_bytes(data: bytes) -> str:
-    """Decode bytes to text, trying utf-8 then gbk then latin-1."""
-    for encoding in ("utf-8", "gbk", "latin-1"):
-        try:
-            return data.decode(encoding)
-        except (UnicodeDecodeError, LookupError):
-            continue
-    return data.decode("utf-8", errors="ignore")
-
-
-def _validate_url(url: str) -> None:
-    """Reject non-HTTPS URLs and unexpected hosts to mitigate SSRF risks."""
-    parsed = urlparse(url)
-    if parsed.scheme not in ALLOWED_SCHEMES:
-        raise ValueError(f"URL scheme not allowed: {parsed.scheme}")
-    host = (parsed.hostname or "").lower()
-    allowed = _allowed_hosts()
-    if not any(host == allowed_host or host.endswith(f".{allowed_host}") for allowed_host in allowed):
-        raise ValueError(f"URL host not allowed: {host}")
-
-
-def _ssl_context() -> ssl.SSLContext:
-    """Create an SSL context compatible with a wide range of servers."""
-    context = ssl.create_default_context()
-    # Lower SECLEVEL to allow older TLS configurations used by some CDNs.
-    context.set_ciphers("DEFAULT:@SECLEVEL=1")
-    return context
+logger = get_logger("crawler")
 
 
 def _fetch_with_curl(url: str, timeout: int, max_bytes: int = 50 * 1024 * 1024) -> str:
     """Fetch via curl, streaming output to avoid subprocess pipe deadlocks."""
-    _validate_url(url)
+    validate_url(url)
     cmd = [
         "curl",
         "-fsSL",
@@ -77,36 +41,41 @@ def _fetch_with_curl(url: str, timeout: int, max_bytes: int = 50 * 1024 * 1024) 
     except subprocess.TimeoutExpired:
         proc.kill()
         stdout, stderr = proc.communicate()
-        raise RuntimeError("curl timed out")
+        raise FetchError("curl timed out")
     if proc.returncode != 0:
         err = stderr.decode("utf-8", errors="ignore")[:200]
-        raise RuntimeError(f"curl failed: {err}")
+        raise FetchError(f"curl failed: {err}")
     data = stdout[:max_bytes]
-    return _decode_bytes(data)
+    return decode_bytes(data)
 
 
 def _fetch_with_urllib(url: str, timeout: int) -> str:
-    _validate_url(url)
+    validate_url(url)
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout, context=_ssl_context()) as resp:
+    with urllib.request.urlopen(req, timeout=timeout, context=ssl_context()) as resp:
         data = resp.read()
-        return _decode_bytes(data)
+        return decode_bytes(data)
 
 
-def fetch(url: str, timeout: int = 20, retries: int = 1, max_bytes: int = 10 * 1024 * 1024) -> str:
+def fetch(
+    url: str,
+    timeout: int = 20,
+    retries: int = 1,
+    max_bytes: int = 10 * 1024 * 1024,
+) -> str:
     """Fetch URL with retries, preferring curl if available for better network tolerance.
 
     If curl fails because the response is too large or too slow, we avoid falling
     back to urllib with the same parameters to save time.
     """
-    _validate_url(url)
-    last_error = None
+    validate_url(url)
+    last_error: Exception | None = None
     for attempt in range(retries + 1):
         try:
             if shutil.which("curl"):
                 try:
                     return _fetch_with_curl(url, timeout, max_bytes=max_bytes)
-                except RuntimeError as exc:
+                except FetchError as exc:
                     err = str(exc).lower()
                     # Don't waste another attempt with urllib on oversized/slow payloads.
                     if "timed out" in err or "filesize" in err or "max-filesize" in err:
@@ -117,7 +86,7 @@ def fetch(url: str, timeout: int = 20, retries: int = 1, max_bytes: int = 10 * 1
             last_error = exc
             if attempt < retries:
                 continue
-    raise last_error or RuntimeError(f"failed to fetch {url}")
+    raise last_error or FetchError(f"failed to fetch {url}")
 
 
 def maybe_decode_base64(text: str) -> str:
@@ -152,7 +121,7 @@ def _fetch_source_safe(source: dict, category: str) -> dict | None:
             entry["proxy_scheme"] = source["proxy_scheme"]
         return entry
     except Exception as exc:
-        print(f"[crawler] failed {source['name']}: {exc}")
+        logger.warning("failed %s: %s", source["name"], exc)
         return None
 
 
@@ -161,9 +130,7 @@ def crawl(config_path: Path | None = None, max_workers: int | None = None) -> di
 
     max_workers defaults to PROXIEHUB_CRAWL_WORKERS or the number of enabled sources.
     """
-    path = config_path or CONFIG_PATH
-    with open(path, "r", encoding="utf-8") as f:
-        config = json.load(f)
+    config = load_sources(config_path)
 
     sources: list[tuple[dict, str]] = []
     for source in config.get("free_node_sources", []):
@@ -198,4 +165,8 @@ def crawl(config_path: Path | None = None, max_workers: int | None = None) -> di
 
 if __name__ == "__main__":
     result = crawl()
-    print(f"[crawler] fetched {len(result['nodes'])} node sources, {len(result['proxies'])} proxy sources")
+    logger.info(
+        "fetched %d node sources, %d proxy sources",
+        len(result["nodes"]),
+        len(result["proxies"]),
+    )

@@ -4,7 +4,10 @@ install:
 	pip install -r requirements.txt
 
 test:
-	python tests/test_parser.py && python tests/test_formatter.py && python tests/test_verifier.py
+	python tests/test_utils.py
+	python tests/test_parser.py
+	python tests/test_formatter.py
+	python tests/test_verifier.py
 
 update:
 	python scripts/update.py
@@ -18,6 +21,7 @@ clean:
 
 lint:
 	python -m py_compile scripts/*.py tests/*.py
+	python -m ruff check scripts tests
 
 lint-web:
 	cd web && npm run lint

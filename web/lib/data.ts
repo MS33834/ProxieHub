@@ -48,6 +48,13 @@ export interface StatusStats {
   actionsStatus: string;
 }
 
+export interface NodeQuality {
+  total: number;
+  alive: number;
+  survivalRate: number;
+  avgLatency: number;
+}
+
 function parseClashYaml(filePath: string): { total: number; protocols: Record<string, number> } {
   const text = fs.readFileSync(filePath, "utf-8");
   const lines = text.split("\n");
@@ -138,6 +145,53 @@ function loadRegions(): Record<string, number> {
   } catch {
     return {};
   }
+}
+
+export function loadNodeQuality(): NodeQuality | null {
+  const clashPath = path.join(NODES_DIR, "clash.yaml");
+  if (!fs.existsSync(clashPath)) return null;
+
+  try {
+    const lines = fs.readFileSync(clashPath, "utf-8").split("\n").slice(0, 10);
+    let total = 0;
+    let alive = 0;
+    let survivalRate = 0;
+    let avgLatency = 0;
+    let found = false;
+
+    for (const rawLine of lines) {
+      const line = rawLine.replace(/\r/g, "").trim();
+      if (!line.startsWith("#")) continue;
+
+      const nodesMatch = line.match(
+        /^#\s*Nodes:\s*(\d+)\s+total,\s*(\d+)\s+alive\s*\(([0-9.]+)%\)/
+      );
+      if (nodesMatch) {
+        total = parseInt(nodesMatch[1], 10);
+        alive = parseInt(nodesMatch[2], 10);
+        survivalRate = parseFloat(nodesMatch[3]);
+        found = true;
+      }
+
+      const latencyMatch = line.match(/^#\s*Average latency:\s*([0-9.]+)\s*ms/);
+      if (latencyMatch) {
+        avgLatency = parseFloat(latencyMatch[1]);
+        found = true;
+      }
+    }
+
+    return found ? { total, alive, survivalRate, avgLatency } : null;
+  } catch {
+    return null;
+  }
+}
+
+export function getTopRegions(n: number): { region: string; count: number }[] {
+  return Object.entries(loadRegions())
+    .filter(([, count]) => count > 0)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, n)
+    .map(([region, count]) => ({ region, count }));
 }
 
 export function loadStats(): SiteStats {

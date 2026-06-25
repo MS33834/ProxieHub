@@ -63,10 +63,11 @@ features:
 
 按平台查看图文配置教程。
 
-- [Clash / Clash Verge Rev](/client-setup/clash) — Windows / macOS / Linux
+- [Clash Verge Rev](/client-setup/clash-verge-rev) — Windows / macOS / Linux
 - [v2rayN](/client-setup/v2rayn) — Windows
 - [v2rayNG](/client-setup/v2rayng) — Android
 - [Shadowrocket](/client-setup/shadowrocket) — iOS
+- [Clash / Clash Verge（旧版）](/client-setup/clash) — 兼容旧版 Clash 客户端
 
 ### 📚 项目参考
 

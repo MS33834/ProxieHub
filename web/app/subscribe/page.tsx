@@ -12,6 +12,11 @@ import {
   ArrowRight,
   CheckCircle2,
   BookOpen,
+  Filter,
+  Gauge,
+  Puzzle,
+  Terminal,
+  Router,
 } from "lucide-react";
 
 const steps = [
@@ -51,6 +56,24 @@ const recommendations = [
     title: "临时/爬虫",
     clients: "SwitchyOmega / FoxyProxy / curl / Python requests",
     tip: "复制 HTTP(S)/SOCKS4/SOCKS5 列表，按需提取单个代理使用。",
+  },
+  {
+    icon: Puzzle,
+    title: "浏览器扩展用户",
+    clients: "SwitchyOmega + HTTP代理",
+    tip: "复制 HTTP(S) 列表，在扩展中添加情景模式并选择单个代理。",
+  },
+  {
+    icon: Terminal,
+    title: "自动化 / 爬虫用户",
+    clients: "Python requests + 代理列表",
+    tip: "按行读取代理列表，随机或轮询选择节点，配合异常重试使用。",
+  },
+  {
+    icon: Router,
+    title: "路由器用户",
+    clients: "OpenClash + Clash订阅",
+    tip: "将 Clash 订阅导入 OpenClash，启用后全屋设备自动分流。",
   },
 ];
 
@@ -102,6 +125,39 @@ export default function SubscribePage() {
           gitcodeUrl={urls.proxies.gitcode}
           icon={<Layers className="w-5 h-5" />}
         />
+      </div>
+
+      <div className="border border-border bg-surface p-5 mb-12">
+        <h2 className="text-lg font-semibold mb-5 flex items-center gap-2">
+          <Filter className="w-4 h-4 text-primary" />
+          如何选择节点
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+          <div className="border border-border bg-background p-4">
+            <h3 className="font-medium text-sm mb-2">看协议</h3>
+            <p className="text-xs text-muted leading-relaxed">
+              Clash 适合规则分流，V2Ray 适合多协议客户端。按你的客户端选择对应订阅格式。
+            </p>
+          </div>
+          <div className="border border-border bg-background p-4">
+            <h3 className="font-medium text-sm mb-2">看地区</h3>
+            <p className="text-xs text-muted leading-relaxed">
+              优先选择距离近的地区（如香港/日本/新加坡），通常延迟更低、速度更稳定。
+            </p>
+          </div>
+          <div className="border border-border bg-background p-4">
+            <h3 className="font-medium text-sm mb-2">看验证</h3>
+            <p className="text-xs text-muted leading-relaxed">
+              状态页可查看最近一次验证通过率，优先选择通过率较高的时段导入。
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/status"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary-hover transition-colors"
+        >
+          查看节点验证状态 <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
 
       <div className="border border-border bg-surface p-5 mb-12">
@@ -195,6 +251,33 @@ export default function SubscribePage() {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="border border-border bg-surface p-4 mb-10">
+        <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
+          <Gauge className="w-4 h-4 text-primary" />
+          如何自己测速
+        </h2>
+        <ul className="space-y-2 text-xs text-muted mb-4">
+          <li className="flex items-start gap-2">
+            <span className="text-primary mt-0.5">·</span>
+            Clash Verge / v2rayN 等客户端内置测速，更新订阅后点击「测试全部节点」即可。
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-primary mt-0.5">·</span>
+            建议测试 3-5 个节点后选择延迟最低的，实际速度还与你的网络环境有关。
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-primary mt-0.5">·</span>
+            免费节点速度会随时间波动，遇到慢或断连时重新测速并切换即可。
+          </li>
+        </ul>
+        <Link
+          href="/clients"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary-hover transition-colors"
+        >
+          查看客户端测速教程 <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
 
       <div className="border border-border bg-surface p-4 mb-10">

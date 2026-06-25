@@ -41,3 +41,52 @@ GitCode 原始文件 URL 需要使用 API 端点。请使用 README 中提供的
 ## 如何报告安全问题？
 
 请参见 [SECURITY.md](https://github.com/MS33834/ProxieHub/blob/main/SECURITY.md) 中的负责任披露指南。
+
+## v2rayN 更新订阅时提示 "404" 怎么办？
+
+通常是订阅 URL 拼写错误，或 GitHub Raw 地址发生了变化。请检查是否使用的是 `{{github_url}}/nodes/v2ray.txt`，并确认网络可以访问 GitHub Raw。也可以尝试在浏览器中直接打开该链接验证。
+
+## Clash Verge Rev 导入订阅后为什么没有节点？
+
+请确认导入的是 Clash 格式订阅 `{{github_url}}/nodes/clash.yaml`，而不是 V2Ray / Base64 格式。如果 URL 正确但无节点，可能是配置文件为空或当日节点全部失效，等待次日更新后再试。
+
+## Shadowrocket 订阅更新一直转圈怎么办？
+
+iOS 设备在某些网络环境下访问 GitHub Raw 较慢。可尝试：切换到 4G/5G、更换 DNS（如 1.1.1.1）、或在 Wi-Fi 路由器上配置可访问 GitHub 的代理。
+
+## v2rayNG 提示 "解析订阅失败" 是什么原因？
+
+常见原因包括：订阅内容不是标准 V2Ray URL / Base64 格式、URL 返回了 HTML 页面而非纯文本、或剪贴板内容包含额外字符。请使用 `{{github_url}}/nodes/v2ray.txt` 并确保页面内容是 Base64 字符串。
+
+## 我应该选择 Clash 还是 V2Ray 格式？
+
+- 使用 **Clash / Clash Verge Rev / Clash Meta / Stash**：选择 Clash 格式 `clash.yaml`。
+- 使用 **v2rayN、v2rayNG、Shadowrocket、NekoBox、Quantumult X**：选择 V2Ray / Base64 格式 `v2ray.txt`。
+- 用于 **爬虫、脚本、命令行工具**：选择 HTTP代理 / JSON / TXT 格式。
+
+## 节点延迟很低但无法打开网页？
+
+可能是节点被 QoS、DNS 污染，或客户端路由规则排除了目标域名。尝试：切换全局模式、更换 DNS、测试其他节点，或检查客户端日志中的连接错误。
+
+## 为什么不同客户端显示的节点数量不一样？
+
+不同客户端对协议、加密方式、传输层的支持不同。例如 Clash 可能不支持某些特殊 VMess 配置，v2rayN 可能不支持某些 Clash 特有字段。这属于正常现象，选择支持你客户端的格式即可。
+
+## 免费节点可以用来打游戏或看视频吗？
+
+不建议。免费节点带宽、延迟和稳定性都无法保证，且运营者可能记录你的流量。观看视频或下载大文件也可能触发节点限速或被封禁。
+
+## 如何保护自己的隐私？
+
+- 不要在免费节点下登录敏感账户。
+- 使用支持分应用代理的客户端，仅让必要应用走代理。
+- 优先选择 HTTPS 网站，避免明文 HTTP 流量被截获。
+- 定期更换订阅链接和节点。
+
+## ProxieHub 的 `{{github_url}}` 占位符代表什么？
+
+`{{github_url}}` 代表 ProxieHub 仓库的 Raw 内容基地址，通常对应 `https://raw.githubusercontent.com/MS33834/ProxieHub/main`。完整订阅链接示例：
+
+- V2Ray / Base64：`{{github_url}}/nodes/v2ray.txt`
+- Clash：`{{github_url}}/nodes/clash.yaml`
+- HTTP代理：`{{github_url}}/nodes/http.txt`

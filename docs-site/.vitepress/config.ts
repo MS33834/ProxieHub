@@ -34,10 +34,11 @@ export default defineConfig({
         text: "客户端配置",
         collapsed: false,
         items: [
-          { text: "Clash / Clash Verge", link: "/client-setup/clash" },
+          { text: "Clash Verge Rev", link: "/client-setup/clash-verge-rev" },
           { text: "v2rayN (Windows)", link: "/client-setup/v2rayn" },
           { text: "v2rayNG (Android)", link: "/client-setup/v2rayng" },
           { text: "Shadowrocket (iOS)", link: "/client-setup/shadowrocket" },
+          { text: "Clash / Clash Verge（旧版）", link: "/client-setup/clash" },
           { text: "客户端对比", link: "/advanced/client-comparison" },
         ],
       },

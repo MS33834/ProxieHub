@@ -8,6 +8,9 @@ export interface Platform {
   stars: string; // 星标级别（如 "10k+", "5k+", "1k+"）
   format: string[]; // 输出格式（如 ["Clash", "V2Ray", "Base64"]）
   featured: boolean; // 是否推荐
+  difficulty: "beginner" | "intermediate" | "advanced"; // 使用难度
+  recommendedFor: string[]; // 推荐场景 / 适用人群
+  compatibility: number; // 兼容性评分（0-100）
 }
 
 export const platforms: Platform[] = [
@@ -22,6 +25,9 @@ export const platforms: Platform[] = [
     stars: "10k+",
     format: ["V2Ray", "Base64"],
     featured: true,
+    difficulty: "beginner",
+    recommendedFor: ["v2rayN用户", "v2rayNG用户", "每日更新", "新手入门"],
+    compatibility: 95,
   },
   {
     name: "free",
@@ -34,6 +40,9 @@ export const platforms: Platform[] = [
     stars: "10k+",
     format: ["V2Ray", "Clash", "Base64"],
     featured: true,
+    difficulty: "beginner",
+    recommendedFor: ["Clash用户", "v2rayN用户", "每日更新", "稳定老牌"],
+    compatibility: 96,
   },
   {
     name: "V2rayAggregator",
@@ -46,6 +55,9 @@ export const platforms: Platform[] = [
     stars: "5k+",
     format: ["Clash", "V2Ray", "Base64", "Sing-box"],
     featured: true,
+    difficulty: "intermediate",
+    recommendedFor: ["进阶用户", "多格式", "Sing-box", "自动检测"],
+    compatibility: 90,
   },
   {
     name: "v2rayfree",
@@ -58,6 +70,9 @@ export const platforms: Platform[] = [
     stars: "5k+",
     format: ["V2Ray", "Clash", "Base64"],
     featured: true,
+    difficulty: "beginner",
+    recommendedFor: ["v2rayN用户", "Clash用户", "测速筛选", "每日更新"],
+    compatibility: 93,
   },
   {
     name: "Free-servers",
@@ -70,6 +85,9 @@ export const platforms: Platform[] = [
     stars: "5k+",
     format: ["V2Ray", "Clash", "Base64"],
     featured: true,
+    difficulty: "beginner",
+    recommendedFor: ["新手入门", "快速试用", "Clash用户", "v2rayN用户"],
+    compatibility: 91,
   },
   {
     name: "treble",
@@ -82,6 +100,9 @@ export const platforms: Platform[] = [
     stars: "5k+",
     format: ["Clash"],
     featured: true,
+    difficulty: "intermediate",
+    recommendedFor: ["Clash Meta用户", "规则筛选", "每日更新"],
+    compatibility: 88,
   },
   {
     name: "NoMoreWalls",
@@ -94,6 +115,9 @@ export const platforms: Platform[] = [
     stars: "5k+",
     format: ["Clash", "V2Ray", "Base64"],
     featured: true,
+    difficulty: "beginner",
+    recommendedFor: ["新手入门", "多协议", "每日更新", "附带文档"],
+    compatibility: 92,
   },
   {
     name: "clash-freenode",
@@ -106,6 +130,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["Clash"],
     featured: false,
+    difficulty: "beginner",
+    recommendedFor: ["Clash用户", "开箱即用", "每日更新"],
+    compatibility: 87,
   },
   {
     name: "v2ray",
@@ -118,6 +145,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Base64"],
     featured: false,
+    difficulty: "beginner",
+    recommendedFor: ["v2rayN用户", "v2rayNG用户", "Base64订阅"],
+    compatibility: 86,
   },
   {
     name: "v2ray",
@@ -130,6 +160,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Base64"],
     featured: false,
+    difficulty: "beginner",
+    recommendedFor: ["v2rayN用户", "自动去重", "每日更新"],
+    compatibility: 85,
   },
   {
     name: "v2ray-configs",
@@ -142,6 +175,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Clash", "Base64"],
     featured: false,
+    difficulty: "beginner",
+    recommendedFor: ["新手入门", "多格式", "每日更新"],
+    compatibility: 88,
   },
   {
     name: "telegram-configs-collector",
@@ -154,6 +190,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Clash", "Base64", "Sing-box"],
     featured: false,
+    difficulty: "intermediate",
+    recommendedFor: ["进阶用户", "Telegram源", "多格式", "Sing-box"],
+    compatibility: 84,
   },
   {
     name: "TelegramV2rayCollector",
@@ -166,6 +205,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Clash", "Base64", "Sing-box"],
     featured: false,
+    difficulty: "intermediate",
+    recommendedFor: ["高频更新", "Telegram源", "Sing-box", "进阶用户"],
+    compatibility: 83,
   },
   {
     name: "v2ray",
@@ -178,6 +220,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Base64"],
     featured: false,
+    difficulty: "beginner",
+    recommendedFor: ["个人学习", "测试", "v2rayN用户"],
+    compatibility: 82,
   },
   {
     name: "PROXY-List",
@@ -190,6 +235,9 @@ export const platforms: Platform[] = [
     stars: "10k+",
     format: ["HTTP代理", "Base64", "JSON"],
     featured: true,
+    difficulty: "advanced",
+    recommendedFor: ["爬虫", "命令行工具", "HTTP代理", "高频更新"],
+    compatibility: 78,
   },
   {
     name: "free-proxy-list",
@@ -202,6 +250,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["HTTP代理", "JSON", "CSV", "TXT"],
     featured: false,
+    difficulty: "advanced",
+    recommendedFor: ["爬虫", "元数据筛选", "JSON/CSV"],
+    compatibility: 75,
   },
   {
     name: "proxies",
@@ -214,6 +265,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["HTTP代理", "JSON", "TXT"],
     featured: false,
+    difficulty: "advanced",
+    recommendedFor: ["爬虫", "按国家分类", "HTTP代理"],
+    compatibility: 76,
   },
   {
     name: "proxy-list",
@@ -226,6 +280,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["HTTP代理", "JSON", "TXT"],
     featured: false,
+    difficulty: "advanced",
+    recommendedFor: ["爬虫", "API接口", "极高频更新"],
+    compatibility: 74,
   },
   {
     name: "openproxylist",
@@ -238,6 +295,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["HTTP代理", "Base64", "TXT"],
     featured: false,
+    difficulty: "advanced",
+    recommendedFor: ["爬虫", "HTTP代理", "Base64"],
+    compatibility: 73,
   },
   {
     name: "free-proxy-list",
@@ -250,6 +310,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["HTTP代理", "JSON", "TXT"],
     featured: false,
+    difficulty: "advanced",
+    recommendedFor: ["爬虫", "可用性排序", "JSON"],
+    compatibility: 72,
   },
   {
     name: "telegram-proxy-collector",
@@ -262,6 +325,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Base64", "HTTP代理"],
     featured: false,
+    difficulty: "intermediate",
+    recommendedFor: ["Telegram源", "混合代理", "进阶用户"],
+    compatibility: 80,
   },
   {
     name: "nodefree",
@@ -274,6 +340,9 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["Clash", "V2Ray", "Base64"],
     featured: false,
+    difficulty: "beginner",
+    recommendedFor: ["新手入门", "附带教程", "Clash用户", "v2rayN用户"],
+    compatibility: 89,
   },
   {
     name: "NodeV2ray",
@@ -286,5 +355,8 @@ export const platforms: Platform[] = [
     stars: "1k+",
     format: ["V2Ray", "Base64"],
     featured: false,
+    difficulty: "intermediate",
+    recommendedFor: ["Xray内核", "v2rayN用户", "Base64订阅"],
+    compatibility: 85,
   },
 ];

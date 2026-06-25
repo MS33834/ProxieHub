@@ -11,6 +11,9 @@ import {
   ArrowRight,
   Shield,
   AlertTriangle,
+  Gauge,
+  Target,
+  Zap,
 } from "lucide-react";
 import { platforms, type Platform } from "@/lib/platforms";
 
@@ -33,8 +36,66 @@ const formatFilters = [
   { label: "JSON", value: "JSON" },
 ] as const;
 
+const difficultyFilters = [
+  { label: "全部难度", value: "all" },
+  { label: "简单", value: "beginner" },
+  { label: "中等", value: "intermediate" },
+  { label: "进阶", value: "advanced" },
+] as const;
+
 type ProtocolValue = (typeof protocolFilters)[number]["value"];
 type FormatValue = (typeof formatFilters)[number]["value"];
+type DifficultyValue = (typeof difficultyFilters)[number]["value"];
+
+const difficultyConfig = {
+  beginner: {
+    label: "简单",
+    colorClass:
+      "border-success/30 bg-success/10 text-success",
+  },
+  intermediate: {
+    label: "中等",
+    colorClass:
+      "border-warning/30 bg-warning/10 text-warning",
+  },
+  advanced: {
+    label: "进阶",
+    colorClass: "border-danger/30 bg-danger/10 text-danger",
+  },
+} as const;
+
+function DifficultyBadge({ difficulty }: { difficulty: Platform["difficulty"] }) {
+  const config = difficultyConfig[difficulty];
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 border ${config.colorClass}`}
+    >
+      <Gauge className="w-3 h-3" />
+      {config.label}
+    </span>
+  );
+}
+
+function CompatibilityBar({ score }: { score: number }) {
+  const clamped = Math.max(0, Math.min(100, score));
+  let barColor = "bg-success";
+  if (clamped < 80) barColor = "bg-warning";
+  if (clamped < 70) barColor = "bg-danger";
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex-1 h-1.5 bg-surface-hover overflow-hidden">
+        <div
+          className={`h-full ${barColor} transition-all`}
+          style={{ width: `${clamped}%` }}
+        />
+      </div>
+      <span className="text-[10px] font-mono text-muted w-8 text-right">
+        {clamped}%
+      </span>
+    </div>
+  );
+}
 
 function PlatformCard({ platform }: { platform: Platform }) {
   return (
@@ -54,7 +115,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
             {platform.owner}/{platform.name}
           </p>
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex flex-col items-end gap-1.5 shrink-0">
           {platform.featured && (
             <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 border border-primary/30 bg-primary/10 text-primary">
               <Sparkles className="w-3 h-3" />
@@ -73,6 +134,28 @@ function PlatformCard({ platform }: { platform: Platform }) {
       </p>
 
       <div className="space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <DifficultyBadge difficulty={platform.difficulty} />
+          <div className="flex-1 max-w-[120px]">
+            <CompatibilityBar score={platform.compatibility} />
+          </div>
+        </div>
+
+        <div>
+          <p className="text-[10px] text-muted mb-1.5">推荐场景</p>
+          <div className="flex flex-wrap gap-1">
+            {platform.recommendedFor.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 border border-secondary/20 bg-secondary/5 text-secondary"
+              >
+                <Target className="w-2.5 h-2.5" />
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
         <div>
           <p className="text-[10px] text-muted mb-1.5">支持协议</p>
           <div className="flex flex-wrap gap-1">
@@ -114,6 +197,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
 export default function PlatformsPage() {
   const [protocolFilter, setProtocolFilter] = useState<ProtocolValue>("all");
   const [formatFilter, setFormatFilter] = useState<FormatValue>("all");
+  const [difficultyFilter, setDifficultyFilter] = useState<DifficultyValue>("all");
 
   const filtered = useMemo(() => {
     return platforms.filter((p) => {
@@ -123,11 +207,15 @@ export default function PlatformsPage() {
         p.format.includes(protocolFilter);
       const formatMatch =
         formatFilter === "all" || p.format.includes(formatFilter);
-      return protocolMatch && formatMatch;
+      const difficultyMatch =
+        difficultyFilter === "all" || p.difficulty === difficultyFilter;
+      return protocolMatch && formatMatch && difficultyMatch;
     });
-  }, [protocolFilter, formatFilter]);
+  }, [protocolFilter, formatFilter, difficultyFilter]);
 
   const featuredCount = platforms.filter((p) => p.featured).length;
+  const hasActiveFilters =
+    protocolFilter !== "all" || formatFilter !== "all" || difficultyFilter !== "all";
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
@@ -220,6 +308,30 @@ export default function PlatformsPage() {
               ))}
             </div>
           </div>
+
+          <div>
+            <p className="text-xs text-muted mb-2 flex items-center gap-1.5">
+              <Gauge className="w-3.5 h-3.5" />
+              按难度筛选
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {difficultyFilters.map((f) => (
+                <button
+                  key={f.value}
+                  type="button"
+                  aria-pressed={difficultyFilter === f.value}
+                  onClick={() => setDifficultyFilter(f.value)}
+                  className={`px-2.5 py-1 text-xs transition-colors border ${
+                    difficultyFilter === f.value
+                      ? "bg-primary text-background border-primary"
+                      : "border-border text-muted hover:text-foreground hover:bg-surface-hover"
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -229,13 +341,16 @@ export default function PlatformsPage() {
           共 <span className="text-foreground font-medium">{filtered.length}</span> 个仓库
           {protocolFilter !== "all" && ` · 协议：${protocolFilter}`}
           {formatFilter !== "all" && ` · 格式：${formatFilter}`}
+          {difficultyFilter !== "all" &&
+            ` · 难度：${difficultyConfig[difficultyFilter].label}`}
         </p>
-        {(protocolFilter !== "all" || formatFilter !== "all") && (
+        {hasActiveFilters && (
           <button
             type="button"
             onClick={() => {
               setProtocolFilter("all");
               setFormatFilter("all");
+              setDifficultyFilter("all");
             }}
             className="text-xs text-primary hover:text-primary-hover"
           >
@@ -259,6 +374,7 @@ export default function PlatformsPage() {
             onClick={() => {
               setProtocolFilter("all");
               setFormatFilter("all");
+              setDifficultyFilter("all");
             }}
             className="mt-3 text-xs text-primary hover:text-primary-hover"
           >
@@ -266,6 +382,52 @@ export default function PlatformsPage() {
           </button>
         </div>
       )}
+
+      {/* Platform selection guide */}
+      <section className="border border-border bg-surface p-6 md:p-8 mb-8">
+        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Zap className="w-4 h-4 text-primary" />
+          平台选择指南
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {[
+            {
+              level: "新手",
+              difficulty: "beginner" as const,
+              desc: "推荐 starred 高、每日更新、Base64/V2Ray 格式的仓库，直接复制订阅链接到 v2rayN / v2rayNG 即可使用。",
+              examples: ["freefq/free", "barry-far/V2ray-Configs", "aiboboxx/v2rayfree"],
+            },
+            {
+              level: "进阶",
+              difficulty: "intermediate" as const,
+              desc: "尝试 Sing-box / Clash 格式、多协议聚合源，可根据需求自定义规则与分流策略。",
+              examples: ["mahdibland/V2rayAggregator", "mfbpn/treble", "yebekhe/TelegramV2rayCollector"],
+            },
+            {
+              level: "爬虫 / 开发者",
+              difficulty: "advanced" as const,
+              desc: "选择 HTTP代理 / JSON / CSV 格式的高频更新代理列表，配合脚本、curl 或爬虫框架使用。",
+              examples: ["TheSpeedX/PROXY-List", "jetkai/proxy-list", "proxifly/free-proxy-list"],
+            },
+          ].map((item) => (
+            <div key={item.level} className="border border-border bg-background p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <DifficultyBadge difficulty={item.difficulty} />
+                <h3 className="text-sm font-medium">{item.level}</h3>
+              </div>
+              <p className="text-xs text-muted leading-relaxed mb-3">{item.desc}</p>
+              <div className="space-y-1">
+                <p className="text-[10px] text-muted">示例仓库</p>
+                {item.examples.map((name) => (
+                  <p key={name} className="text-[10px] font-mono text-foreground truncate">
+                    {name}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Usage guide */}
       <section className="border border-border bg-surface p-6 md:p-8 mb-8">

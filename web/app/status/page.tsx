@@ -1,4 +1,5 @@
-import { loadStatusStats } from "@/lib/data";
+import Link from "next/link";
+import { loadStatusStats, loadNodeQuality, getTopRegions } from "@/lib/data";
 import { ProtocolChart } from "@/components/protocol-chart";
 import {
   Clock,
@@ -10,10 +11,16 @@ import {
   Shield,
   Zap,
   MapPin,
+  Signal,
+  Gauge,
+  TrendingUp,
+  ArrowRight,
 } from "lucide-react";
 
 export default function StatusPage() {
   const stats = loadStatusStats();
+  const quality = loadNodeQuality();
+  const topRegions = getTopRegions(3);
   const protocolTotal = Object.values(stats.protocolCounts).reduce(
     (sum, v) => sum + v,
     0
@@ -83,6 +90,47 @@ export default function StatusPage() {
             </div>
           );
         })}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="border border-border bg-surface p-4">
+          <Signal className="w-4 h-4 text-muted mb-3" />
+          <div className="text-xl font-semibold font-mono mb-0.5">
+            {quality ? `${quality.survivalRate.toFixed(1)}%` : "未启用"}
+          </div>
+          <div className="text-xs text-muted">验证通过率</div>
+          <div className="mt-2 text-[10px] text-muted leading-relaxed">
+            {quality
+              ? `${quality.alive}/${quality.total} 个节点通过 TCP 校验`
+              : "本次生成未启用验证，可在本地运行 --verify 启用"}
+          </div>
+        </div>
+        <div className="border border-border bg-surface p-4">
+          <Gauge className="w-4 h-4 text-muted mb-3" />
+          <div className="text-xl font-semibold font-mono mb-0.5">
+            {quality ? `${quality.avgLatency.toFixed(0)} ms` : "未启用"}
+          </div>
+          <div className="text-xs text-muted">平均延迟</div>
+          <div className="mt-2 text-[10px] text-muted leading-relaxed">
+            {quality
+              ? "通过验证节点的平均延迟"
+              : "未启用验证时无延迟数据"}
+          </div>
+        </div>
+        <div className="border border-border bg-surface p-4">
+          <TrendingUp className="w-4 h-4 text-muted mb-3" />
+          <div className="text-xl font-semibold font-mono mb-0.5">
+            {topRegions.length > 0
+              ? topRegions.map((r) => r.region.toUpperCase()).join(" / ")
+              : "暂无数据"}
+          </div>
+          <div className="text-xs text-muted">地区 TOP3</div>
+          <div className="mt-2 text-[10px] text-muted leading-relaxed">
+            {topRegions.length > 0
+              ? topRegions.map((r) => `${r.region.toUpperCase()}: ${r.count}`).join(" · ")
+              : "未生成地区分布数据"}
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -158,6 +206,36 @@ export default function StatusPage() {
             ))}
           </div>
         )}
+      </div>
+
+      <div className="border border-border bg-surface p-5 mb-8">
+        <div className="flex items-center gap-2 mb-4">
+          <Gauge className="w-4 h-4 text-primary" />
+          <h2 className="font-medium text-sm">质量说明</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs text-muted leading-relaxed">
+          <div>
+            <h3 className="font-medium text-foreground mb-1">验证流程</h3>
+            <p className="mb-3">
+              生成 clash.yaml 时，脚本会对节点进行 TCP 连通性校验。通过校验的节点会被保留，并统计通过率与平均延迟。
+            </p>
+            <p>
+              GitHub Actions 默认每日运行一次；本地可使用 --verify 参数获得更严格的筛选结果。
+            </p>
+          </div>
+          <div>
+            <h3 className="font-medium text-foreground mb-1">为什么可用性会变化</h3>
+            <p className="mb-3">
+              免费节点来自公开渠道，服务器负载、网络抖动、IP 封锁都会影响可用性。同一节点在不同地区、不同运营商的表现也可能不同。
+            </p>
+            <Link
+              href="/clients"
+              className="inline-flex items-center gap-1.5 text-primary hover:text-primary-hover transition-colors"
+            >
+              查看测速方法 <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
       </div>
 
       <div className="border border-warning/20 bg-warning/10 p-4 flex items-start gap-3">

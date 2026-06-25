@@ -182,6 +182,8 @@ export default function PlatformsPage() {
               {protocolFilters.map((f) => (
                 <button
                   key={f.value}
+                  type="button"
+                  aria-pressed={protocolFilter === f.value}
                   onClick={() => setProtocolFilter(f.value)}
                   className={`px-2.5 py-1 text-xs transition-colors border ${
                     protocolFilter === f.value
@@ -204,6 +206,8 @@ export default function PlatformsPage() {
               {formatFilters.map((f) => (
                 <button
                   key={f.value}
+                  type="button"
+                  aria-pressed={formatFilter === f.value}
                   onClick={() => setFormatFilter(f.value)}
                   className={`px-2.5 py-1 text-xs transition-colors border ${
                     formatFilter === f.value
@@ -228,6 +232,7 @@ export default function PlatformsPage() {
         </p>
         {(protocolFilter !== "all" || formatFilter !== "all") && (
           <button
+            type="button"
             onClick={() => {
               setProtocolFilter("all");
               setFormatFilter("all");
@@ -250,6 +255,7 @@ export default function PlatformsPage() {
         <div className="border border-border bg-surface p-10 text-center mb-12">
           <p className="text-sm text-muted">没有符合筛选条件的仓库</p>
           <button
+            type="button"
             onClick={() => {
               setProtocolFilter("all");
               setFormatFilter("all");

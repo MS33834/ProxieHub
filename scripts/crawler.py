@@ -6,6 +6,7 @@ import base64
 import os
 import shutil
 import subprocess
+import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -24,7 +25,7 @@ logger = get_logger("crawler")
 
 
 def _fetch_with_curl(url: str, timeout: int, max_bytes: int = 50 * 1024 * 1024) -> str:
-    """Fetch via curl, streaming output to avoid subprocess pipe deadlocks."""
+    """Fetch via curl with bounded size/time limits."""
     validate_url(url)
     cmd = [
         "curl",
@@ -35,17 +36,20 @@ def _fetch_with_curl(url: str, timeout: int, max_bytes: int = 50 * 1024 * 1024) 
         "-A", USER_AGENT,
         url,
     ]
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
-        stdout, stderr = proc.communicate(timeout=timeout + 5)
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            timeout=timeout + 5,
+        )
     except subprocess.TimeoutExpired:
-        proc.kill()
-        stdout, stderr = proc.communicate()
         raise FetchError("curl timed out")
-    if proc.returncode != 0:
-        err = stderr.decode("utf-8", errors="ignore")[:200]
+    if result.returncode != 0:
+        err = result.stderr.decode("utf-8", errors="ignore")[:200]
+        if result.returncode == 63 or "filesize" in err.lower():
+            raise FetchError(f"curl filesize exceeded: {err}")
         raise FetchError(f"curl failed: {err}")
-    data = stdout[:max_bytes]
+    data = result.stdout[:max_bytes]
     return decode_bytes(data)
 
 
@@ -114,14 +118,18 @@ def fetch_source(source: dict) -> str:
 
 def _fetch_source_safe(source: dict, category: str) -> dict | None:
     """Fetch a single source and return its raw entry, or None on failure."""
+    name = source["name"]
     try:
+        start = time.perf_counter()
         text = fetch_source(source)
-        entry = {"name": source["name"], "text": text, "category": category}
+        elapsed = time.perf_counter() - start
+        logger.info("fetched %s in %.2fs", name, elapsed)
+        entry = {"name": name, "text": text, "category": category}
         if "proxy_scheme" in source:
             entry["proxy_scheme"] = source["proxy_scheme"]
         return entry
     except Exception as exc:
-        logger.warning("failed %s: %s", source["name"], exc)
+        logger.warning("failed %s: %s", name, exc)
         return None
 
 

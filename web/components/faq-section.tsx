@@ -19,12 +19,15 @@ export function FaqSection({ items }: FaqSectionProps) {
     <div className="border border-border divide-y divide-border bg-surface">
       {items.map((item, index) => {
         const open = openIndex === index;
+        const answerId = `faq-answer-${index}`;
         return (
           <div key={item.question}>
             <button
+              type="button"
               onClick={() => setOpenIndex(open ? null : index)}
               className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-surface-hover/50 transition-colors"
               aria-expanded={open}
+              aria-controls={answerId}
             >
               <span className="font-medium text-sm">{item.question}</span>
               <ChevronDown
@@ -34,7 +37,11 @@ export function FaqSection({ items }: FaqSectionProps) {
               />
             </button>
             {open && (
-              <div className="px-4 pb-3 text-xs text-muted leading-relaxed animate-fade-in">
+              <div
+                id={answerId}
+                role="region"
+                className="px-4 pb-3 text-xs text-muted leading-relaxed animate-fade-in"
+              >
                 {item.answer}
               </div>
             )}

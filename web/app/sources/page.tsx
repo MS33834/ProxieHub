@@ -31,7 +31,10 @@ export default function SourcesPage() {
     )
   ).sort(([, a], [, b]) => b - a);
 
-  const maxIntervalCount = Math.max(...intervalDistribution.map(([, count]) => count));
+  const maxIntervalCount =
+    intervalDistribution.length > 0
+      ? Math.max(...intervalDistribution.map(([, count]) => count))
+      : 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">

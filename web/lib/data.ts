@@ -210,6 +210,12 @@ export function parseChangelog(): ChangelogEntry[] {
   return entries;
 }
 
+export function getLatestVersion(): string {
+  const entries = parseChangelog();
+  const first = entries[0];
+  return first ? `v${first.version}` : "-";
+}
+
 export function loadStatusStats(): StatusStats {
   const clashPath = path.join(NODES_DIR, "clash.yaml");
   const proxiesPath = path.join(NODES_DIR, "proxies.txt");

@@ -29,6 +29,7 @@ export function RegionCloud({ regions }: RegionCloudProps) {
           <button
             key={region}
             type="button"
+            aria-pressed={isActive}
             onClick={() => setActive(isActive ? null : region)}
             className={`font-mono text-xs px-2 py-1 border transition-colors ${
               isActive
@@ -36,7 +37,7 @@ export function RegionCloud({ regions }: RegionCloudProps) {
                 : "border-border text-muted hover:bg-surface-hover"
             }`}
           >
-            <span className="uppercase">{region}</span>
+            <span>{region}</span>
             <span className="ml-1.5 opacity-70">{count}</span>
           </button>
         );

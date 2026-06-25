@@ -36,6 +36,8 @@ export function SubscribeCard({
       <div className="space-y-3">
         <div className="flex border border-border p-0.5">
           <button
+            type="button"
+            aria-pressed={mirror === "github"}
             onClick={() => setMirror("github")}
             className={`flex-1 py-1 text-xs font-medium transition-colors ${
               mirror === "github"
@@ -46,6 +48,8 @@ export function SubscribeCard({
             GitHub
           </button>
           <button
+            type="button"
+            aria-pressed={mirror === "gitcode"}
             onClick={() => setMirror("gitcode")}
             className={`flex-1 py-1 text-xs font-medium transition-colors ${
               mirror === "gitcode"
@@ -61,6 +65,7 @@ export function SubscribeCard({
           <input
             readOnly
             value={url}
+            aria-label="订阅链接"
             className="flex-1 min-w-0 bg-background border border-border px-3 py-2 text-xs font-mono text-foreground truncate focus:outline-none focus:border-primary"
           />
           <CopyButton text={url} className="shrink-0" />

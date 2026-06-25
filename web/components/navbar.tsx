@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X, Code2, Globe } from "lucide-react";
 
 const navItems = [
@@ -24,9 +24,36 @@ const navItems = [
 
 const docsHref = "/ProxieHub/docs/";
 
+const mobileMenuId = "mobile-menu";
+
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+      }
+    }
+
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    if (open) {
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
@@ -46,6 +73,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={`px-3 py-1.5 text-sm transition-colors ${
                   active
                     ? "text-foreground border-b border-primary"
@@ -74,16 +102,23 @@ export function Navbar() {
         </nav>
 
         <button
+          type="button"
           className="md:hidden p-1.5 hover:bg-surface-hover"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls={mobileMenuId}
         >
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-border px-4 py-2 space-y-1 animate-fade-in">
+        <div
+          ref={menuRef}
+          id={mobileMenuId}
+          className="md:hidden border-t border-border px-4 py-2 space-y-1 animate-fade-in"
+        >
           {navItems.map((item) => {
             const active = pathname === item.href;
             return (
@@ -91,6 +126,7 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
+                aria-current={active ? "page" : undefined}
                 className={`block px-3 py-2 text-sm ${
                   active
                     ? "text-foreground bg-surface"

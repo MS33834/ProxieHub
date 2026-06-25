@@ -7,7 +7,7 @@ try:
 except ImportError:  # pragma: no cover
     yaml = None
 
-from parser import node_to_clash_config
+from parser import decode_vmess, node_to_clash_config, parse_ss_link, parse_trojan_link, parse_vless_link
 from utils import NODES_DIR, is_private_host
 
 
@@ -46,6 +46,26 @@ def _node_info(item):
     if isinstance(item, dict):
         return item.get("link"), item.get("region", "unknown"), item.get("latency_ms")
     return item, "unknown", None
+
+
+def _extract_host_from_link(link: str) -> str | None:
+    """Extract the server host from a node link without full Clash conversion."""
+    if not link or "://" not in link:
+        return None
+    scheme = link.split("://", 1)[0].lower()
+    if scheme == "vmess":
+        cfg = decode_vmess(link)
+        return cfg.get("add") if cfg else None
+    if scheme == "vless":
+        cfg = parse_vless_link(link)
+        return cfg.get("server") if cfg else None
+    if scheme == "trojan":
+        cfg = parse_trojan_link(link)
+        return cfg.get("server") if cfg else None
+    if scheme == "ss":
+        cfg = parse_ss_link(link)
+        return cfg.get("server") if cfg else None
+    return None
 
 
 def _compute_stats(items: list) -> dict:
@@ -180,8 +200,8 @@ def to_v2ray_subscription(items, stats: dict | None = None) -> str:
     safe_links = []
     for item in items:
         link, _region, _latency = _node_info(item)
-        cfg = node_to_clash_config(link)
-        if cfg and cfg.get("server") and not is_private_host(cfg.get("server")):
+        host = _extract_host_from_link(link)
+        if host and not is_private_host(host):
             safe_links.append(link)
     if not safe_links:
         return "# ProxieHub V2Ray subscription\n# Auto-generated.\n"

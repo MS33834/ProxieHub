@@ -16,7 +16,7 @@ logger = setup_logging()
 # Limits are configurable via environment variables for future scaling.
 MAX_NODES = int(os.environ.get("PROXIEHUB_MAX_NODES", "500"))
 MAX_PROXIES = int(os.environ.get("PROXIEHUB_MAX_PROXIES", "200"))
-VERIFY_NODES = os.environ.get("PROXIEHUB_VERIFY_NODES", "false").lower() in ("1", "true", "yes")
+VERIFY_NODES = os.environ.get("PROXIEHUB_VERIFY_NODES", "true").lower() in ("1", "true", "yes")
 GEO_ENABLED = os.environ.get("PROXIEHUB_GEO_ENABLED", "false").lower() in ("1", "true", "yes")
 # Verification tuning: per-node connect timeout (seconds) and concurrency.
 VERIFY_TIMEOUT = int(os.environ.get("PROXIEHUB_VERIFY_TIMEOUT", "5"))
@@ -49,7 +49,9 @@ def main(verify: bool = False) -> int:
 
     should_verify = verify and can_reach_public_internet()
     if verify and not should_verify:
-        logger.warning("public internet reachability test failed; skipping node verification")
+        logger.warning(
+            "verification requested but public internet unreachable; outputting unverified nodes"
+        )
 
     raw = crawl()
 

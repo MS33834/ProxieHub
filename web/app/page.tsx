@@ -16,7 +16,7 @@ import {
   Sparkles,
   ExternalLink,
 } from "lucide-react";
-import { loadStats, getSubscribeUrls } from "@/lib/data";
+import { loadStats, getSubscribeUrls, getLatestVersion } from "@/lib/data";
 import { platforms } from "@/lib/platforms";
 import { StatsSection } from "@/components/stats-section";
 import { ProtocolChart } from "@/components/protocol-chart";
@@ -97,6 +97,7 @@ const faqs = [
 export default function HomePage() {
   const stats = loadStats();
   const urls = getSubscribeUrls();
+  const latestVersion = getLatestVersion();
 
   return (
     <>
@@ -208,7 +209,7 @@ export default function HomePage() {
                   版本动态
                 </h3>
               </div>
-              <div className="text-2xl font-semibold font-mono mb-1">v1.2.0</div>
+              <div className="text-2xl font-semibold font-mono mb-1">{latestVersion}</div>
               <p className="text-xs text-muted">新增路线图、状态页与架构说明</p>
             </Link>
           </div>

@@ -60,6 +60,8 @@ export function SourceTable({ sources }: SourceTableProps) {
             {(["all", "enabled", "disabled"] as const).map((key) => (
               <button
                 key={key}
+                type="button"
+                aria-pressed={filter === key}
                 onClick={() => setFilter(key)}
                 className={`px-2.5 py-1 text-xs transition-colors ${
                   filter === key

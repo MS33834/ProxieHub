@@ -8,12 +8,27 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
 
 from parser import decode_vmess, parse_vless_link, parse_trojan_link, parse_ss_link
-from utils import is_private_host
+from utils import get_logger, is_private_host
 
 TIMEOUT = 5
 MAX_WORKERS = 50
 GEO_TIMEOUT = 5
 GEO_MIN_INTERVAL = 1.5  # seconds; stay below ip-api free tier (≈45/min)
+MAX_GEO_RESPONSE_SIZE = 65536  # 64 KiB
+
+logger = get_logger("verifier")
+
+
+def _to_valid_port(port_raw) -> int | None:
+    """Convert a raw port value to an int in the valid 1-65535 range."""
+    if port_raw is None:
+        return None
+    try:
+        port = int(str(port_raw).strip())
+    except (TypeError, ValueError):
+        return None
+    return port if 1 <= port <= 65535 else None
+
 
 _geo_cache: dict[str, str] = {}
 _geo_lock = threading.Lock()
@@ -65,11 +80,7 @@ def parse_endpoint(link: str) -> tuple[str | None, int | None]:
             if not cfg:
                 return None, None
             host = cfg.get("add")
-            port_raw = cfg.get("port")
-            try:
-                port = int(port_raw) if port_raw is not None and str(port_raw).strip() else None
-            except (TypeError, ValueError):
-                port = None
+            port = _to_valid_port(cfg.get("port"))
             return host, port
         if scheme == "vless":
             cfg = parse_vless_link(link)
@@ -92,7 +103,23 @@ def parse_endpoint(link: str) -> tuple[str | None, int | None]:
         return None, None
 
 
-def resolve_ip(host: str) -> str | None:
+class _SocketTimeout:
+    """Temporarily set the global socket default timeout."""
+
+    def __init__(self, timeout: float | None):
+        self.timeout = timeout
+        self._previous: float | None = None
+
+    def __enter__(self) -> "_SocketTimeout":
+        self._previous = socket.getdefaulttimeout()
+        socket.setdefaulttimeout(self.timeout)
+        return self
+
+    def __exit__(self, *args) -> None:
+        socket.setdefaulttimeout(self._previous)
+
+
+def resolve_ip(host: str, timeout: int = 3) -> str | None:
     """Resolve a hostname to an IP address; return IPs unchanged."""
     try:
         ipaddress.ip_address(host)
@@ -100,13 +127,15 @@ def resolve_ip(host: str) -> str | None:
     except ValueError:
         pass
     try:
-        infos = socket.getaddrinfo(host, None, socket.AF_INET, socket.SOCK_STREAM)
+        with _SocketTimeout(timeout):
+            infos = socket.getaddrinfo(host, None, socket.AF_INET, socket.SOCK_STREAM)
         if infos:
             return infos[0][4][0]
     except Exception:
         pass
     try:
-        infos = socket.getaddrinfo(host, None, socket.AF_INET6, socket.SOCK_STREAM)
+        with _SocketTimeout(timeout):
+            infos = socket.getaddrinfo(host, None, socket.AF_INET6, socket.SOCK_STREAM)
         if infos:
             return infos[0][4][0]
     except Exception:
@@ -130,7 +159,8 @@ def _geo_request(url: str) -> dict:
         headers={"User-Agent": "ProxieHub-Verifier/1.0"},
     )
     with urllib.request.urlopen(req, timeout=GEO_TIMEOUT) as resp:
-        return json.loads(resp.read().decode("utf-8", errors="ignore"))
+        raw = resp.read(MAX_GEO_RESPONSE_SIZE)
+        return json.loads(raw.decode("utf-8", errors="ignore"))
 
 
 def _format_geo(data: dict) -> str:
@@ -228,6 +258,7 @@ def verify_nodes(
                 results.append(future.result())
             except Exception as exc:
                 link = future_to_link[future]
+                logger.warning("verification failed for %s: %s", link, exc)
                 results.append(
                     {
                         "link": link,

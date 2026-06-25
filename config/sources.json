@@ -8,7 +8,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated mixed-protocol subscription (Base64)."
     },
     {
@@ -18,7 +23,10 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless"],
+      "protocols": [
+        "vmess",
+        "vless"
+      ],
       "note": "Daily updated v2ray node pool (Base64)."
     },
     {
@@ -28,7 +36,10 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "30min",
-      "protocols": ["vless", "vmess"],
+      "protocols": [
+        "vless",
+        "vmess"
+      ],
       "note": "Updated every 30 minutes. Plain text vless/vmess links."
     },
     {
@@ -38,7 +49,11 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss"
+      ],
       "note": "Daily updated filtered nodes (Base64)."
     },
     {
@@ -48,7 +63,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated mixed-protocol subscription (Base64)."
     },
     {
@@ -58,7 +78,10 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless"],
+      "protocols": [
+        "vmess",
+        "vless"
+      ],
       "note": "Free proxy/node pool, v2ray subscription (Base64)."
     },
     {
@@ -68,7 +91,11 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss"
+      ],
       "note": "Continuously updated free clash/v2ray subscription (Base64)."
     },
     {
@@ -78,7 +105,10 @@
       "enabled": false,
       "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["vmess", "vless"],
+      "protocols": [
+        "vmess",
+        "vless"
+      ],
       "note": "Hourly updated mixed free nodes from getNode. Currently empty/placeholder file."
     },
     {
@@ -88,7 +118,10 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless"],
+      "protocols": [
+        "vmess",
+        "vless"
+      ],
       "note": "Aggregated public nodes, v2ray format (Base64)."
     },
     {
@@ -98,7 +131,12 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Aggregated public nodes, plain text links."
     },
     {
@@ -108,8 +146,11 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "12h",
-      "protocols": ["vmess", "vless"],
-      "note": "12-hour updated free airport subscription (Base64). Non-GitHub source, enable with caution."
+      "protocols": [
+        "vmess",
+        "vless"
+      ],
+      "note": "Currently disabled: 12-hour updated free airport subscription (Base64). Non-GitHub source, enable with caution."
     },
     {
       "name": "freefq-free",
@@ -118,7 +159,10 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless"],
+      "protocols": [
+        "vmess",
+        "vless"
+      ],
       "note": "Historic free node list. Currently inactive (last update 2024-02)."
     },
     {
@@ -128,7 +172,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["ss"],
+      "protocols": [
+        "ss"
+      ],
       "note": "Shadowsocks nodes collected by NiREvil, updated via GitHub Actions."
     },
     {
@@ -137,9 +183,11 @@
       "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/Base64/Sub11_base64.txt",
       "enabled": true,
       "decode_base64": true,
-      "timeout": 40,
       "update_interval": "daily",
-      "protocols": ["vless"],
+      "timeout": 40,
+      "protocols": [
+        "vless"
+      ],
       "note": "VLESS subscription Sub11 from Epodonios v2ray-configs (Base64)."
     },
     {
@@ -149,7 +197,9 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vless"],
+      "protocols": [
+        "vless"
+      ],
       "note": "VLESS subscription Sub20 from Epodonios v2ray-configs (Base64)."
     },
     {
@@ -159,7 +209,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["ss", "vmess", "trojan", "vless"],
+      "protocols": [
+        "ss",
+        "vmess",
+        "trojan",
+        "vless"
+      ],
       "note": "Daily updated mixed-protocol subscription from ShadowsocksAggregator (Base64)."
     },
     {
@@ -169,7 +224,12 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["vless", "vmess", "ss", "trojan"],
+      "protocols": [
+        "vless",
+        "vmess",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated mixed v2ray nodes from openproxylist (plain text)."
     },
     {
@@ -179,7 +239,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated mixed free nodes from Auto_proxy (Base64)."
     },
     {
@@ -189,7 +254,11 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vless", "vmess", "ss"],
+      "protocols": [
+        "vless",
+        "vmess",
+        "ss"
+      ],
       "note": "Daily updated free v2ray subscription (Base64)."
     },
     {
@@ -199,7 +268,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["trojan", "vmess", "ss", "vless"],
+      "protocols": [
+        "trojan",
+        "vmess",
+        "ss",
+        "vless"
+      ],
       "note": "Daily updated mixed-protocol subscription (Base64)."
     },
     {
@@ -209,7 +283,10 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["ss", "vmess"],
+      "protocols": [
+        "ss",
+        "vmess"
+      ],
       "note": "Small daily updated SS/VMess subscription (Base64). Low node count."
     },
     {
@@ -219,8 +296,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "trojan", "vless"],
       "max_size": 2097152,
+      "protocols": [
+        "vmess",
+        "trojan",
+        "vless"
+      ],
       "note": "Large mixed-protocol subscription from Epodonios v2ray-configs (Base64)."
     },
     {
@@ -230,9 +311,11 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vless"],
       "max_size": 2097152,
-      "note": "Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
+      "protocols": [
+        "vless"
+      ],
+      "note": "Currently disabled: Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
     },
     {
       "name": "epodonios-v2ray-sub4",
@@ -241,9 +324,11 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vless"],
       "max_size": 2097152,
-      "note": "Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
+      "protocols": [
+        "vless"
+      ],
+      "note": "Currently disabled: Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
     },
     {
       "name": "epodonios-v2ray-sub5",
@@ -252,9 +337,14 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "ss", "trojan", "vless"],
       "max_size": 2097152,
-      "note": "Large mixed-protocol subscription from Epodonios v2ray-configs (Base64)."
+      "protocols": [
+        "vmess",
+        "ss",
+        "trojan",
+        "vless"
+      ],
+      "note": "Currently disabled: Large mixed-protocol subscription from Epodonios v2ray-configs (Base64)."
     },
     {
       "name": "epodonios-v2ray-sub6",
@@ -263,9 +353,12 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["ss", "vmess"],
       "max_size": 2097152,
-      "note": "Large SS/VMess subscription from Epodonios v2ray-configs (Base64)."
+      "protocols": [
+        "ss",
+        "vmess"
+      ],
+      "note": "Currently disabled: Large SS/VMess subscription from Epodonios v2ray-configs (Base64)."
     },
     {
       "name": "epodonios-v2ray-sub8",
@@ -274,9 +367,11 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["trojan"],
       "max_size": 2097152,
-      "note": "Large Trojan-only subscription from Epodonios v2ray-configs (Base64)."
+      "protocols": [
+        "trojan"
+      ],
+      "note": "Currently disabled: Large Trojan-only subscription from Epodonios v2ray-configs (Base64)."
     },
     {
       "name": "epodonios-v2ray-sub12",
@@ -285,9 +380,11 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vless"],
       "max_size": 2097152,
-      "note": "Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
+      "protocols": [
+        "vless"
+      ],
+      "note": "Currently disabled: Large VLESS-only subscription from Epodonios v2ray-configs (Base64)."
     },
     {
       "name": "awesome-vpn-all",
@@ -296,7 +393,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "High-star community project (5.6k+ stars) providing daily mixed-protocol subscription (Base64)."
     },
     {
@@ -306,7 +408,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated mixed free VPN subscription, v2ray Base64 format."
     },
     {
@@ -316,7 +423,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["vless"],
+      "protocols": [
+        "vless"
+      ],
       "note": "VLESS nodes from MegaV Public."
     },
     {
@@ -326,7 +435,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["vmess"],
+      "protocols": [
+        "vmess"
+      ],
       "note": "VMess nodes from MegaV Public."
     },
     {
@@ -336,7 +447,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["trojan"],
+      "protocols": [
+        "trojan"
+      ],
       "note": "Trojan nodes from MegaV Public."
     },
     {
@@ -346,7 +459,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["ss"],
+      "protocols": [
+        "ss"
+      ],
       "note": "Shadowsocks nodes from MegaV Public."
     },
     {
@@ -356,9 +471,14 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
       "timeout": 60,
       "max_size": 5242880,
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "INACTIVE: frequently times out (>60s for ~1 MB). Aggregated free v2ray configs (Base64)."
     },
     {
@@ -368,7 +488,11 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "hysteria2"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "hysteria2"
+      ],
       "note": "Daily updated free nodes from Barabama/FreeNodes, v2ray Base64."
     },
     {
@@ -378,7 +502,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated mixed-protocol subscription from NoMoreWalls (Base64)."
     },
     {
@@ -388,7 +517,12 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Raw plain-text backup list from NoMoreWalls."
     },
     {
@@ -398,7 +532,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated merged-protocol subscription from V2RayAggregator (Base64)."
     },
     {
@@ -408,7 +547,12 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["trojan", "vmess", "vless", "ss"],
+      "protocols": [
+        "trojan",
+        "vmess",
+        "vless",
+        "ss"
+      ],
       "note": "Daily updated plain-text merged subscription from V2RayAggregator."
     },
     {
@@ -418,7 +562,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated mixed-protocol subscription from V2rayCollector (Base64)."
     },
     {
@@ -428,7 +577,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["vless"],
+      "protocols": [
+        "vless"
+      ],
       "note": "VLESS nodes from V2rayCollector (plain text)."
     },
     {
@@ -438,7 +589,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["trojan"],
+      "protocols": [
+        "trojan"
+      ],
       "note": "Trojan nodes from V2rayCollector (plain text)."
     },
     {
@@ -448,7 +601,9 @@
       "enabled": true,
       "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["ss"],
+      "protocols": [
+        "ss"
+      ],
       "note": "Shadowsocks nodes from V2rayCollector (plain text)."
     },
     {
@@ -458,7 +613,9 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vless"],
+      "protocols": [
+        "vless"
+      ],
       "note": "VLESS subscription from V2rayCollector (Base64)."
     },
     {
@@ -468,7 +625,9 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess"],
+      "protocols": [
+        "vmess"
+      ],
       "note": "VMess subscription from V2rayCollector (Base64)."
     },
     {
@@ -478,7 +637,10 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vless", "vmess"],
+      "protocols": [
+        "vless",
+        "vmess"
+      ],
       "note": "Daily updated v2ray subscription from free18/v2ray (Base64)."
     },
     {
@@ -488,7 +650,12 @@
       "enabled": true,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Daily updated v2ray subscription from openproxylist (Base64)."
     },
     {
@@ -498,7 +665,12 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Currently unavailable (404). Repository disabled/removed (DMCA)."
     },
     {
@@ -508,7 +680,12 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "daily",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Currently unavailable. Uses rotating daily filenames (e.g. v202606252), no stable raw URL."
     },
     {
@@ -518,7 +695,12 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Currently unavailable (404). Repository not found."
     },
     {
@@ -528,7 +710,10 @@
       "enabled": false,
       "decode_base64": false,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless"],
+      "protocols": [
+        "vmess",
+        "vless"
+      ],
       "note": "Currently unavailable. Config served externally at free.datiya.com, no raw file in repo. Also Clash YAML format (not supported by parser)."
     },
     {
@@ -538,7 +723,12 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Currently unavailable (404). Repository not found."
     },
     {
@@ -548,7 +738,12 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Currently unavailable (404). Repository not found."
     },
     {
@@ -558,7 +753,12 @@
       "enabled": false,
       "decode_base64": false,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Currently unavailable (404). Repository not found."
     },
     {
@@ -568,7 +768,12 @@
       "enabled": false,
       "decode_base64": true,
       "update_interval": "inactive",
-      "protocols": ["vmess", "vless", "ss", "trojan"],
+      "protocols": [
+        "vmess",
+        "vless",
+        "ss",
+        "trojan"
+      ],
       "note": "Currently unavailable (404). Repository not found."
     }
   ],
@@ -578,8 +783,15 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "5min",
-      "protocols": ["http", "https", "socks4", "socks5"],
+      "protocols": [
+        "http",
+        "https",
+        "socks4",
+        "socks5"
+      ],
+      "proxy_scheme": "http",
       "note": "Public HTTP(S)/SOCKS4/SOCKS5 proxy list, validated every 5 minutes."
     },
     {
@@ -587,8 +799,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["http"],
+      "protocols": [
+        "http"
+      ],
       "proxy_scheme": "http",
       "note": "Public HTTP proxy list in plain ip:port format. TheSpeedX/PROXY-List is a popular proxy aggregator."
     },
@@ -597,8 +812,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["socks4"],
+      "protocols": [
+        "socks4"
+      ],
       "proxy_scheme": "socks4",
       "note": "Public SOCKS4 proxy list in plain ip:port format."
     },
@@ -607,8 +825,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["socks5"],
+      "protocols": [
+        "socks5"
+      ],
       "proxy_scheme": "socks5",
       "note": "Public SOCKS5 proxy list in plain ip:port format."
     },
@@ -617,8 +838,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["http"],
+      "protocols": [
+        "http"
+      ],
       "proxy_scheme": "http",
       "note": "Hourly updated and verified public HTTP proxy list (ip:port)."
     },
@@ -627,8 +851,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/https.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["https"],
+      "protocols": [
+        "https"
+      ],
       "proxy_scheme": "https",
       "note": "Hourly updated and verified public HTTPS proxy list (ip:port)."
     },
@@ -637,8 +864,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks4.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["socks4"],
+      "protocols": [
+        "socks4"
+      ],
       "proxy_scheme": "socks4",
       "note": "Hourly updated and verified public SOCKS4 proxy list (ip:port)."
     },
@@ -647,8 +877,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks5.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["socks5"],
+      "protocols": [
+        "socks5"
+      ],
       "proxy_scheme": "socks5",
       "note": "Hourly updated and verified public SOCKS5 proxy list (ip:port)."
     },
@@ -657,8 +890,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-http.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["http"],
+      "protocols": [
+        "http"
+      ],
       "proxy_scheme": "http",
       "note": "Hourly tested online HTTP proxies (ip:port) from jetkai/proxy-list."
     },
@@ -667,8 +903,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks4.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["socks4"],
+      "protocols": [
+        "socks4"
+      ],
       "proxy_scheme": "socks4",
       "note": "Hourly tested online SOCKS4 proxies (ip:port) from jetkai/proxy-list."
     },
@@ -677,8 +916,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks5.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "hourly",
-      "protocols": ["socks5"],
+      "protocols": [
+        "socks5"
+      ],
       "proxy_scheme": "socks5",
       "note": "Hourly tested online SOCKS5 proxies (ip:port) from jetkai/proxy-list."
     },
@@ -687,8 +929,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["http"],
+      "protocols": [
+        "http"
+      ],
       "proxy_scheme": "http",
       "note": "Daily updated validated HTTP proxy list (ip:port) from monosans/proxy-list."
     },
@@ -697,8 +942,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks4.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["socks4"],
+      "protocols": [
+        "socks4"
+      ],
       "proxy_scheme": "socks4",
       "note": "Daily updated validated SOCKS4 proxy list (ip:port) from monosans/proxy-list."
     },
@@ -707,8 +955,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["socks5"],
+      "protocols": [
+        "socks5"
+      ],
       "proxy_scheme": "socks5",
       "note": "Daily updated validated SOCKS5 proxy list (ip:port) from monosans/proxy-list."
     },
@@ -717,8 +968,12 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["http", "https"],
+      "protocols": [
+        "http",
+        "https"
+      ],
       "proxy_scheme": "http",
       "note": "Daily updated raw HTTP/HTTPS proxy list (ip:port) from clarketm/proxy-list."
     },
@@ -727,8 +982,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["http"],
+      "protocols": [
+        "http"
+      ],
       "proxy_scheme": "http",
       "note": "HTTP proxy list (ip:port) from ShiftyTR/Proxy-List."
     },
@@ -737,8 +995,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/mmpx12/proxy-list/master/http.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["http"],
+      "protocols": [
+        "http"
+      ],
       "proxy_scheme": "http",
       "note": "HTTP proxy list (ip:port) from mmpx12/proxy-list."
     },
@@ -747,8 +1008,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks5.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["socks5"],
+      "protocols": [
+        "socks5"
+      ],
       "proxy_scheme": "socks5",
       "note": "SOCKS5 proxy list (ip:port) from mmpx12/proxy-list."
     },
@@ -757,8 +1021,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["https"],
+      "protocols": [
+        "https"
+      ],
       "proxy_scheme": "https",
       "note": "HTTPS proxy list (ip:port) from roosterkid/openproxylist."
     },
@@ -767,8 +1034,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS4.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["socks4"],
+      "protocols": [
+        "socks4"
+      ],
       "proxy_scheme": "socks4",
       "note": "SOCKS4 proxy list (ip:port) from roosterkid/openproxylist."
     },
@@ -777,8 +1047,11 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS5.txt",
       "enabled": true,
+      "decode_base64": false,
       "update_interval": "daily",
-      "protocols": ["socks5"],
+      "protocols": [
+        "socks5"
+      ],
       "proxy_scheme": "socks5",
       "note": "SOCKS5 proxy list (ip:port) from roosterkid/openproxylist."
     },
@@ -787,8 +1060,12 @@
       "type": "github_raw",
       "url": "https://raw.githubusercontent.com/sanjusss/free-proxy-list/master/proxy.txt",
       "enabled": false,
+      "decode_base64": false,
       "update_interval": "inactive",
-      "protocols": ["http", "https"],
+      "protocols": [
+        "http",
+        "https"
+      ],
       "proxy_scheme": "http",
       "note": "Currently unavailable (404). Repository not found."
     }

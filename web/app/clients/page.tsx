@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Monitor,
@@ -10,6 +11,12 @@ import {
   BookOpen,
   HelpCircle,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "客户端教程 — ProxieHub",
+  description:
+    "按平台选择合适的代理客户端，查看推荐列表、配置教程与导入常见问题，所有链接指向官方仓库。",
+};
 import { ClientCard } from "@/components/client-card";
 import { FeatureCard } from "@/components/feature-card";
 import { StepCard } from "@/components/step-card";

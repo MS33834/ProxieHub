@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Users,
@@ -16,11 +17,16 @@ import {
   Copy,
   Newspaper,
   Calendar,
-  Sparkles,
-  Activity,
   GitBranch,
   Zap,
 } from "lucide-react";
+import { news, categoryLabels, type NewsCategory } from "@/lib/news";
+
+export const metadata: Metadata = {
+  title: "社区与贡献 — ProxieHub",
+  description:
+    "ProxieHub 由社区驱动。了解参与渠道、核心贡献者、贡献方式与数据源质量反馈机制，欢迎你加入共建。",
+};
 
 const channels = [
   {
@@ -122,36 +128,19 @@ const feedbackTypes = [
   },
 ];
 
-const latestNews = [
-  {
-    date: "2026-06-24",
-    type: "功能",
-    icon: GitBranch,
-    title: "项目仓库新增平台索引页面",
-    summary: "platforms 页面正式上线，可按协议、地区与可用性筛选节点源。",
-  },
-  {
-    date: "2026-06-23",
-    type: "数据",
-    icon: Zap,
-    title: "数据源扩充至 56 个节点源 + 22 个代理 API",
-    summary: "新增多个公开订阅与代理列表，覆盖更多地区与协议。",
-  },
-  {
-    date: "2026-06-20",
-    type: "文档",
-    icon: Sparkles,
-    title: "文档站点新增 Clash Verge Rev 图文教程",
-    summary: "从安装到订阅导入，提供 step-by-step 的图文指引。",
-  },
-  {
-    date: "2026-06-18",
-    type: "优化",
-    icon: Activity,
-    title: "验证流程优化，默认启用节点连通性测试",
-    summary: "每日构建时自动剔除不可达节点，提升输出列表质量。",
-  },
-];
+const newsIconByCategory: Record<NewsCategory, typeof GitBranch> = {
+  project: GitBranch,
+  protocol: Zap,
+  security: AlertTriangle,
+};
+
+const latestNews = news.slice(0, 4).map((item) => ({
+  date: item.date,
+  type: categoryLabels[item.category],
+  icon: newsIconByCategory[item.category],
+  title: item.title,
+  summary: item.summary,
+}));
 
 function Avatar({ name, color }: { name: string; color: string }) {
   const initials = name.slice(0, 2).toUpperCase();

@@ -96,7 +96,7 @@ def fetch(
 def maybe_decode_base64(text: str) -> str:
     """If the whole text looks like base64, try decoding it once."""
     text = text.strip()
-    if not text or "//" in text or "\n" in text:
+    if not text or "://" in text or "\n" in text:
         return text
     try:
         decoded = base64.b64decode(text + "=" * (-len(text) % 4), validate=True)

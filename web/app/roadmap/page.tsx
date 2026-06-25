@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   CheckCircle2,
   Loader2,
@@ -6,6 +7,12 @@ import {
   Route,
   Target,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "项目路线图 — ProxieHub",
+  description:
+    "ProxieHub 的短期、中期与长期规划，涵盖稳定性、验证策略、地区分组、JSON API 与社区建设。",
+};
 
 const phases = [
   {

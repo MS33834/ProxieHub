@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { parseChangelog } from "@/lib/data";
 import {
   Globe,
   Shield,
@@ -20,6 +20,12 @@ import {
   Radio,
   Code2,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "关于 — ProxieHub",
+  description:
+    "了解 ProxieHub 的项目定位、核心原则、技术架构与版本历程，一个社区维护的免费公开代理与节点聚合项目。",
+};
 
 const principles = [
   {
@@ -147,45 +153,14 @@ const asciiArchitecture = `
 └──────────────────────────────────────────────────────────────────────┘
 `;
 
-interface ChangelogVersion {
-  version: string;
-  date: string;
-  summary: string[];
-}
-
-async function parseChangelog(limit = 3): Promise<ChangelogVersion[]> {
-  try {
-    const filePath = join(process.cwd(), "..", "CHANGELOG.md");
-    const content = await readFile(filePath, "utf-8");
-    const versions: ChangelogVersion[] = [];
-    const lines = content.split("\n");
-    let current: ChangelogVersion | null = null;
-
-    for (const line of lines) {
-      const match = line.match(/^##\s*\[([\d.]+)\]\s*-\s*(\d{4}-\d{2}-\d{2})\s*$/);
-      if (match) {
-        if (current && versions.length < limit) {
-          versions.push(current);
-        }
-        if (versions.length >= limit) break;
-        current = { version: match[1], date: match[2], summary: [] };
-        continue;
-      }
-      if (current && line.trim().startsWith("- ") && current.summary.length < 3) {
-        current.summary.push(line.trim().replace(/^-\s*/, ""));
-      }
-    }
-    if (current && versions.length < limit) {
-      versions.push(current);
-    }
-    return versions;
-  } catch {
-    return [];
-  }
-}
-
-export default async function AboutPage() {
-  const versions = await parseChangelog(3);
+export default function AboutPage() {
+  const versions = parseChangelog()
+    .slice(0, 3)
+    .map((entry) => ({
+      version: entry.version,
+      date: entry.date,
+      summary: Object.values(entry.categories).flat().slice(0, 3),
+    }));
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
@@ -279,7 +254,7 @@ export default async function AboutPage() {
           <div className="space-y-4">
             {milestones.map((m) => (
               <div key={`${m.date}-${m.title}`} className="flex items-start gap-4">
-                <div className="w-16 shrink-0 text-xs font-mono text-primary pt-1">{m.date}</div>
+                <div className="w-20 shrink-0 text-xs font-mono text-primary pt-1">{m.date}</div>
                 <div>
                   <h3 className="text-sm font-medium mb-1">{m.title}</h3>
                   <p className="text-xs text-muted">{m.desc}</p>

@@ -25,7 +25,7 @@ export function DisclaimerBanner() {
         <button
           onClick={() => setDismissed(true)}
           className="shrink-0 p-1 hover:bg-warning/20"
-          aria-label="Dismiss"
+          aria-label="关闭提示"
         >
           <X className="w-3.5 h-3.5" />
         </button>

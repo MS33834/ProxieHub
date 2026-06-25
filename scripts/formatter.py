@@ -206,7 +206,7 @@ def to_v2ray_subscription(items, stats: dict | None = None) -> str:
     if not safe_links:
         return "# ProxieHub V2Ray subscription\n# Auto-generated.\n"
     joined = "\n".join(safe_links)
-    return base64.urlsafe_b64encode(joined.encode()).decode()
+    return base64.b64encode(joined.encode()).decode()
 
 
 def _proxy_host(proxy: str) -> str | None:

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Settings,
   Download,
@@ -10,6 +11,12 @@ import {
   ArrowRight,
   Cpu,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "架构说明 — ProxieHub",
+  description:
+    "从数据源配置到 GitHub Pages 部署的端到端自动化流水线说明，所有脚本与配置均开源可复现。",
+};
 
 const pipeline = [
   {

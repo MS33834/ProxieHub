@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getSubscribeUrls } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "订阅中心 — ProxieHub",
+  description:
+    "选择 Clash / V2Ray / HTTP(S)/SOCKS4/SOCKS5 订阅格式，复制链接并导入客户端；包含镜像切换、格式说明与导入示例。",
+};
 import { SubscribeCard } from "@/components/subscribe-card";
 import { CopyButton } from "@/components/copy-button";
 import { StepCard } from "@/components/step-card";
@@ -177,7 +184,8 @@ export default function SubscribePage() {
               <input
                 readOnly
                 value={urls.clash.github}
-                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none"
+                aria-label="Clash 订阅链接"
+                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40"
               />
               <CopyButton text={urls.clash.github} label="复制" />
             </div>
@@ -193,7 +201,8 @@ export default function SubscribePage() {
               <input
                 readOnly
                 value={urls.v2ray.github}
-                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none"
+                aria-label="V2Ray 订阅链接"
+                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40"
               />
               <CopyButton text={urls.v2ray.github} label="复制" />
             </div>
@@ -209,7 +218,8 @@ export default function SubscribePage() {
               <input
                 readOnly
                 value={urls.proxies.github}
-                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none"
+                aria-label="HTTP(S) / SOCKS4 / SOCKS5 代理列表链接"
+                className="flex-1 min-w-0 bg-background border border-border px-2 py-1.5 text-[10px] font-mono text-muted truncate focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40"
               />
               <CopyButton text={urls.proxies.github} label="复制" />
             </div>

@@ -13,14 +13,27 @@ from verifier import can_reach_public_internet, stats_summary, verify_nodes
 
 logger = setup_logging()
 
+
+def _get_int_env(name: str, default: int) -> int:
+    """Read an integer env var, returning *default* (with a warning) on bad input."""
+    raw = os.environ.get(name)
+    if raw is None or raw == "":
+        return default
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        logger.warning("invalid integer for %s=%r; using default %d", name, raw, default)
+        return default
+
+
 # Limits are configurable via environment variables for future scaling.
-MAX_NODES = int(os.environ.get("PROXIEHUB_MAX_NODES", "500"))
-MAX_PROXIES = int(os.environ.get("PROXIEHUB_MAX_PROXIES", "200"))
+MAX_NODES = _get_int_env("PROXIEHUB_MAX_NODES", 500)
+MAX_PROXIES = _get_int_env("PROXIEHUB_MAX_PROXIES", 200)
 VERIFY_NODES = os.environ.get("PROXIEHUB_VERIFY_NODES", "true").lower() in ("1", "true", "yes")
 GEO_ENABLED = os.environ.get("PROXIEHUB_GEO_ENABLED", "false").lower() in ("1", "true", "yes")
 # Verification tuning: per-node connect timeout (seconds) and concurrency.
-VERIFY_TIMEOUT = int(os.environ.get("PROXIEHUB_VERIFY_TIMEOUT", "5"))
-VERIFY_WORKERS = int(os.environ.get("PROXIEHUB_VERIFY_WORKERS", "50"))
+VERIFY_TIMEOUT = _get_int_env("PROXIEHUB_VERIFY_TIMEOUT", 5)
+VERIFY_WORKERS = _get_int_env("PROXIEHUB_VERIFY_WORKERS", 50)
 
 
 def _extract_node_links_safe(item: dict) -> tuple[list[str], str | None]:

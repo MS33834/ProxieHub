@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: "update-nodes"
@@ -75,6 +73,10 @@ jobs:
           git config --local credential.helper store
           printf 'url=https://gitcode.com/badhope/ProxieHub.git\nusername=oauth2\npassword=%s\n' "$GITCODE_TOKEN" | git credential approve
           git push gitcode main
+
+      - name: Clear GitCode credentials
+        if: ${{ always() && env.GITCODE_TOKEN != '' }}
+        run: |
           git credential reject <<'EOF'
           url=https://gitcode.com/badhope/ProxieHub.git
           EOF

@@ -23,7 +23,7 @@ const navItems = [
   { label: "免责声明", href: "/disclaimer" },
 ];
 
-const docsHref = "/ProxieHub/docs/";
+const docsHref = "/docs";
 
 const mobileMenuId = "mobile-menu";
 
@@ -85,12 +85,12 @@ export function Navbar() {
               </Link>
             );
           })}
-          <a
+          <Link
             href={docsHref}
             className="px-3 py-1.5 text-sm text-muted hover:text-foreground transition-colors"
           >
             文档
-          </a>
+          </Link>
           <a
             href="https://github.com/MS33834/ProxieHub"
             target="_blank"
@@ -138,13 +138,13 @@ export function Navbar() {
               </Link>
             );
           })}
-          <a
+          <Link
             href={docsHref}
             onClick={() => setOpen(false)}
             className="block px-3 py-2 text-sm text-muted hover:text-foreground hover:bg-surface-hover"
           >
             文档
-          </a>
+          </Link>
         </div>
       )}
     </header>

@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getSubscribeUrls } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "工具与生态 — ProxieHub",
+  description:
+    "整理各平台常用代理客户端、浏览器扩展、命令行工具与路由器方案，配合命令行示例与工具选择决策树。",
+};
 import { CopyButton } from "@/components/copy-button";
 import {
   Wrench,
@@ -265,7 +272,7 @@ const categories = [
 const difficultyBadge = {
   beginner: { label: "新手", className: "border-success/30 text-success bg-success/10" },
   intermediate: { label: "进阶", className: "border-warning/30 text-warning bg-warning/10" },
-  advanced: { label: "高阶", className: "border-destructive/30 text-destructive bg-destructive/10" },
+  advanced: { label: "高阶", className: "border-danger/30 text-danger bg-danger/10" },
 };
 
 const commands = [

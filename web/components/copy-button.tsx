@@ -51,7 +51,7 @@ export function CopyButton({ text, label = "复制", className = "" }: CopyButto
         state === "copied"
           ? "border-success/30 text-success bg-success/10"
           : state === "error"
-            ? "border-destructive/30 text-destructive bg-destructive/10"
+            ? "border-danger/30 text-danger bg-danger/10"
             : "border-primary text-primary hover:bg-primary hover:text-background"
       } ${className}`}
     >

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Database,
@@ -10,6 +11,12 @@ import {
   Globe,
   Shield,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "数据源贡献指南 — ProxieHub",
+  description:
+    "了解 ProxieHub 收录数据源的条件与提交步骤，学习如何贡献新的公开节点或代理源。",
+};
 
 const requirements = [
   {

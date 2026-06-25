@@ -152,7 +152,7 @@ export function loadNodeQuality(): NodeQuality | null {
   if (!fs.existsSync(clashPath)) return null;
 
   try {
-    const lines = fs.readFileSync(clashPath, "utf-8").split("\n").slice(0, 10);
+    const lines = fs.readFileSync(clashPath, "utf-8").split("\n").slice(0, 30);
     let total = 0;
     let alive = 0;
     let survivalRate = 0;

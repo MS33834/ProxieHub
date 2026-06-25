@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   AlertTriangle,
   Scale,
@@ -7,6 +8,12 @@ import {
   Eye,
   Ban,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "免责声明 — ProxieHub",
+  description:
+    "使用 ProxieHub 前请阅读免责声明：项目性质、安全隐私风险、用户责任、使用条款与法律合规提示。",
+};
 
 export default function DisclaimerPage() {
   return (

@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CopyButton } from "@/components/copy-button";
+
+export const metadata: Metadata = {
+  title: "参与贡献 — ProxieHub",
+  description:
+    "ProxieHub 是社区驱动的开源项目，欢迎提交数据源、改进代码、完善文档与翻译，附数据源提交模板。",
+};
 import {
   GitPullRequest,
   Database,
@@ -159,7 +166,8 @@ export default function ContributePage() {
             <textarea
               readOnly
               value={sourceTemplate}
-              className="w-full h-56 bg-background border border-border p-3 text-xs font-mono text-muted resize-none focus:outline-none"
+              aria-label="数据源提交模板"
+              className="w-full h-56 bg-background border border-border p-3 text-xs font-mono text-muted resize-none focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40"
             />
             <div className="absolute top-2 right-2">
               <CopyButton text={sourceTemplate} label="复制模板" />

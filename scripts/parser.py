@@ -2,7 +2,9 @@ import json
 import re
 from urllib.parse import unquote, parse_qs
 
-from utils import safe_b64decode
+from utils import get_logger, safe_b64decode
+
+logger = get_logger("parser")
 
 LINK_PATTERNS = [
     r'(?<!\S)ss://[^\s<>"\)]+',
@@ -14,19 +16,30 @@ LINK_PATTERNS = [
     r'(?<!\S)hysteria2://[^\s<>"\)]+',
 ]
 
-SUPPORTED_SCHEMES = {"ss", "ssr", "vmess", "vless", "trojan", "hysteria", "hysteria2"}
+# Schemes we can fully parse and render to Clash/V2Ray output.
+OUTPUT_SCHEMES = {"ss", "vmess", "vless", "trojan"}
+# Recognized but unsupported schemes (no Clash config writer); skipped on output.
+SKIPPED_SCHEMES = {"ssr", "hysteria", "hysteria2"}
+SUPPORTED_SCHEMES = OUTPUT_SCHEMES | SKIPPED_SCHEMES
 
 
 def extract_node_links(text: str | None) -> list[str]:
     if not text:
         return []
     links = set()
+    skipped: dict[str, int] = {}
     for pattern in LINK_PATTERNS:
         for match in re.findall(pattern, text):
             link = match.strip()
             scheme = link.split("://", 1)[0].lower()
-            if scheme in SUPPORTED_SCHEMES:
+            if scheme in OUTPUT_SCHEMES:
                 links.add(link)
+            elif scheme in SKIPPED_SCHEMES:
+                skipped[scheme] = skipped.get(scheme, 0) + 1
+    if skipped:
+        total = sum(skipped.values())
+        detail = ", ".join(f"{s}: {c}" for s, c in sorted(skipped.items()))
+        logger.info("skipped %d unsupported protocol link(s): %s", total, detail)
     return list(links)
 
 

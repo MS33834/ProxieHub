@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { loadStats } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "数据源透明度 — ProxieHub",
+  description:
+    "ProxieHub 不生产节点，所有内容均来自公开数据源。查看数据源总数、协议覆盖、更新频率与地区分布。",
+};
 import { SourceTable } from "@/components/source-table";
 import { ProtocolChart } from "@/components/protocol-chart";
 import { RegionCloud } from "@/components/region-cloud";

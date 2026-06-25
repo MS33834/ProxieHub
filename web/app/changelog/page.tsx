@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { parseChangelog } from "@/lib/data";
 import {
   Clock,
@@ -8,6 +9,12 @@ import {
   Sparkles,
   FileText,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "更新日志 — ProxieHub",
+  description:
+    "记录 ProxieHub 每个版本的重要变更，包括新增、优化、修复、变更、移除与安全相关更新。",
+};
 
 const categoryConfig: Record<
   string,
@@ -20,6 +27,16 @@ const categoryConfig: Record<
   优化: { label: "优化", icon: Sparkles, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20" },
   Fixed: { label: "修复", icon: Bug, color: "text-danger", bg: "bg-danger/10", border: "border-danger/20" },
   修复: { label: "修复", icon: Bug, color: "text-danger", bg: "bg-danger/10", border: "border-danger/20" },
+  Changed: { label: "变更", icon: Wrench, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20" },
+  变更: { label: "变更", icon: Wrench, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20" },
+  Removed: { label: "移除", icon: Bug, color: "text-danger", bg: "bg-danger/10", border: "border-danger/20" },
+  移除: { label: "移除", icon: Bug, color: "text-danger", bg: "bg-danger/10", border: "border-danger/20" },
+  Deprecated: { label: "弃用", icon: Clock, color: "text-warning", bg: "bg-warning/10", border: "border-warning/20" },
+  弃用: { label: "弃用", icon: Clock, color: "text-warning", bg: "bg-warning/10", border: "border-warning/20" },
+  Security: { label: "安全", icon: Bug, color: "text-danger", bg: "bg-danger/10", border: "border-danger/20" },
+  安全: { label: "安全", icon: Bug, color: "text-danger", bg: "bg-danger/10", border: "border-danger/20" },
+  Docs: { label: "文档", icon: FileText, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20" },
+  文档: { label: "文档", icon: FileText, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20" },
 };
 
 function getCategoryStyle(name: string) {

@@ -76,7 +76,8 @@ export function SourceTable({ sources }: SourceTableProps) {
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="border border-border bg-background px-2.5 py-1 text-xs text-muted focus:outline-none focus:border-primary"
+            aria-label="按类型筛选数据源"
+            className="border border-border bg-background px-2.5 py-1 text-xs text-muted focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40"
           >
             <option value="all">所有类型</option>
             {types.map((t) => (
@@ -88,7 +89,8 @@ export function SourceTable({ sources }: SourceTableProps) {
           <select
             value={protocolFilter}
             onChange={(e) => setProtocolFilter(e.target.value)}
-            className="border border-border bg-background px-2.5 py-1 text-xs text-muted focus:outline-none focus:border-primary"
+            aria-label="按协议筛选数据源"
+            className="border border-border bg-background px-2.5 py-1 text-xs text-muted focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40"
           >
             <option value="all">所有协议</option>
             {protocols.map((p) => (

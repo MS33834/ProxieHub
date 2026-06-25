@@ -16,10 +16,23 @@ class FakeSocket:
 
 
 class _Monkeypatch:
-    """Minimal stand-in for pytest's monkeypatch fixture."""
+    """Minimal stand-in for pytest's monkeypatch fixture.
+
+    Saves original values on ``setattr`` so they can be restored via ``undo()``.
+    """
+
+    def __init__(self):
+        self._originals: list = []
 
     def setattr(self, obj, name, value):
+        original = getattr(obj, name)
+        self._originals.append((obj, name, original))
         setattr(obj, name, value)
+
+    def undo(self):
+        while self._originals:
+            obj, name, original = self._originals.pop()
+            setattr(obj, name, original)
 
 
 def _mp(monkeypatch):
@@ -65,10 +78,20 @@ def test_parse_endpoint_invalid():
 
 
 def test_verify_node_alive(monkeypatch):
-    # Avoid external geo API calls in this test.
+    import verifier
+
+    mp = _mp(monkeypatch)
+
+    def fake_create_connection(addr, timeout=None):
+        return FakeSocket()
+
+    mp.setattr(verifier.socket, "create_connection", fake_create_connection)
+
+    # Mock socket.create_connection so no real network request is made.
     result = verify_node("ss://YWVzLTI1Ni1nY206cGFzc3dvcmQ=@example.com:443", timeout=5, geo_enabled=False)
     assert "link" in result
     assert "alive" in result
+    assert result["alive"] is True
     assert "latency_ms" in result
 
 
@@ -164,11 +187,26 @@ if __name__ == "__main__":
     test_parse_endpoint_vmess()
     test_parse_endpoint_ipv6()
     test_parse_endpoint_invalid()
-    test_verify_node_alive(None)
+
+    mp = _Monkeypatch()
+    test_verify_node_alive(mp)
+    mp.undo()
+
     test_verify_node_unreachable()
-    test_verify_node_latency_ms(None)
-    test_verify_node_region(None)
+
+    mp = _Monkeypatch()
+    test_verify_node_latency_ms(mp)
+    mp.undo()
+
+    mp = _Monkeypatch()
+    test_verify_node_region(mp)
+    mp.undo()
+
     test_is_private_host()
-    test_geo_cache(None)
+
+    mp = _Monkeypatch()
+    test_geo_cache(mp)
+    mp.undo()
+
     test_stats_summary()
     print("verifier tests passed")

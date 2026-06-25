@@ -103,43 +103,31 @@ def parse_endpoint(link: str) -> tuple[str | None, int | None]:
         return None, None
 
 
-class _SocketTimeout:
-    """Temporarily set the global socket default timeout."""
-
-    def __init__(self, timeout: float | None):
-        self.timeout = timeout
-        self._previous: float | None = None
-
-    def __enter__(self) -> "_SocketTimeout":
-        self._previous = socket.getdefaulttimeout()
-        socket.setdefaulttimeout(self.timeout)
-        return self
-
-    def __exit__(self, *args) -> None:
-        socket.setdefaulttimeout(self._previous)
-
-
 def resolve_ip(host: str, timeout: int = 3) -> str | None:
-    """Resolve a hostname to an IP address; return IPs unchanged."""
+    """Resolve a hostname to an IP address; return IPs unchanged.
+
+    Uses a thread-level timeout (``Future.result``) instead of mutating the
+    global ``socket.setdefaulttimeout`` so concurrent verifications don't race.
+    """
     try:
         ipaddress.ip_address(host)
         return host
     except ValueError:
         pass
-    try:
-        with _SocketTimeout(timeout):
-            infos = socket.getaddrinfo(host, None, socket.AF_INET, socket.SOCK_STREAM)
-        if infos:
-            return infos[0][4][0]
-    except Exception:
-        pass
-    try:
-        with _SocketTimeout(timeout):
-            infos = socket.getaddrinfo(host, None, socket.AF_INET6, socket.SOCK_STREAM)
-        if infos:
-            return infos[0][4][0]
-    except Exception:
-        pass
+
+    def _resolve(family: int) -> str | None:
+        infos = socket.getaddrinfo(host, None, family, socket.SOCK_STREAM)
+        return infos[0][4][0] if infos else None
+
+    for family in (socket.AF_INET, socket.AF_INET6):
+        try:
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(_resolve, family)
+                result = future.result(timeout=timeout)
+                if result:
+                    return result
+        except Exception:
+            continue
     return None
 
 
@@ -175,12 +163,14 @@ def _format_geo(data: dict) -> str:
 
 
 def _fetch_geo_data(ip: str) -> dict:
-    """Try free IP geo APIs in order; return {} on failure."""
+    """Try free IP geo APIs in order; return {} on failure.
+
+    Uses HTTPS-capable endpoints (ip-api.com's free tier is HTTP-only, so it
+    is replaced with ipwho.is which supports HTTPS at no cost).
+    """
     try:
-        data = _geo_request(
-            f"https://ip-api.com/json/{ip}?fields=status,country,countryCode,regionName,region,city,query"
-        )
-        if data.get("status") == "success":
+        data = _geo_request(f"https://ipwho.is/{ip}")
+        if data.get("success") or data.get("country"):
             return data
     except Exception:
         pass

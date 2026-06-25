@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { loadStatusStats, loadNodeQuality, getTopRegions } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "运行状态 — ProxieHub",
+  description:
+    "查看 ProxieHub 最近一次构建的节点数量、验证通过率、平均延迟、协议覆盖与地区分布。",
+};
 import { ProtocolChart } from "@/components/protocol-chart";
 import {
   Clock,

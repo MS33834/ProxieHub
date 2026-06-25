@@ -66,7 +66,7 @@ export function SubscribeCard({
             readOnly
             value={url}
             aria-label="订阅链接"
-            className="flex-1 min-w-0 bg-background border border-border px-3 py-2 text-xs font-mono text-foreground truncate focus:outline-none focus:border-primary"
+            className="flex-1 min-w-0 bg-background border border-border px-3 py-2 text-xs font-mono text-foreground truncate focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40"
           />
           <CopyButton text={url} className="shrink-0" />
         </div>

@@ -20,10 +20,12 @@ export function FaqSection({ items }: FaqSectionProps) {
       {items.map((item, index) => {
         const open = openIndex === index;
         const answerId = `faq-answer-${index}`;
+        const buttonId = `faq-button-${index}`;
         return (
           <div key={item.question}>
             <button
               type="button"
+              id={buttonId}
               onClick={() => setOpenIndex(open ? null : index)}
               className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-surface-hover/50 transition-colors"
               aria-expanded={open}
@@ -40,6 +42,7 @@ export function FaqSection({ items }: FaqSectionProps) {
               <div
                 id={answerId}
                 role="region"
+                aria-labelledby={buttonId}
                 className="px-4 pb-3 text-xs text-muted leading-relaxed animate-fade-in"
               >
                 {item.answer}

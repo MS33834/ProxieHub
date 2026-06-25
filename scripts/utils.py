@@ -67,6 +67,9 @@ def get_logger(name: str) -> logging.Logger:
     return logging.getLogger(f"proxiehub.{name}")
 
 
+logger = get_logger("utils")
+
+
 def _pad_base64(data: str) -> str:
     """Pad base64 string to a multiple of 4 characters."""
     return data + "=" * (-len(data) % 4)
@@ -124,8 +127,13 @@ def validate_url(url: str) -> None:
 def ssl_context() -> ssl.SSLContext:
     """Create an SSL context compatible with a wide range of servers."""
     context = ssl.create_default_context()
-    # Lower SECLEVEL to allow older TLS configurations used by some CDNs.
-    context.set_ciphers("DEFAULT:@SECLEVEL=1")
+    # Prefer SECLEVEL=2 for stronger security; fall back to SECLEVEL=1 only
+    # if the stricter cipher set is unavailable on the system.
+    try:
+        context.set_ciphers("DEFAULT:@SECLEVEL=2")
+    except ssl.SSLError:
+        logger.warning("SECLEVEL=2 ciphers unavailable; falling back to SECLEVEL=1")
+        context.set_ciphers("DEFAULT:@SECLEVEL=1")
     return context
 
 

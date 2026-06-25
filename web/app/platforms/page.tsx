@@ -19,12 +19,10 @@ import { platforms, type Platform } from "@/lib/platforms";
 
 const protocolFilters = [
   { label: "全部", value: "all" },
-  { label: "V2Ray", value: "V2Ray" },
-  { label: "Clash", value: "Clash" },
-  { label: "SS", value: "SS" },
-  { label: "Trojan", value: "Trojan" },
-  { label: "HTTP代理", value: "HTTP代理" },
-] as const;
+  ...Array.from(new Set(platforms.flatMap((p) => p.protocols)))
+    .sort()
+    .map((proto) => ({ label: proto, value: proto })),
+];
 
 const formatFilters = [
   { label: "全部格式", value: "all" },
@@ -202,9 +200,7 @@ export default function PlatformsPage() {
   const filtered = useMemo(() => {
     return platforms.filter((p) => {
       const protocolMatch =
-        protocolFilter === "all" ||
-        p.protocols.includes(protocolFilter) ||
-        p.format.includes(protocolFilter);
+        protocolFilter === "all" || p.protocols.includes(protocolFilter);
       const formatMatch =
         formatFilter === "all" || p.format.includes(formatFilter);
       const difficultyMatch =

@@ -71,9 +71,10 @@ features:
 
 ### 📚 项目参考
 
-了解 ProxieHub 的工作原理与数据来源。
+了解 ProxieHub 的工作原理、数据来源与安全合规事项。
 
 - [项目架构](/architecture) — 配置、抓取、解析、校验、格式化、部署流水线说明。
+- [安全与合规](/security) — 节点安全风险、安全使用建议与合规声明。
 - [数据源说明](/data-sources) — 当前聚合的所有公开数据源清单。
 - [数据源贡献指南](/data-source-guide) — 如何提交新的数据源。
 - [自动化工作流](/automation) — GitHub Actions 定时更新机制。

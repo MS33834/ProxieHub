@@ -15,10 +15,25 @@ import {
   PlusCircle,
   ExternalLink,
   MapPin,
+  Activity,
+  BadgeCheck,
+  Layers,
 } from "lucide-react";
 
 export default function SourcesPage() {
   const stats = loadStats();
+
+  const activeSources = stats.enabledSources;
+  const verifiedSources = stats.sources.filter(
+    (s) => s.enabled && s.reliability === "high"
+  ).length;
+  const avgProtocolCoverage =
+    stats.totalSources > 0
+      ? (
+          stats.sources.reduce((sum, s) => sum + (s.protocols?.length || 0), 0) /
+          stats.totalSources
+        ).toFixed(1)
+      : "0";
 
   const intervalDistribution = Object.entries(
     stats.sources.reduce<Record<string, number>>(
@@ -125,6 +140,32 @@ export default function SourcesPage() {
         <RegionCloud regions={stats.regions} />
       </div>
 
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold mb-4">数据源健康度</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="border border-border bg-surface p-4">
+            <Database className="w-4 h-4 text-muted mb-2" />
+            <div className="text-xl font-semibold font-mono">{stats.totalSources}</div>
+            <div className="text-[10px] text-muted">总收录源数量</div>
+          </div>
+          <div className="border border-border bg-surface p-4">
+            <Activity className="w-4 h-4 text-success mb-2" />
+            <div className="text-xl font-semibold font-mono">{activeSources}</div>
+            <div className="text-[10px] text-muted">活跃源数量</div>
+          </div>
+          <div className="border border-border bg-surface p-4">
+            <BadgeCheck className="w-4 h-4 text-primary mb-2" />
+            <div className="text-xl font-semibold font-mono">{verifiedSources}</div>
+            <div className="text-[10px] text-muted">已验证源数量</div>
+          </div>
+          <div className="border border-border bg-surface p-4">
+            <Layers className="w-4 h-4 text-secondary mb-2" />
+            <div className="text-xl font-semibold font-mono">{avgProtocolCoverage}</div>
+            <div className="text-[10px] text-muted">平均协议覆盖数</div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2">
           <SourceTable sources={stats.sources} />
@@ -204,7 +245,7 @@ export default function SourcesPage() {
         </div>
       </div>
 
-      <div className="border border-warning/20 bg-warning/10 p-4 flex items-start gap-3">
+      <div className="border border-warning/20 bg-warning/10 p-4 flex items-start gap-3 mb-8">
         <AlertTriangle className="w-5 h-5 text-warning shrink-0" />
         <div>
           <h3 className="font-medium text-warning text-sm mb-1">来源可信提示</h3>
@@ -216,6 +257,32 @@ export default function SourcesPage() {
             </Link>
             。
           </p>
+        </div>
+      </div>
+
+      <div className="border border-border bg-surface p-5">
+        <h2 className="text-lg font-semibold mb-2">发现数据源失效？</h2>
+        <p className="text-xs text-muted leading-relaxed mb-4">
+          如果你遇到某个源长期无法访问、返回空内容或节点全部不可用，欢迎在 GitHub 提交 Issue。
+          请附上源名称、失效现象和你发现的时间，维护者会尽快核实并处理。
+        </p>
+        <div className="flex flex-col sm:flex-row items-start gap-2">
+          <a
+            href="https://github.com/MS33834/ProxieHub/issues/new?template=source_report.md&title=数据源失效报告"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-background text-xs font-medium hover:bg-primary-hover transition-colors"
+          >
+            报告失效源 <ExternalLink className="w-3 h-3" />
+          </a>
+          <a
+            href="https://github.com/MS33834/ProxieHub/issues?q=is%3Aissue+label%3Asource%2Fbroken"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border text-xs font-medium hover:bg-surface-hover transition-colors"
+          >
+            查看历史 Issue <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
     </div>

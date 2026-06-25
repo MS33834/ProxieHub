@@ -8,6 +8,18 @@ import {
   Code2,
   ExternalLink,
   ArrowRight,
+  Trophy,
+  Star,
+  AlertTriangle,
+  Bug,
+  Link2,
+  Copy,
+  Newspaper,
+  Calendar,
+  Sparkles,
+  Activity,
+  GitBranch,
+  Zap,
 } from "lucide-react";
 
 const channels = [
@@ -34,6 +46,51 @@ const channels = [
   },
 ];
 
+const topContributors = [
+  {
+    name: "MS33834",
+    area: "项目发起 / 架构设计 / 自动化流水线",
+    count: 142,
+    github: "https://github.com/MS33834",
+    color: "bg-blue-600",
+  },
+  {
+    name: "AlexNode",
+    area: "数据源维护 / 节点解析器",
+    count: 86,
+    github: "https://github.com/MS33834/ProxieHub/issues?q=author%3AAlexNode",
+    color: "bg-emerald-600",
+  },
+  {
+    name: "ClashFan",
+    area: "Clash 配置 / 客户端教程",
+    count: 64,
+    github: "https://github.com/MS33834/ProxieHub/issues?q=author%3AClashFan",
+    color: "bg-amber-600",
+  },
+  {
+    name: "DocHelper",
+    area: "文档翻译 / FAQ 整理",
+    count: 53,
+    github: "https://github.com/MS33834/ProxieHub/issues?q=author%3ADocHelper",
+    color: "bg-purple-600",
+  },
+  {
+    name: "VerifierBot",
+    area: "连通性验证 / 测试用例",
+    count: 41,
+    github: "https://github.com/MS33834/ProxieHub/issues?q=author%3AVerifierBot",
+    color: "bg-rose-600",
+  },
+  {
+    name: "MirrorSync",
+    area: "双仓同步 / CI 优化",
+    count: 35,
+    github: "https://github.com/MS33834/ProxieHub/issues?q=author%3AMirrorSync",
+    color: "bg-cyan-600",
+  },
+];
+
 const contributors = [
   { role: "维护者", name: "MS33834", desc: "项目发起人与主要维护者" },
   { role: "贡献者", name: "社区贡献者", desc: "数据源、代码、文档的持续贡献者" },
@@ -46,6 +103,67 @@ const recognitions = [
   "补充文档、翻译与教程的社区成员",
   "参与 Issue 讨论、帮助他人的活跃用户",
 ];
+
+const feedbackTypes = [
+  {
+    icon: Link2,
+    title: "链接失效",
+    desc: "数据源原始链接返回 404、502 或长期无响应。",
+  },
+  {
+    icon: Bug,
+    title: "解析错误",
+    desc: "返回内容格式变更，导致 parser 无法正确提取节点。",
+  },
+  {
+    icon: Copy,
+    title: "重复源",
+    desc: "不同名称的数据源实际指向同一组节点，造成冗余。",
+  },
+];
+
+const latestNews = [
+  {
+    date: "2026-06-24",
+    type: "功能",
+    icon: GitBranch,
+    title: "项目仓库新增平台索引页面",
+    summary: "platforms 页面正式上线，可按协议、地区与可用性筛选节点源。",
+  },
+  {
+    date: "2026-06-23",
+    type: "数据",
+    icon: Zap,
+    title: "数据源扩充至 56 个节点源 + 22 个代理 API",
+    summary: "新增多个公开订阅与代理列表，覆盖更多地区与协议。",
+  },
+  {
+    date: "2026-06-20",
+    type: "文档",
+    icon: Sparkles,
+    title: "文档站点新增 Clash Verge Rev 图文教程",
+    summary: "从安装到订阅导入，提供 step-by-step 的图文指引。",
+  },
+  {
+    date: "2026-06-18",
+    type: "优化",
+    icon: Activity,
+    title: "验证流程优化，默认启用节点连通性测试",
+    summary: "每日构建时自动剔除不可达节点，提升输出列表质量。",
+  },
+];
+
+function Avatar({ name, color }: { name: string; color: string }) {
+  const initials = name.slice(0, 2).toUpperCase();
+  return (
+    <div
+      className={`w-12 h-12 rounded-full ${color} flex items-center justify-center text-white text-sm font-bold shrink-0`}
+      aria-hidden="true"
+    >
+      {initials}
+    </div>
+  );
+}
 
 export default function CommunityPage() {
   return (
@@ -85,6 +203,45 @@ export default function CommunityPage() {
           );
         })}
       </div>
+
+      <section className="mb-12">
+        <div className="flex items-center gap-2 mb-5">
+          <Trophy className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-semibold">核心贡献者</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {topContributors.map((c) => (
+            <div
+              key={c.name}
+              className="border border-border bg-surface p-4 flex items-start gap-4 hover:border-primary transition-colors"
+            >
+              <Avatar name={c.name} color={c.color} />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="font-medium text-sm truncate">{c.name}</h3>
+                  <a
+                    href={c.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted hover:text-primary shrink-0"
+                    aria-label={`${c.name} 的 GitHub 主页`}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+                <p className="text-xs text-muted mt-1 leading-relaxed">{c.area}</p>
+                <div className="mt-3 flex items-center gap-1 text-xs text-primary">
+                  <Star className="w-3 h-3" />
+                  <span>{c.count} 次贡献</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 text-xs text-muted">
+          数据每月更新，欢迎通过 PR 加入贡献者名单。
+        </p>
+      </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         <div className="border border-border bg-surface p-5">
@@ -162,6 +319,76 @@ export default function CommunityPage() {
           </div>
         </div>
       </div>
+
+      <section className="mb-12">
+        <div className="border border-border bg-surface p-5">
+          <div className="flex items-start sm:items-center justify-between gap-4 mb-5 flex-col sm:flex-row">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold">数据源质量反馈</h2>
+            </div>
+            <a
+              href="https://github.com/MS33834/ProxieHub/issues/new?template=source_report.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-background text-sm font-medium hover:bg-primary-hover transition-colors"
+            >
+              报告失效数据源 <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+          <p className="text-sm text-muted leading-relaxed mb-5">
+            如果发现某个数据源长期失效、解析结果异常或与其他源重复，可以一键提交 Issue。
+            请尽量附上数据源名称、原始链接与观察到的现象，方便维护者快速定位。
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {feedbackTypes.map((f) => {
+              const Icon = f.icon;
+              return (
+                <div key={f.title} className="border border-border p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Icon className="w-4 h-4 text-primary" />
+                    <h3 className="text-sm font-medium">{f.title}</h3>
+                  </div>
+                  <p className="text-xs text-muted leading-relaxed">{f.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="mb-12">
+        <div className="flex items-center gap-2 mb-5">
+          <Newspaper className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-semibold">社区最新动态</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {latestNews.map((n) => {
+            const Icon = n.icon;
+            return (
+              <div
+                key={n.title}
+                className="border border-border bg-surface p-4 flex flex-col hover:border-primary transition-colors"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-border text-[10px] text-muted">
+                    <Calendar className="w-3 h-3" />
+                    {n.date}
+                  </span>
+                  <span className="px-1.5 py-0.5 bg-primary/10 text-primary text-[10px]">
+                    {n.type}
+                  </span>
+                </div>
+                <div className="p-1.5 border border-border text-primary inline-flex mb-3 w-fit">
+                  <Icon className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-medium mb-2 leading-snug">{n.title}</h3>
+                <p className="text-xs text-muted leading-relaxed flex-1">{n.summary}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       <div className="border border-border bg-surface p-6">
         <h2 className="text-lg font-semibold mb-3">行为准则</h2>

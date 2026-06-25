@@ -46,6 +46,7 @@ export default defineConfig({
         text: "项目参考",
         items: [
           { text: "项目架构", link: "/architecture" },
+          { text: "安全与合规", link: "/security" },
           { text: "数据源说明", link: "/data-sources" },
           { text: "数据源贡献指南", link: "/data-source-guide" },
           { text: "自动化工作流", link: "/automation" },

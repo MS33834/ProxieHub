@@ -13,7 +13,15 @@ flowchart LR
     E --> F[部署层<br/>GitHub Actions / GitHub Pages]
 ```
 
-整个流水线每天由 GitHub Actions 触发一次，也可以手动触发或在本地完整复现。
+整个流水线每天由 GitHub Actions 触发一次，也可以手动触发或在本地完整复现。从功能视角看，整条链路可归纳为 **数据采集、数据验证、数据发布** 三个阶段：
+
+| 阶段 | 核心模块 | 主要职责 |
+|---|---|---|
+| 数据采集 | `config/sources.json` + `crawler.py` | 声明并并发拉取所有公开数据源 |
+| 数据验证 | `parser.py` + `verifier.py` | 解析链接、去重、TCP 连通性检测 |
+| 数据发布 | `formatter.py` + `web/` + `docs-site/` + GitHub Actions | 生成多格式订阅、构建站点并部署 |
+
+下面对每一阶段进行详细说明。
 
 ## 各层职责与对应文件
 
@@ -123,6 +131,65 @@ flowchart LR
 4. 构建 `docs-site/` 到 `docs-site/.vitepress/dist`。
 5. 将文档站产物复制到 `web/dist/docs/`。
 6. 上传并部署到 GitHub Pages。
+
+## 三阶段详解
+
+### 第一阶段：数据采集
+
+数据采集阶段负责从互联网上抓取所有公开可用的节点与代理资源。
+
+```mermaid
+flowchart LR
+    A[config/sources.json<br/>数据源清单] --> B[crawler.py<br/>并发下载]
+    B --> C[原始文本<br/>Base64 / 明文 / YAML]
+```
+
+关键点：
+
+- 所有来源必须在 `config/sources.json` 中显式声明，便于审计。
+- `crawler.py` 通过域名白名单、HTTPS 强制与 `max_size` 限制降低 SSRF 与异常流量风险。
+- 对 Base64 编码源自动解码，输出统一文本交给解析层。
+
+### 第二阶段：数据验证
+
+数据验证阶段把原始文本变成结构化、可用的节点对象，并过滤明显失效的条目。
+
+```mermaid
+flowchart LR
+    A[原始文本] --> B[parser.py<br/>提取协议链接]
+    B --> C[去重链接列表]
+    C --> D[verifier.py<br/>TCP 连通检测]
+    D --> E[存活节点集]
+```
+
+关键点：
+
+- `parser.py` 支持 `ss://`、`vmess://`、`vless://`、`trojan://`、`hysteria://`、`hysteria2://` 以及 HTTP(S)/SOCKS4/SOCKS5 代理链接。
+- 解析后先进行 URL 级别去重，避免同一节点多次输出。
+- `verifier.py` 通过轻量级 TCP 连接测试 `host:port`，可选开启 GeoIP 地区识别。
+- CI 默认不启用验证以加快测试；每日自动更新默认启用 `--verify`。
+
+### 第三阶段：数据发布
+
+数据发布阶段把验证后的节点生成多种客户端可消费的格式，并构建、部署站点。
+
+```mermaid
+flowchart LR
+    A[存活节点集] --> B[formatter.py<br/>多格式输出]
+    B --> C[nodes/ 订阅文件]
+    B --> D[web/ 前端数据]
+    C --> E[GitHub Actions<br/>提交 + 部署]
+    D --> E
+```
+
+关键点：
+
+- 输出 `nodes/clash.yaml`、`nodes/v2ray.txt`、`nodes/proxies.txt` 三种主流格式。
+- 可选生成 `nodes/regions.json` 供前端做协议/地区统计。
+- `deploy-web.yml` 同时构建 Next.js 主站与 VitePress 文档站，合并后部署到 GitHub Pages。
+- GitCode 镜像同步让不同地区用户都能稳定访问。
+
+---
 
 ## 目录结构
 

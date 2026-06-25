@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import {
   Globe,
   Shield,
@@ -9,6 +11,14 @@ import {
   BookOpen,
   Heart,
   ArrowRight,
+  Cpu,
+  Layers,
+  Server,
+  FileText,
+  History,
+  Rocket,
+  Radio,
+  Code2,
 } from "lucide-react";
 
 const principles = [
@@ -51,13 +61,132 @@ const principles = [
 ];
 
 const milestones = [
-  { date: "2026-06", title: "项目启动", desc: "确定 ProxieHub 定位，搭建自动化流水线与初始数据源。" },
-  { date: "2026-06", title: "多格式输出", desc: "支持 Clash、V2Ray、HTTP(S)/SOCKS4/SOCKS5 三种订阅格式。" },
-  { date: "2026-06", title: "双仓库同步", desc: "GitHub 主仓库与 GitCode 镜像同步，提升访问稳定性。" },
-  { date: "2026-06", title: "前端与文档站", desc: "Next.js 展示站与 VitePress 文档站上线，内容持续扩展。" },
+  { date: "2026-06-01", title: "项目启动", desc: "确定 ProxieHub 定位，初始化仓库与数据源配置。" },
+  { date: "2026-06-03", title: "自动化流水线搭建", desc: "完成爬虫、解析器、校验器与格式化器，打通端到端自动更新。" },
+  { date: "2026-06-08", title: "多格式输出支持", desc: "支持 Clash YAML、V2Ray 订阅、HTTP(S)/SOCKS4/SOCKS5 代理列表。" },
+  { date: "2026-06-10", title: "双仓库同步", desc: "GitHub 主仓库与 GitCode 镜像同步，提升国内外访问稳定性。" },
+  { date: "2026-06-12", title: "前端 Next.js 站点上线", desc: "静态展示站点发布，包含订阅、数据源、客户端与社区页面。" },
+  { date: "2026-06-14", title: "文档站 VitePress 上线", desc: "完整文档体系上线，覆盖新手指南、部署运维与客户端教程。" },
+  { date: "2026-06-18", title: "平台索引上线", desc: "新增 platforms 页面，支持按协议、地区与可用性筛选节点源。" },
+  { date: "2026-06-20", title: "验证流程优化", desc: "默认启用节点连通性测试，每日构建自动剔除不可达节点。" },
+  { date: "2026-06-22", title: "社区贡献体系建立", desc: "完善 Issue 模板、贡献指南、行为准则与核心贡献者名单。" },
+  { date: "未来", title: "节点质量仪表板", desc: "计划上线历史可用率、延迟趋势与地区分布的可视化面板。" },
 ];
 
-export default function AboutPage() {
+const team = [
+  {
+    name: "MS33834",
+    role: "项目发起人",
+    duties: "项目方向、架构设计、核心代码与发布管理",
+    areas: ["自动化流水线", "架构设计", "版本发布"],
+    icon: Rocket,
+  },
+  {
+    name: "社区贡献者",
+    role: "数据源维护",
+    duties: "发现、验证与维护公开数据源，保持 sources.json 最新",
+    areas: ["数据源挖掘", "节点验证", "配置更新"],
+    icon: Radio,
+  },
+  {
+    name: "代码审阅者",
+    role: "质量把控",
+    duties: "Review Pull Request，确保代码风格、测试与安全性",
+    areas: ["代码审阅", "测试覆盖", "安全审计"],
+    icon: Code2,
+  },
+  {
+    name: "文档维护者",
+    role: "教程编写",
+    duties: "维护 VitePress 文档站、FAQ 与客户端图文教程",
+    areas: ["文档编写", "教程翻译", "用户支持"],
+    icon: FileText,
+  },
+];
+
+const architectureLayers = [
+  {
+    title: "数据采集层",
+    subtitle: "Data Collection",
+    desc: "由 config/sources.json 定义数据源，crawler.py 批量抓取，parser.py 解析 SSR/vmess/VLESS/Trojan 等多种协议。",
+    icon: Layers,
+  },
+  {
+    title: "验证转换层",
+    subtitle: "Verification & Format",
+    desc: "verifier.py 执行 TCP 连通性、IP 黑名单与重复节点检查；formatter.py 输出 Clash、V2Ray 与代理列表。",
+    icon: Cpu,
+  },
+  {
+    title: "发布展示层",
+    subtitle: "Publication",
+    desc: "GitHub Actions 每日定时调度，自动部署 Next.js 站点、VitePress 文档并向仓库写入最新节点产物。",
+    icon: Server,
+  },
+];
+
+const asciiArchitecture = `
+┌──────────────────────────────────────────────────────────────────────┐
+│                      数据采集层  (Data Collection)                    │
+│   config/sources.json  ──▶  crawler.py  ──▶  parser.py               │
+│      数据源配置                批量抓取           多协议解析           │
+└──────────────────────────────────┬───────────────────────────────────┘
+                                   │
+                                   ▼
+┌──────────────────────────────────────────────────────────────────────┐
+│                  验证转换层  (Verification & Format)                  │
+│   verifier.py  ──▶  formatter.py                                     │
+│    连通性/去重/黑名单        输出 Clash / V2Ray / 代理列表             │
+└──────────────────────────────────┬───────────────────────────────────┘
+                                   │
+                                   ▼
+┌──────────────────────────────────────────────────────────────────────┐
+│                       发布展示层  (Publication)                       │
+│   GitHub Actions  ──▶  Next.js 站点  +  VitePress 文档  +  nodes/    │
+│      每日自动调度            订阅页面        教程文档      节点产物     │
+└──────────────────────────────────────────────────────────────────────┘
+`;
+
+interface ChangelogVersion {
+  version: string;
+  date: string;
+  summary: string[];
+}
+
+async function parseChangelog(limit = 3): Promise<ChangelogVersion[]> {
+  try {
+    const filePath = join(process.cwd(), "..", "CHANGELOG.md");
+    const content = await readFile(filePath, "utf-8");
+    const versions: ChangelogVersion[] = [];
+    const lines = content.split("\n");
+    let current: ChangelogVersion | null = null;
+
+    for (const line of lines) {
+      const match = line.match(/^##\s*\[([\d.]+)\]\s*-\s*(\d{4}-\d{2}-\d{2})\s*$/);
+      if (match) {
+        if (current && versions.length < limit) {
+          versions.push(current);
+        }
+        if (versions.length >= limit) break;
+        current = { version: match[1], date: match[2], summary: [] };
+        continue;
+      }
+      if (current && line.trim().startsWith("- ") && current.summary.length < 3) {
+        current.summary.push(line.trim().replace(/^-\s*/, ""));
+      }
+    }
+    if (current && versions.length < limit) {
+      versions.push(current);
+    }
+    return versions;
+  } catch {
+    return [];
+  }
+}
+
+export default async function AboutPage() {
+  const versions = await parseChangelog(3);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="mb-10">
@@ -157,6 +286,112 @@ export default function AboutPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mb-14">
+        <div className="flex items-center gap-2 mb-6">
+          <Users className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-semibold">核心团队</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {team.map((member) => {
+            const Icon = member.icon;
+            return (
+              <div
+                key={member.name}
+                className="border border-border bg-surface p-5 hover:border-primary transition-colors"
+              >
+                <div className="p-1.5 border border-border text-primary inline-flex mb-3">
+                  <Icon className="w-4 h-4" />
+                </div>
+                <h3 className="font-medium text-sm mb-1">{member.name}</h3>
+                <p className="text-xs text-primary mb-3">{member.role}</p>
+                <p className="text-xs text-muted leading-relaxed mb-4">{member.duties}</p>
+                <div className="flex flex-wrap gap-2">
+                  {member.areas.map((area) => (
+                    <span
+                      key={area}
+                      className="px-1.5 py-0.5 border border-border text-[10px] text-muted"
+                    >
+                      {area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="mb-14">
+        <div className="flex items-center gap-2 mb-6">
+          <Cpu className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-semibold">技术架构</h2>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+          {architectureLayers.map((layer) => {
+            const Icon = layer.icon;
+            return (
+              <div key={layer.title} className="border border-border bg-surface p-5">
+                <div className="p-1.5 border border-border text-primary inline-flex mb-3">
+                  <Icon className="w-4 h-4" />
+                </div>
+                <h3 className="font-medium text-sm mb-1">{layer.title}</h3>
+                <p className="text-[10px] text-muted font-mono mb-3">{layer.subtitle}</p>
+                <p className="text-xs text-muted leading-relaxed">{layer.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+        <div className="border border-border bg-surface p-5 overflow-x-auto">
+          <pre className="text-xs text-muted font-mono leading-relaxed whitespace-pre">
+            {asciiArchitecture}
+          </pre>
+        </div>
+      </section>
+
+      <section className="mb-14">
+        <div className="flex items-center gap-2 mb-6">
+          <History className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-semibold">版本历程</h2>
+        </div>
+        <div className="border border-border bg-surface p-5">
+          {versions.length === 0 ? (
+            <p className="text-sm text-muted">暂时无法读取 CHANGELOG，请稍后查看。</p>
+          ) : (
+            <div className="space-y-5">
+              {versions.map((v) => (
+                <div
+                  key={v.version}
+                  className="flex flex-col sm:flex-row sm:items-start gap-4 border-b border-border last:border-0 pb-5 last:pb-0"
+                >
+                  <div className="sm:w-36 shrink-0">
+                    <div className="text-sm font-mono font-medium text-primary">v{v.version}</div>
+                    <div className="text-xs text-muted">{v.date}</div>
+                  </div>
+                  <ul className="space-y-1.5 flex-1">
+                    {v.summary.map((item) => (
+                      <li key={`${v.version}-${item}`} className="flex items-start gap-2 text-sm text-muted">
+                        <span className="text-primary mt-1.5">·</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="mt-5 pt-4 border-t border-border">
+            <a
+              href="https://github.com/MS33834/ProxieHub/blob/main/CHANGELOG.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-hover"
+            >
+              查看完整 CHANGELOG <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </section>

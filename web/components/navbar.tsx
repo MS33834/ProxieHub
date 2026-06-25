@@ -10,6 +10,7 @@ const navItems = [
   { label: "订阅", href: "/subscribe" },
   { label: "数据源", href: "/sources" },
   { label: "平台", href: "/platforms" },
+  { label: "动态", href: "/news" },
   { label: "客户端", href: "/clients" },
   { label: "工具", href: "/tools" },
   { label: "状态", href: "/status" },

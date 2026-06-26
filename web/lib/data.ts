@@ -19,6 +19,7 @@ export interface SourceConfig {
   reliability?: "high" | "medium" | "low";
   max_size?: number;
   proxy_scheme?: string;
+  timeout?: number;
 }
 
 export interface SiteStats {
@@ -124,11 +125,15 @@ function parseClashYaml(filePath: string): { total: number; protocols: Record<st
 
 function loadSources(): SourceConfig[] {
   if (!fs.existsSync(CONFIG_PATH)) return [];
-  const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
-  return [
-    ...(config.free_node_sources || []),
-    ...(config.free_proxy_apis || []),
-  ];
+  try {
+    const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
+    return [
+      ...(config.free_node_sources || []),
+      ...(config.free_proxy_apis || []),
+    ];
+  } catch {
+    return [];
+  }
 }
 
 function loadRegions(): Record<string, number> {

@@ -10,7 +10,8 @@ import utils
 def test_pad_base64():
     assert utils._pad_base64("aGVsbG8") == "aGVsbG8="
     assert utils._pad_base64("aGVsbG8=") == "aGVsbG8="
-    assert utils._pad_base64("aGVsbG8==") == "aGVsbG8====="
+    # Excess padding is normalized away before re-padding.
+    assert utils._pad_base64("aGVsbG8==") == "aGVsbG8="
 
 
 def test_safe_b64decode():
@@ -34,6 +35,12 @@ def test_is_private_host():
     assert utils.is_private_host("10.0.0.1") is True
     assert utils.is_private_host("example.com") is False
     assert utils.is_private_host("example.local") is True
+    # IPv6 brackets must be stripped before evaluation.
+    assert utils.is_private_host("[fe80::1]") is True
+    assert utils.is_private_host("[2606:4700:4700::1111]") is False
+    # Link-local / unspecified addresses must be blocked.
+    assert utils.is_private_host("169.254.169.254") is True
+    assert utils.is_private_host("0.0.0.0") is True
 
 
 def test_validate_url_allowed():

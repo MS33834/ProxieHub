@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import re
 from urllib.parse import unquote, parse_qs
@@ -29,7 +31,7 @@ def extract_node_links(text: str | None) -> list[str]:
     links = set()
     skipped: dict[str, int] = {}
     for pattern in LINK_PATTERNS:
-        for match in re.findall(pattern, text):
+        for match in re.findall(pattern, text, re.IGNORECASE):
             link = match.strip()
             scheme = link.split("://", 1)[0].lower()
             if scheme in OUTPUT_SCHEMES:
@@ -56,6 +58,29 @@ def decode_vmess(link: str) -> dict | None:
         return None
 
 
+def _split_server_port(server_port: str) -> tuple[str, int] | None:
+    """Split 'server:port', supporting IPv6 ``[addr]:port`` and trailing query."""
+    if server_port.startswith("["):
+        end = server_port.find("]")
+        if end == -1:
+            return None
+        server = server_port[1:end]
+        tail = server_port[end + 1:]
+        if not tail.startswith(":"):
+            return None
+        port_str = tail[1:].split("?", 1)[0]
+    else:
+        if ":" not in server_port:
+            return None
+        server, port_str = server_port.rsplit(":", 1)
+        port_str = port_str.split("?", 1)[0]
+    try:
+        port = int(port_str)
+    except ValueError:
+        return None
+    return server, port
+
+
 def parse_ss_link(link: str) -> dict | None:
     """Parse ss:// BASE64(method:password)@server:port#name"""
     if not link.startswith("ss://"):
@@ -78,15 +103,10 @@ def parse_ss_link(link: str) -> dict | None:
             name = unquote(name)
         else:
             server_port, name = rest, None
-        if ":" not in server_port:
+        parsed = _split_server_port(server_port)
+        if parsed is None:
             return None
-        server, port_str = server_port.rsplit(":", 1)
-        # Strip plugin/query parameters that may appear after the port.
-        port_str = port_str.split("?", 1)[0]
-        try:
-            port = int(port_str)
-        except ValueError:
-            return None
+        server, port = parsed
         return {
             "type": "ss",
             "server": server,
@@ -109,12 +129,10 @@ def parse_ss_link(link: str) -> dict | None:
             if ":" not in auth:
                 return None
             method, password = auth.split(":", 1)
-            server, port_str = server_port.rsplit(":", 1)
-            port_str = port_str.split("?", 1)[0]
-            try:
-                port = int(port_str)
-            except ValueError:
+            parsed = _split_server_port(server_port)
+            if parsed is None:
                 return None
+            server, port = parsed
             return {
                 "type": "ss",
                 "server": server,

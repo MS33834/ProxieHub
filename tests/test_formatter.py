@@ -50,10 +50,13 @@ def test_to_clash_yaml_disclaimer():
 
 
 def test_to_v2ray_subscription():
-    links = ["ss://example", "vmess://example"]
+    links = ["ss://YWVzLTI1Ni1nY206cGFzc3dvcmQ=@example.com:443#test"]
     sub = to_v2ray_subscription(links)
     assert sub
-    assert sub != "# ProxieHub V2Ray subscription"
+    assert not sub.startswith("#")
+    import base64
+    decoded = base64.b64decode(sub).decode()
+    assert "example.com" in decoded
 
 
 def test_to_v2ray_subscription_private_ip_filtered():
@@ -80,6 +83,14 @@ def test_to_proxy_list_private_ip_filtered():
     text = to_proxy_list(proxies)
     assert "127.0.0.1" not in text
     assert "1.2.3.4" in text
+
+
+def test_to_proxy_list_ipv6_private_filtered():
+    # Link-local IPv6 proxies must be filtered; public IPv6 proxies kept.
+    proxies = ["http://[fe80::1]:8080", "http://[2606:4700:4700::1111]:8080"]
+    text = to_proxy_list(proxies)
+    assert "fe80::1" not in text
+    assert "2606:4700:4700::1111" in text
 
 
 def test_is_private_host():
@@ -117,7 +128,9 @@ def test_compute_stats_raw_links():
     items = ["ss://a", "ss://b"]
     stats = _compute_stats(items)
     assert stats["total"] == 2
-    assert stats["alive"] == 2
+    # Raw links carry no liveness flag; survival must be reported as unknown.
+    assert stats["alive"] is None
+    assert stats["survival_rate"] is None
 
 
 if __name__ == "__main__":
@@ -129,6 +142,7 @@ if __name__ == "__main__":
     test_to_v2ray_subscription_private_ip_filtered()
     test_to_proxy_list()
     test_to_proxy_list_private_ip_filtered()
+    test_to_proxy_list_ipv6_private_filtered()
     test_is_private_host()
     test_compute_stats_all_dead()
     test_compute_stats_mixed()

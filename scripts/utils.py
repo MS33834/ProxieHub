@@ -72,6 +72,7 @@ logger = get_logger("utils")
 
 def _pad_base64(data: str) -> str:
     """Pad base64 string to a multiple of 4 characters."""
+    data = data.rstrip("=")
     return data + "=" * (-len(data) % 4)
 
 
@@ -144,9 +145,19 @@ def is_private_host(host: str | None) -> bool:
     lower = str(host).lower()
     if lower in ("localhost", "127.0.0.1", "::1"):
         return True
+    # Strip IPv6 brackets so bracketed hosts are evaluated correctly.
+    if lower.startswith("[") and lower.endswith("]"):
+        lower = lower[1:-1]
     try:
         ip = ipaddress.ip_address(lower)
-        return ip.is_private or ip.is_reserved or ip.is_loopback or ip.is_multicast
+        return (
+            ip.is_private
+            or ip.is_reserved
+            or ip.is_loopback
+            or ip.is_multicast
+            or ip.is_link_local
+            or ip.is_unspecified
+        )
     except ValueError:
         # Hostname: allow public domains; block obvious local suffixes.
         local_suffixes = (".local", ".localhost", ".lan", ".internal")

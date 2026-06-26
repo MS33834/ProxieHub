@@ -65,12 +65,6 @@ body {
   background: var(--color-muted);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;

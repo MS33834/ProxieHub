@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 import os
 import sys
@@ -155,9 +157,10 @@ def _main_cli() -> int:
     parser = argparse.ArgumentParser(description="Update ProxieHub node and proxy lists")
     parser.add_argument(
         "--verify",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
         default=VERIFY_NODES,
-        help="Enable node connectivity verification (also settable via PROXIEHUB_VERIFY_NODES)",
+        help="Enable/disable node connectivity verification "
+        "(use --verify / --no-verify; also settable via PROXIEHUB_VERIFY_NODES)",
     )
     args = parser.parse_args()
     try:

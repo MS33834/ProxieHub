@@ -4,24 +4,24 @@ install:
 	pip install -r requirements.txt
 
 test:
-	python tests/test_utils.py
-	python tests/test_parser.py
-	python tests/test_formatter.py
-	python tests/test_verifier.py
+	python3 tests/test_utils.py
+	python3 tests/test_parser.py
+	python3 tests/test_formatter.py
+	python3 tests/test_verifier.py
 
 update:
-	python scripts/update.py
+	python3 scripts/update.py
 
 verify:
-	PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+	PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify
 
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 
 lint:
-	python -m py_compile scripts/*.py tests/*.py
-	python -m ruff check scripts tests
+	python3 -m py_compile scripts/*.py tests/*.py
+	python3 -m ruff check scripts tests
 
 lint-web:
 	cd web && npm run lint

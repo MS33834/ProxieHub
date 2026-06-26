@@ -13,7 +13,7 @@ interface ClientCardProps {
   rating?: number;
 }
 
-const difficultyStyles: Record<string, string> = {
+const difficultyStyles: Record<"新手" | "进阶" | "高阶", string> = {
   新手: "text-success border-success/30 bg-success/10",
   进阶: "text-warning border-warning/30 bg-warning/10",
   高阶: "text-danger border-danger/30 bg-danger/10",

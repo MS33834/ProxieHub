@@ -36,7 +36,7 @@ jobs:
         run: make test
 
       - name: Run update pipeline (without verification)
-        run: python scripts/update.py
+        run: python3 scripts/update.py --no-verify
 
   web:
     runs-on: ubuntu-latest

@@ -23,7 +23,8 @@ const navItems = [
   { label: "免责声明", href: "/disclaimer" },
 ];
 
-const docsHref = "/docs";
+// Docs are served by the separate VitePress site, not a Next.js route.
+const docsHref = "https://ms33834.github.io/ProxieHub/docs/";
 
 const mobileMenuId = "mobile-menu";
 
@@ -85,12 +86,14 @@ export function Navbar() {
               </Link>
             );
           })}
-          <Link
+          <a
             href={docsHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-3 py-1.5 text-sm text-muted hover:text-foreground transition-colors"
           >
             文档
-          </Link>
+          </a>
           <a
             href="https://github.com/MS33834/ProxieHub"
             target="_blank"
@@ -138,13 +141,15 @@ export function Navbar() {
               </Link>
             );
           })}
-          <Link
+          <a
             href={docsHref}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => setOpen(false)}
             className="block px-3 py-2 text-sm text-muted hover:text-foreground hover:bg-surface-hover"
           >
             文档
-          </Link>
+          </a>
         </div>
       )}
     </header>

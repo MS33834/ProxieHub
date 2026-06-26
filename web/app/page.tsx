@@ -442,11 +442,11 @@ export default function HomePage() {
               <ProtocolChart counts={stats.protocolCounts} />
               <div className="mt-4 border border-primary/20 bg-primary/5 p-3 text-xs text-muted">
                 <strong className="text-foreground">提示：</strong>
-                流水线默认不启用深度验证。可在本地通过{" "}
+                每日 CI 默认启用 TCP 连通性校验；本地可通过{" "}
                 <code className="px-1 py-0.5 bg-background text-primary font-mono text-[10px]">
-                  python scripts/update.py --verify
+                  python3 scripts/update.py --no-verify
                 </code>{" "}
-                开启连通性校验。
+                关闭验证以加速测试。
               </div>
             </div>
           </div>

@@ -88,6 +88,12 @@ def fetch(
             return _fetch_with_urllib(url, timeout)
         except Exception as exc:
             last_error = exc
+            # Don't waste another attempt on deterministic failures
+            # (oversized or already-timed-out payloads).
+            if isinstance(exc, FetchError):
+                err = str(exc).lower()
+                if "timed out" in err or "filesize" in err or "max-filesize" in err:
+                    raise
             if attempt < retries:
                 continue
     raise last_error or FetchError(f"failed to fetch {url}")

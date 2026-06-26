@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import base64
 import json
 import re
+from urllib.parse import urlparse
 
 try:
     import yaml
@@ -75,9 +78,14 @@ def _compute_stats(items: list) -> dict:
     if has_alive_flag:
         alive_items = [i for i in items if isinstance(i, dict) and i.get("alive")]
         candidates = alive_items
+        alive_count = len(candidates)
+        survival_rate = round(alive_count / total * 100, 1) if total else 0.0
     else:
+        # Raw links without verification: liveness is unknown, so we must not
+        # report a misleading 100% survival rate.
         candidates = items
-    alive_count = len(candidates)
+        alive_count = None
+        survival_rate = None
     latencies = [
         i["latency_ms"] for i in candidates if isinstance(i, dict) and i.get("latency_ms") is not None
     ]
@@ -89,7 +97,6 @@ def _compute_stats(items: list) -> dict:
         else:
             region = "unknown"
         regions[region] = regions.get(region, 0) + 1
-    survival_rate = round(alive_count / total * 100, 1) if total else 0.0
     return {
         "total": total,
         "alive": alive_count,
@@ -100,9 +107,12 @@ def _compute_stats(items: list) -> dict:
 
 
 def _format_stats_lines(stats: dict) -> list[str]:
-    lines = [
-        f"# Nodes: {stats['total']} total, {stats['alive']} alive ({stats['survival_rate']}%)"
-    ]
+    alive = stats.get("alive")
+    rate = stats.get("survival_rate")
+    if alive is None or rate is None:
+        lines = [f"# Nodes: {stats['total']} total (unverified)"]
+    else:
+        lines = [f"# Nodes: {stats['total']} total, {alive} alive ({rate}%)"]
     if stats.get("avg_latency") is not None:
         lines.append(f"# Average latency: {stats['avg_latency']} ms")
     else:
@@ -210,9 +220,12 @@ def to_v2ray_subscription(items, stats: dict | None = None) -> str:
 
 
 def _proxy_host(proxy: str) -> str | None:
-    """Extract host from http(s)://host:port or socks4/5://host:port."""
-    match = re.match(r"^(?:http|https|socks4|socks5)://(?:[^@]+@)?([^:/]+)(?::\d+)?", proxy, re.I)
-    return match.group(1) if match else None
+    """Extract host from http(s)://host:port or socks4/5://host:port.
+
+    Uses urlparse so IPv6 addresses wrapped in brackets are handled correctly.
+    """
+    parsed = urlparse(proxy)
+    return parsed.hostname
 
 
 def to_proxy_list(proxies: list[str]) -> str:

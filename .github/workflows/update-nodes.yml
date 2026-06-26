@@ -37,7 +37,7 @@ jobs:
           PROXIEHUB_GEO_ENABLED: "false"
           PROXIEHUB_MAX_NODES: "800"
           PROXIEHUB_MAX_PROXIES: "300"
-        run: python scripts/update.py --verify
+        run: python3 scripts/update.py --verify
 
       - name: Validate generated files
         run: |

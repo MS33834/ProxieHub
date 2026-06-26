@@ -67,6 +67,24 @@ def test_parse_ss_link_with_plugin_params():
     assert cfg["port"] == 443
 
 
+def test_parse_ss_link_ipv6():
+    # IPv6 hosts must be parsed without leaving brackets, so private/link-local
+    # IPv6 addresses are filtered downstream instead of bypassing the check.
+    link = "ss://YWVzLTI1Ni1nY206cGFzcw==@[2001:db8::1]:443#ipv6"
+    cfg = parse_ss_link(link)
+    assert cfg is not None
+    assert cfg["server"] == "2001:db8::1"
+    assert cfg["port"] == 443
+
+
+def test_extract_node_links_case_insensitive():
+    text = "Vmess://eyJhZGQiOiJhLmNvbSJ9 SS://bWV0aG9kOnBhc3M=@b.com:443"
+    links = extract_node_links(text)
+    assert len(links) == 2
+    assert any(link.lower().startswith("vmess://") for link in links)
+    assert any(link.lower().startswith("ss://") for link in links)
+
+
 def test_parse_trojan_link():
     link = "trojan://pass@example.com:443#trojan-test"
     cfg = parse_trojan_link(link)
@@ -163,6 +181,8 @@ if __name__ == "__main__":
     test_parse_ss_link()
     test_parse_ss_link_sip002_with_name()
     test_parse_ss_link_with_plugin_params()
+    test_parse_ss_link_ipv6()
+    test_extract_node_links_case_insensitive()
     test_parse_trojan_link()
     test_parse_vless_link()
     test_parse_vless_link_ipv6()

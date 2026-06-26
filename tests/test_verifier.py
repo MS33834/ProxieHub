@@ -95,7 +95,17 @@ def test_verify_node_alive(monkeypatch):
     assert "latency_ms" in result
 
 
-def test_verify_node_unreachable():
+def test_verify_node_unreachable(monkeypatch=None):
+    import verifier
+
+    mp = _mp(monkeypatch)
+
+    def fake_create_connection(addr, timeout=None):
+        raise ConnectionRefusedError(111, "Connection refused")
+
+    mp.setattr(verifier.socket, "create_connection", fake_create_connection)
+
+    # Deterministic: no real network connection is attempted.
     result = verify_node("ss://YWVzLTI1Ni1nY206cGFzcw==@127.0.0.1:1", timeout=1, geo_enabled=False)
     assert result["alive"] is False
     assert result["region"] == "private"
@@ -192,7 +202,9 @@ if __name__ == "__main__":
     test_verify_node_alive(mp)
     mp.undo()
 
-    test_verify_node_unreachable()
+    mp = _Monkeypatch()
+    test_verify_node_unreachable(mp)
+    mp.undo()
 
     mp = _Monkeypatch()
     test_verify_node_latency_ms(mp)

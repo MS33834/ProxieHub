@@ -18,7 +18,7 @@ export function StatsSection({
   const items = [
     { label: "节点总数", value: totalNodes, icon: Server },
     { label: "启用数据源", value: `${enabledSources}/${totalSources}`, icon: Database },
-    { label: "覆盖协议", value: protocolCount ?? "4+", icon: Globe },
+    { label: "覆盖协议", value: protocolCount ?? 0, icon: Globe },
     { label: "最近更新", value: generatedAt, icon: Clock },
   ];
 

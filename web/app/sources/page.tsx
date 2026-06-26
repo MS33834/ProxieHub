@@ -31,8 +31,8 @@ export default function SourcesPage() {
   const stats = loadStats();
 
   const activeSources = stats.enabledSources;
-  const verifiedSources = stats.sources.filter(
-    (s) => s.enabled && s.reliability === "high"
+  const documentedSources = stats.sources.filter(
+    (s) => s.enabled && s.update_interval
   ).length;
   const avgProtocolCoverage =
     stats.totalSources > 0
@@ -162,8 +162,8 @@ export default function SourcesPage() {
           </div>
           <div className="border border-border bg-surface p-4">
             <BadgeCheck className="w-4 h-4 text-primary mb-2" />
-            <div className="text-xl font-semibold font-mono">{verifiedSources}</div>
-            <div className="text-[10px] text-muted">已验证源数量</div>
+            <div className="text-xl font-semibold font-mono">{documentedSources}</div>
+            <div className="text-[10px] text-muted">已标注更新源</div>
           </div>
           <div className="border border-border bg-surface p-4">
             <Layers className="w-4 h-4 text-secondary mb-2" />

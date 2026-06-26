@@ -5,7 +5,7 @@ const nextConfig = {
   output: "export",
   distDir: "dist",
   ...(isProd
-    ? { basePath: "/ProxieHub", assetPrefix: "/ProxieHub" }
+    ? { basePath: "/ProxieHub" }
     : {
         allowedDevOrigins: [
           "127.0.0.1",

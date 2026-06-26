@@ -146,7 +146,7 @@ export default function ArchitecturePage() {
             <span className="text-primary mt-0.5">·</span>
             <span>
               <strong className="text-foreground">可复现：</strong>
-              本地执行 <code className="px-1 py-0.5 bg-background border border-border text-[10px] font-mono text-muted">python scripts/update.py</code> 即可跑完整条流水线。
+              本地执行 <code className="px-1 py-0.5 bg-background border border-border text-[10px] font-mono text-muted">python3 scripts/update.py</code> 即可跑完整条流水线。
             </span>
           </li>
           <li className="flex items-start gap-2">

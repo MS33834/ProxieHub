@@ -241,7 +241,7 @@ const platformGuides = [
     platform: "Browser",
     primary: "SwitchyOmega",
     alternatives: "FoxyProxy、SmartProxy",
-    format: "HTTP(S) / SOCKS5",
+    format: "HTTP(S) / SOCKS4 / SOCKS5",
     difficulty: "新手" as const,
   },
 ];

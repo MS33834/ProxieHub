@@ -289,7 +289,7 @@ const commands = [
   {
     title: "验证节点可用性",
     description: "在项目根目录运行脚本，对本地节点进行连通性验证。",
-    code: "python scripts/update.py --verify",
+    code: "python3 scripts/update.py --verify",
   },
 ];
 

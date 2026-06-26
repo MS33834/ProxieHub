@@ -52,12 +52,12 @@ export const news: NewsItem[] = [
   },
   {
     id: "source-verification",
-    title: "数据源可靠性标注更新",
+    title: "数据源更新频率标注上线",
     date: "2026-06-10",
     category: "project",
-    summary: "为每个数据源新增 reliability 字段，优先展示高可靠源并标注更新频率。",
+    summary: "数据源页新增更新频率分布与“已标注更新源”指标，帮助识别活跃源。",
     content:
-      "我们在 sources.json 中引入了 reliability（high / medium / low）字段，用于标识数据源的历史稳定性与维护活跃度。网站健康度卡片中的“已验证源数量”即来源于此。未来还将结合每日连通性检测结果进一步校准该指标。",
+      "我们在 config/sources.json 中维护每个数据源的 update_interval 字段（如 5min / hourly / 12h / daily / inactive），用于标识更新频率。网站数据源页的健康度卡片中“已标注更新源”即基于该字段统计，同时提供更新频率分布图，方便社区判断哪些源持续活跃、哪些已低频或停滞。",
   },
   {
     id: "sing-box-intro",

@@ -46,7 +46,7 @@ const steps = [
   "编辑 config/sources.json，在 free_node_sources 或 free_proxy_apis 中添加条目。",
   "确保填写 name、url、enabled、protocols、update_interval 和 note。",
   "如果是代理列表（ip:port），请添加 proxy_scheme 字段（http/socks4/socks5）。",
-  "本地运行 python scripts/update.py 验证能否成功抓取并解析。",
+  "本地运行 python3 scripts/update.py 验证能否成功抓取并解析。",
   "提交 Pull Request，并在描述中说明数据源来源、更新频率和测试结果。",
 ];
 

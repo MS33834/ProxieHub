@@ -111,21 +111,21 @@ flowchart LR
 ```bash
 git clone https://github.com/MS33834/ProxieHub.git
 cd ProxieHub
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 make test              # 运行单元测试
-python scripts/update.py
+python3 scripts/update.py
 ```
 
 启用节点验证（耗时更长，可过滤失效节点）：
 
 ```bash
-PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify
 ```
 
 启用地区分组（需要 GeoIP 数据支持）：
 
 ```bash
-PROXIEHUB_GEO_ENABLED=true python scripts/update.py
+PROXIEHUB_GEO_ENABLED=true python3 scripts/update.py
 ```
 
 ### 3. 浏览前端站点

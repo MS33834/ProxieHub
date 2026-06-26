@@ -25,13 +25,13 @@
 运行以下命令可在本地生成并查看节点统计：
 
 ```bash
-python scripts/update.py
+python3 scripts/update.py
 ```
 
 如果开启了验证，还会输出存活率与平均延迟：
 
 ```bash
-PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify
 ```
 
 ### 4. 主站实时看板
@@ -93,7 +93,7 @@ vmess://uuid@example.com:443?...#Node_002
   - 手动：仓库管理员可在 Actions 页面点击“Run workflow”
 - **执行内容**：
   1. 安装 Python 依赖。
-  2. 运行 `python scripts/update.py --verify`（开启节点验证）。
+  2. 运行 `python3 scripts/update.py --verify`（开启节点验证）。
   3. 运行 `make test`。
   4. 若 `nodes/` 有变化，提交 `chore: daily node update`。
   5. 若配置了 `GITCODE_TOKEN`，同步推送到 GitCode 镜像仓库。

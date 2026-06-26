@@ -92,7 +92,7 @@ flowchart LR
 4. `verify_nodes(links, geo_enabled=...)`：使用线程池批量检测。
 5. `stats_summary(results)`：计算存活数、存活率、平均延迟与地域分布。
 
-> CI 检查默认不开启验证；每日自动更新工作流默认启用 `--verify`。本地可通过 `PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify` 启用。
+> CI 检查默认不开启验证；每日自动更新工作流默认启用 `--verify`。本地可通过 `PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify` 启用。
 
 ### 5. 格式化层
 

@@ -1,7 +1,7 @@
 .PHONY: install test update clean lint lint-web build-web
 
 install:
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 
 test:
 	python3 tests/test_utils.py

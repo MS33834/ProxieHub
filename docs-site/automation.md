@@ -13,13 +13,13 @@ ProxieHub 的日常运维主要由 GitHub Actions 驱动，从节点抓取、解
 ## 节点更新流程（update-nodes.yml）
 
 1. **检出仓库**：拉取完整历史，便于后续提交。
-2. **安装 Python 依赖**：`pip install -r requirements.txt`。
+2. **安装 Python 依赖**：`pip3 install -r requirements.txt`。
 3. **运行更新脚本**：
    ```bash
    PROXIEHUB_VERIFY_NODES=true \
    PROXIEHUB_MAX_NODES=800 \
    PROXIEHUB_MAX_PROXIES=300 \
-   python scripts/update.py --verify
+   python3 scripts/update.py --verify
    ```
 4. **运行测试**：`make test`。
 5. **提交变更**：如果 `nodes/` 目录有变化，自动提交并推送 `chore: daily node update`。
@@ -63,13 +63,13 @@ ProxieHub 的日常运维主要由 GitHub Actions 驱动，从节点抓取、解
 
 ```bash
 # 1. 安装 Python 依赖
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # 2. 运行完整更新（不验证，速度较快）
-python scripts/update.py
+python3 scripts/update.py
 
 # 3. 或开启连通性验证（较慢，但节点质量更高）
-PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify
 
 # 4. 运行测试
 make test

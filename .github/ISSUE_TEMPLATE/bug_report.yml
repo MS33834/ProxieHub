@@ -28,7 +28,7 @@ body:
       description: 请提供最小可复现步骤，包括执行的命令和配置。
       placeholder: |
         1. 克隆仓库
-        2. 运行 `python scripts/update.py --verify`
+        2. 运行 `python3 scripts/update.py --verify`
         3. 出现错误
     validations:
       required: true

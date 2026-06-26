@@ -16,7 +16,7 @@
 免费公开节点具有时效性，可能随时失效。建议：
 
 1. 等待次日 UTC 02:00 的自动更新。
-2. 在本地运行 `python scripts/update.py --verify` 获取经过连通性校验的节点。
+2. 在本地运行 `python3 scripts/update.py --verify` 获取经过连通性校验的节点。
 3. 尝试切换不同协议（Clash / V2Ray）或不同数据源。
 
 ### 订阅链接无法导入？

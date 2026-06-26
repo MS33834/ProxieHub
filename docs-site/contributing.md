@@ -77,13 +77,13 @@ git clone https://github.com/MS33834/ProxieHub.git
 cd ProxieHub
 
 # 安装 Python 依赖（推荐 Python 3.11+）
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # 运行一次完整更新（不验证，速度较快）
-python scripts/update.py
+python3 scripts/update.py
 
 # 或开启连通性验证（较慢，但节点质量更高）
-PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify
 ```
 
 ### Node 依赖
@@ -135,7 +135,7 @@ npm run docs:build  # 构建静态站点
 ```bash
 make lint
 make test
-python scripts/update.py
+python3 scripts/update.py
 ```
 
 如果改动了主站或文档站，再额外运行对应的 `npm run lint` / `npm run build` 或 `npm run docs:build`。

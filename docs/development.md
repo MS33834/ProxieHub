@@ -20,7 +20,7 @@ cd ProxieHub
 ### 安装依赖
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ### 运行单元测试
@@ -34,19 +34,19 @@ pytest tests/ -v
 ### 运行完整更新流程
 
 ```bash
-python scripts/update.py
+python3 scripts/update.py
 ```
 
 启用节点验证（更严格但耗时）：
 
 ```bash
-PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify
+PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify
 ```
 
 启用 GeoIP 地区分组：
 
 ```bash
-PROXIEHUB_GEO_ENABLED=true python scripts/update.py
+PROXIEHUB_GEO_ENABLED=true python3 scripts/update.py
 ```
 
 ### 代码风格
@@ -100,6 +100,6 @@ npm run docs:dev
 
 ## 调试技巧
 
-- 直接运行 `python scripts/crawler.py` 可测试数据源抓取，输出节点源与代理源数量。
+- 直接运行 `python3 scripts/crawler.py` 可测试数据源抓取，输出节点源与代理源数量。
 - 查看 `nodes/` 目录下的输出文件，确认格式是否符合预期。
 - 前端页面使用 `npm run dev` 实时预览，静态导出结果位于 `web/dist/`。

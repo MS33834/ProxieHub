@@ -32,7 +32,7 @@ GitCode 原始文件 URL 需要使用 API 端点。请使用 README 中提供的
 
 ## 为什么更新流程默认跳过验证？
 
-连通性验证需要对每个节点发起出站 TCP 连接，耗时较长，也可能对公开源造成压力。你可以在本地通过 `PROXIEHUB_VERIFY_NODES=true python scripts/update.py --verify` 开启。
+连通性验证需要对每个节点发起出站 TCP 连接，耗时较长，也可能对公开源造成压力。你可以在本地通过 `PROXIEHUB_VERIFY_NODES=true python3 scripts/update.py --verify` 开启。
 
 ## 可以自己部署 Web UI 吗？
 

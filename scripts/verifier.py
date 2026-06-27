@@ -213,14 +213,33 @@ def verify_node(link: str, timeout: int = TIMEOUT, geo_enabled: bool = True) -> 
             "error": "parse failed",
         }
 
+    # SSRF defence: never connect to private/loopback/link-local hosts.
+    if is_private_host(host):
+        return {
+            "link": link,
+            "alive": False,
+            "latency": None,
+            "latency_ms": None,
+            "region": "private",
+            "error": "private host blocked",
+        }
+
     alive, latency_ms, error = tcp_check(host, port, timeout)
     latency_ms = int(round(latency_ms)) if alive else None
 
-    if is_private_host(host):
-        region = "private"
-    elif alive and geo_enabled:
+    # DNS rebinding defence: after resolution, re-check the resolved IP.
+    if alive:
         ip = resolve_ip(host)
-        region = query_geo_api(ip) if ip else "unknown"
+        if ip and is_private_host(ip):
+            return {
+                "link": link,
+                "alive": False,
+                "latency": None,
+                "latency_ms": None,
+                "region": "private",
+                "error": "resolved to private IP",
+            }
+        region = query_geo_api(ip) if (geo_enabled and ip) else "unknown"
     else:
         region = "unknown"
 
@@ -262,11 +281,6 @@ def verify_nodes(
                     }
                 )
     return results
-
-
-def filter_alive(links: list[str], max_workers: int = MAX_WORKERS) -> list[str]:
-    results = verify_nodes(links, max_workers)
-    return [r["link"] for r in results if r["alive"]]
 
 
 def stats_summary(results: list[dict]) -> dict:

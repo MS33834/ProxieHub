@@ -124,7 +124,7 @@ def fetch_source(source: dict) -> str:
 
 def _fetch_source_safe(source: dict, category: str) -> dict | None:
     """Fetch a single source and return its raw entry, or None on failure."""
-    name = source["name"]
+    name = source.get("name", "unknown")
     try:
         start = time.perf_counter()
         text = fetch_source(source)

@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import base64
 import json
+import os
 import re
+import tempfile
+from pathlib import Path
 from urllib.parse import urlparse
 
 try:
@@ -255,25 +258,45 @@ def _build_regions(items) -> dict[str, list[str]]:
     return regions
 
 
+def _atomic_write(path: Path, content: str) -> None:
+    """Write *content* to *path* atomically via a temp file + os.replace.
+
+    Prevents half-written / truncated output files if the process is killed
+    mid-write (CI timeout, OOM, etc.).
+    """
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(content)
+        os.replace(tmp, str(path))
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
 def write_outputs(node_results, proxy_list: list[str], stats: dict | None = None):
     NODES_DIR.mkdir(parents=True, exist_ok=True)
 
     summary = stats if stats is not None else _compute_stats(node_results)
     stats_header = "\n".join(_format_stats_lines(summary)) + "\n"
 
-    (NODES_DIR / "clash.yaml").write_text(to_clash_yaml(node_results, stats=summary), encoding="utf-8")
+    _atomic_write(NODES_DIR / "clash.yaml", to_clash_yaml(node_results, stats=summary))
 
     v2ray_body = to_v2ray_subscription(node_results)
     if not v2ray_body.startswith("#"):
         v2ray_body = stats_header + v2ray_body
-    (NODES_DIR / "v2ray.txt").write_text(v2ray_body, encoding="utf-8")
+    _atomic_write(NODES_DIR / "v2ray.txt", v2ray_body)
 
     regions = _build_regions(node_results)
-    (NODES_DIR / "regions.json").write_text(
-        json.dumps(regions, ensure_ascii=False, indent=2), encoding="utf-8"
+    _atomic_write(
+        NODES_DIR / "regions.json",
+        json.dumps(regions, ensure_ascii=False, indent=2),
     )
 
-    (NODES_DIR / "proxies.txt").write_text(to_proxy_list(proxy_list), encoding="utf-8")
+    _atomic_write(NODES_DIR / "proxies.txt", to_proxy_list(proxy_list))
 
 
 if __name__ == "__main__":

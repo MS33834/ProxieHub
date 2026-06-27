@@ -142,7 +142,10 @@ def main(verify: bool = False) -> int:
             all_proxies.extend(proxies)
 
     all_proxies = list(dict.fromkeys(all_proxies))[:MAX_PROXIES]
-    write_outputs(alive_results, all_proxies, stats=stats)
+    # Let write_outputs compute stats from the actual output set so the file
+    # header matches what is written to disk. Verification stats (logged above)
+    # reflect the full candidate pool and may differ when MAX_NODES truncates.
+    write_outputs(alive_results, all_proxies)
     logger.info("done: %d nodes, %d proxies written", len(alive_results), len(all_proxies))
 
     if failed_sources:

@@ -213,16 +213,34 @@ def parse_vless_link(link: str) -> dict | None:
         return None
     uuid, host, port, query, fragment = parts
     qs = {k: v[0] for k, v in parse_qs(query).items()} if query else {}
-    return {
+    security = qs.get("security", "none")
+    cfg = {
         "type": "vless",
         "server": host,
         "port": port,
         "uuid": unquote(uuid),
-        "tls": qs.get("security", "none") in ("tls", "reality"),
+        "tls": security in ("tls", "reality"),
         "servername": qs.get("sni", host),
         "network": qs.get("type", "tcp"),
         "name": unquote(fragment) or "vless_node",
     }
+    flow = qs.get("flow")
+    if flow:
+        cfg["flow"] = flow
+    if security == "reality":
+        reality_opts = {}
+        pbk = qs.get("pbk")
+        if pbk:
+            reality_opts["public-key"] = pbk
+        sid = qs.get("sid")
+        if sid:
+            reality_opts["short-id"] = sid
+        if reality_opts:
+            cfg["reality-opts"] = reality_opts
+        fp = qs.get("fp")
+        if fp:
+            cfg["client-fingerprint"] = fp
+    return cfg
 
 
 def node_to_clash_config(link: str) -> dict | None:
@@ -236,19 +254,25 @@ def node_to_clash_config(link: str) -> dict | None:
             alter_id = int(cfg.get("aid") or 0)
         except (TypeError, ValueError):
             return None
-        return {
+        net = cfg.get("net", "tcp")
+        result = {
             "name": cfg.get("ps") or cfg.get("remark") or "vmess_node",
             "type": "vmess",
             "server": cfg.get("add"),
             "port": port,
             "uuid": cfg.get("id"),
             "alterId": alter_id,
-            "cipher": "auto",
+            "cipher": cfg.get("scy", "auto"),
             "tls": cfg.get("tls") in ("tls", True, "true"),
-            "network": cfg.get("net", "tcp"),
-            "ws-opts": {"path": cfg.get("path", "/"), "headers": {"Host": cfg.get("host", "")}},
+            "network": net,
             "skip-cert-verify": False,
         }
+        if net == "ws":
+            result["ws-opts"] = {
+                "path": cfg.get("path", "/"),
+                "headers": {"Host": cfg.get("host", "")},
+            }
+        return result
     if scheme == "ss":
         return parse_ss_link(link)
     if scheme == "trojan":
@@ -268,7 +292,7 @@ def parse_proxy_api_response(text: str | None, default_scheme: str = "http") -> 
         return []
     scheme_pattern = re.compile(r"^(http|https|socks4|socks5)://", re.I)
     ipv4_pattern = re.compile(r"^((?:\d{1,3}\.){3}\d{1,3}):(\d{1,5})\s*$")
-    ipv6_pattern = re.compile(r"^(\[[\da-fA-F:]+\]):(\d{1,5})\s*$")
+    ipv6_pattern = re.compile(r"^(\[[\da-fA-F:.]+\]):(\d{1,5})\s*$")
 
     def _is_valid_ipv4(host: str) -> bool:
         try:

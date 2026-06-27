@@ -16,7 +16,6 @@ export interface SourceConfig {
   note?: string;
   update_interval?: string;
   protocols?: string[];
-  reliability?: "high" | "medium" | "low";
   max_size?: number;
   proxy_scheme?: string;
   timeout?: number;

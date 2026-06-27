@@ -114,6 +114,22 @@ def test_parse_vless_link_ipv6():
     assert cfg["port"] == 443
 
 
+def test_parse_vless_link_reality():
+    link = (
+        "vless://uuid@example.com:443?security=reality&sni=example.com"
+        "&pbk=abc123&sid=def&fp=chrome&type=tcp&flow=xtls-rprx-vision#reality-test"
+    )
+    cfg = parse_vless_link(link)
+    assert cfg is not None
+    assert cfg["server"] == "example.com"
+    assert cfg["port"] == 443
+    assert cfg["tls"] is True
+    assert cfg["flow"] == "xtls-rprx-vision"
+    assert cfg["reality-opts"]["public-key"] == "abc123"
+    assert cfg["reality-opts"]["short-id"] == "def"
+    assert cfg["client-fingerprint"] == "chrome"
+
+
 def test_extract_node_links_ipv6():
     text = "vless://uuid@[2001:db8::1]:443?type=tcp#ipv6"
     links = extract_node_links(text)
@@ -137,6 +153,30 @@ def test_node_to_clash_config():
     cfg = node_to_clash_config(link)
     assert cfg is not None
     assert cfg["type"] == "ss"
+
+
+def test_node_to_clash_config_vmess_tcp_no_ws_opts():
+    import base64
+    cfg = {"add": "a.com", "port": 443, "id": "uuid", "aid": 0, "net": "tcp", "scy": "aes-128-gcm"}
+    b64 = base64.b64encode(json.dumps(cfg).encode()).decode().rstrip("=")
+    link = f"vmess://{b64}"
+    result = node_to_clash_config(link)
+    assert result is not None
+    assert result["network"] == "tcp"
+    assert "ws-opts" not in result
+    assert result["cipher"] == "aes-128-gcm"
+
+
+def test_node_to_clash_config_vmess_ws_has_ws_opts():
+    import base64
+    cfg = {"add": "a.com", "port": 443, "id": "uuid", "aid": 0, "net": "ws", "path": "/ws", "host": "a.com"}
+    b64 = base64.b64encode(json.dumps(cfg).encode()).decode().rstrip("=")
+    link = f"vmess://{b64}"
+    result = node_to_clash_config(link)
+    assert result is not None
+    assert result["network"] == "ws"
+    assert result["ws-opts"]["path"] == "/ws"
+    assert result["ws-opts"]["headers"]["Host"] == "a.com"
 
 
 def test_parse_proxy_api_response():
@@ -186,9 +226,12 @@ if __name__ == "__main__":
     test_parse_trojan_link()
     test_parse_vless_link()
     test_parse_vless_link_ipv6()
+    test_parse_vless_link_reality()
     test_extract_node_links_ipv6()
     test_node_to_clash_config_vmess_null_port()
     test_node_to_clash_config()
+    test_node_to_clash_config_vmess_tcp_no_ws_opts()
+    test_node_to_clash_config_vmess_ws_has_ws_opts()
     test_parse_proxy_api_response()
     test_parse_proxy_api_response_ignores_duplicates()
     test_parse_proxy_api_response_plain_ip_port()

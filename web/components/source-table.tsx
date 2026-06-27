@@ -12,7 +12,6 @@ interface Source {
   note?: string;
   update_interval?: string;
   protocols?: string[];
-  reliability?: "high" | "medium" | "low";
 }
 
 interface SourceTableProps {

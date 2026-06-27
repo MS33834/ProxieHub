@@ -148,6 +148,54 @@ def test_verify_node_region(monkeypatch):
     assert result["region"] == "US/California"
 
 
+def test_verify_node_private_host_blocked(monkeypatch):
+    """SSRF defence: private hosts must be blocked before any TCP connection."""
+    import verifier
+
+    mp = _mp(monkeypatch)
+
+    called = []
+
+    def fake_tcp_check(host, port, timeout=None):
+        called.append((host, port))
+        return True, 1.0, None
+
+    mp.setattr(verifier, "tcp_check", fake_tcp_check)
+
+    result = verify_node(
+        "ss://YWVzLTI1Ni1nY206cGFzcw==@127.0.0.1:443#test",
+        timeout=2,
+        geo_enabled=False,
+    )
+    assert result["alive"] is False
+    assert result["region"] == "private"
+    assert result["error"] == "private host blocked"
+    assert len(called) == 0  # tcp_check was never called
+
+
+def test_verify_node_dns_rebinding(monkeypatch):
+    """DNS rebinding defence: domain resolving to a private IP must be blocked."""
+    import verifier
+
+    mp = _mp(monkeypatch)
+
+    def fake_create_connection(addr, timeout=None):
+        return FakeSocket()
+
+    mp.setattr(verifier.socket, "create_connection", fake_create_connection)
+    # Domain resolves to a private IP → must be blocked after resolution.
+    mp.setattr(verifier, "resolve_ip", lambda host: "127.0.0.1")
+
+    result = verify_node(
+        "ss://YWVzLTI1Ni1nY206cGFzcw==@evil.com:443#test",
+        timeout=2,
+        geo_enabled=False,
+    )
+    assert result["alive"] is False
+    assert result["region"] == "private"
+    assert result["error"] == "resolved to private IP"
+
+
 def test_is_private_host():
     assert is_private_host("127.0.0.1") is True
     assert is_private_host("192.168.1.1") is True
@@ -212,6 +260,14 @@ if __name__ == "__main__":
 
     mp = _Monkeypatch()
     test_verify_node_region(mp)
+    mp.undo()
+
+    mp = _Monkeypatch()
+    test_verify_node_private_host_blocked(mp)
+    mp.undo()
+
+    mp = _Monkeypatch()
+    test_verify_node_dns_rebinding(mp)
     mp.undo()
 
     test_is_private_host()

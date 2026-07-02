@@ -1,0 +1,57 @@
+# ProxieHub — full stack deployment (backend + reverse proxy)
+#
+# Usage:
+#   1. Copy backend/.env.example to backend/.env and edit.
+#   2. Set your domain in Caddyfile.
+#   3. docker compose up -d
+#
+# Services:
+#   backend  — FastAPI app (pipeline + API + scheduler)
+#   caddy    — reverse proxy with automatic HTTPS
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    container_name: proxiehub-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - PROXIEHUB_DATABASE_URL=sqlite:///data/proxiehub.db
+      - PROXIEHUB_SOURCES_CONFIG_PATH=/app/config/sources.json
+      - PROXIEHUB_NODES_OUTPUT_DIR=/app/nodes
+    volumes:
+      - backend_data:/app/backend/data
+      - nodes_output:/app/nodes
+      - ../config:/app/config:ro
+    ports:
+      - "127.0.0.1:8000:8000"  # Only expose locally; Caddy handles public traffic
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: proxiehub-caddy
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - nodes_output:/srv/nodes:ro  # Serve subscription files directly
+
+volumes:
+  backend_data:
+  nodes_output:
+  caddy_data:
+  caddy_config:
